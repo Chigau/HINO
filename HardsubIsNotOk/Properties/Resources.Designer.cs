@@ -65,7 +65,7 @@ namespace HardsubIsNotOk.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap Danganronpa_V3_Bonus_Mode_Chihiro_Fujisaki_Sprite__11_ {
             get {
-                object obj = ResourceManager.GetObject("Danganronpa_V3_Bonus_Mode_Chihiro_Fujisaki_Sprite_(11)", resourceCulture);
+                object obj = ResourceManager.GetObject("Danganronpa_V3_Bonus_Mode_Chihiro_Fujisaki_Sprite__11_", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -75,7 +75,7 @@ namespace HardsubIsNotOk.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap Danganronpa_V3_Bonus_Mode_Chihiro_Fujisaki_Sprite__14_ {
             get {
-                object obj = ResourceManager.GetObject("Danganronpa_V3_Bonus_Mode_Chihiro_Fujisaki_Sprite_(14)", resourceCulture);
+                object obj = ResourceManager.GetObject("Danganronpa_V3_Bonus_Mode_Chihiro_Fujisaki_Sprite__14_", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -85,7 +85,7 @@ namespace HardsubIsNotOk.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap Danganronpa_V3_Bonus_Mode_Chihiro_Fujisaki_Sprite__4_ {
             get {
-                object obj = ResourceManager.GetObject("Danganronpa_V3_Bonus_Mode_Chihiro_Fujisaki_Sprite_(4)", resourceCulture);
+                object obj = ResourceManager.GetObject("Danganronpa_V3_Bonus_Mode_Chihiro_Fujisaki_Sprite__4_", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -95,7 +95,7 @@ namespace HardsubIsNotOk.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap Danganronpa_V3_Bonus_Mode_Chihiro_Fujisaki_Sprite__8_ {
             get {
-                object obj = ResourceManager.GetObject("Danganronpa_V3_Bonus_Mode_Chihiro_Fujisaki_Sprite_(8)", resourceCulture);
+                object obj = ResourceManager.GetObject("Danganronpa_V3_Bonus_Mode_Chihiro_Fujisaki_Sprite__8_", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
