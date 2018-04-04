@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DAA79407-9A5A-40BC-9073-855BA6B5C26A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>HardsubIsNotOk</RootNamespace>
+    <AssemblyName>HardsubIsNotOk</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AForge.Video">
+      <HintPath>C:\Users\Manuel\Documents\Visual Studio 2017\Projects\ConsoleApp2\ConsoleApp2\AForgeFFmpeg\sourceCode\aforgeffmpeg\Release\AForge.Video.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video.FFMPEG">
+      <HintPath>C:\Users\Manuel\Documents\Visual Studio 2017\Projects\ConsoleApp2\ConsoleApp2\AForgeFFmpeg\sourceCode\aforgeffmpeg\Release\AForge.Video.FFMPEG.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConversionThread.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FramePreview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FramePreview.Designer.cs">
+      <DependentUpon>FramePreview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GuessLetter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GuessLetter.Designer.cs">
+      <DependentUpon>GuessLetter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputString.cs" />
+    <Compile Include="LearningExamples.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LearningExamples.Designer.cs">
+      <DependentUpon>LearningExamples.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LearningThread.cs" />
+    <Compile Include="Letter.cs" />
+    <Compile Include="LockBitmap.cs" />
+    <Compile Include="Network.cs" />
+    <Compile Include="Neuron.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsRegulation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsRegulation.Designer.cs">
+      <DependentUpon>SettingsRegulation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsWindow.Designer.cs">
+      <DependentUpon>SettingsWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Subtitle.cs" />
+    <Compile Include="SubtitlesWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SubtitlesWindow.Designer.cs">
+      <DependentUpon>SubtitlesWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WordNotFound.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WordNotFound.Designer.cs">
+      <DependentUpon>WordNotFound.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FramePreview.resx">
+      <DependentUpon>FramePreview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GuessLetter.resx">
+      <DependentUpon>GuessLetter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LearningExamples.resx">
+      <DependentUpon>LearningExamples.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="SettingsRegulation.resx">
+      <DependentUpon>SettingsRegulation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsWindow.resx">
+      <DependentUpon>SettingsWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubtitlesWindow.resx">
+      <DependentUpon>SubtitlesWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WordNotFound.resx">
+      <DependentUpon>WordNotFound.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Danganronpa_V3_Bonus_Mode_Chihiro_Fujisaki_Sprite_%284%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Danganronpa_V3_Bonus_Mode_Chihiro_Fujisaki_Sprite_%288%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Danganronpa_V3_Bonus_Mode_Chihiro_Fujisaki_Sprite_%2811%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Danganronpa_V3_Bonus_Mode_Chihiro_Fujisaki_Sprite_%2814%29.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
