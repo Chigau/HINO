@@ -11,6 +11,7 @@ namespace HardsubIsNotOk
     {
         public bool top = false;
         public List<Line> lines = new List<Line>();
+        public List<Coord> discardedPixels = new List<Coord>();
         public long startFrame = -1, endFrame = -1;
         public string value = "";
 
@@ -192,11 +193,15 @@ namespace HardsubIsNotOk
         {
             Bitmap toRet = new Bitmap(ConversionThread.frame.Width, ConversionThread.frame.Height);
             foreach (Line line in lines)
+            {
                 foreach (Letter l in line.letters)
+                {
                     foreach (Coord p in l.pixels)
-                    {
                         toRet.SetPixel(p.x, p.y, Color.Black);
-                    }
+                }
+            }
+            foreach (Coord p in discardedPixels)
+                toRet.SetPixel(p.x, p.y, Color.LightCoral);
 
             return toRet;
         }

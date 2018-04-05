@@ -485,7 +485,10 @@ namespace HardsubIsNotOk
                         {
                             if (subtitle == null)
                                 subtitle = new Subtitle();
-                            subtitle.AddLetter(get);
+                            if (get.pixels.Count < Settings.maxCharPixelSize)
+                                subtitle.AddLetter(get);
+                            else
+                                subtitle.discardedPixels.AddRange(get.pixels);
                         }
                     }
                 }
@@ -533,6 +536,7 @@ namespace HardsubIsNotOk
                 {
                     if (subtitle.lines[l].letters[i].pixels.Count < Settings.minCharPixelSize) //|| subtitle.lines[l].letters[i].pixels.Count > Settings.maxCharPixelSize)
                     {
+                        subtitle.discardedPixels.AddRange(subtitle.lines[l].letters[i].pixels);
                         subtitle.lines[l].letters.RemoveAt(i);
                         if (subtitle.lines[l].letters.Count != 0)
                             subtitle.lines[l].RecalcCoords();
@@ -557,11 +561,13 @@ namespace HardsubIsNotOk
                         }
                         else if (frame.Width - subtitle.lines[l].xMax > subtitle.lines[l].xMin)
                         {
+                            subtitle.discardedPixels.AddRange(subtitle.lines[l].letters[0].pixels);
                             subtitle.lines[l].letters.RemoveAt(0);
                             subtitle.lines[l].RecalcCoords();
                         }
                         else
                         {
+                            subtitle.discardedPixels.AddRange(subtitle.lines[l].letters[subtitle.lines[l].letters.Count - 1].pixels);
                             subtitle.lines[l].letters.RemoveAt(subtitle.lines[l].letters.Count - 1);
                             subtitle.lines[l].RecalcCoords();
                         }

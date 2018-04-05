@@ -63,8 +63,11 @@ namespace HardsubIsNotOk
             }
             else
             {
-                foreach(KeyValuePair<Coord, Letter> p in toRemove)
+                foreach (KeyValuePair<Coord, Letter> p in toRemove)
+                {
+                    sub.discardedPixels.Add(p.Key);
                     p.Value.pixels.Remove(p.Key);
+                }
                 for (int line = 0; line < sub.lines.Count; line++)
                 {
                     for (int c = 0; c < sub.lines[line].letters.Count; c++)

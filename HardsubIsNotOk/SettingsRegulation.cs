@@ -633,7 +633,8 @@ namespace HardsubIsNotOk
                         {
                             if (subtitle == null)
                                 subtitle = new Subtitle();
-                            subtitle.AddLetter(get);
+                            if(get.pixels.Count < Settings.maxCharPixelSize)
+                                subtitle.AddLetter(get);
                         }
                     }
                 }
@@ -643,7 +644,7 @@ namespace HardsubIsNotOk
                 {
                     for (int i = 0; i < l.letters.Count; i++)
                     {
-                        if (l.letters[i].pixels.Count < Settings.minCharPixelSize || l.letters[i].pixels.Count > Settings.maxCharPixelSize)
+                        if (l.letters[i].pixels.Count < Settings.minCharPixelSize) //|| l.letters[i].pixels.Count > Settings.maxCharPixelSize)
                             l.letters.RemoveAt(i);
                     }
                 }

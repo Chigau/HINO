@@ -62,7 +62,7 @@ namespace HardsubIsNotOk
             int height = yMax - yMin;
             if(height > width)
             {
-                if(height * Settings.defaultCharScale > 24)
+                if(height * Settings.defaultCharScale > 23)
                 {
                     double scaleConst = (double) 23 / height;
                     foreach(Coord p in pixels)
@@ -84,7 +84,7 @@ namespace HardsubIsNotOk
             }
             else
             {
-                if (width * Settings.defaultCharScale > 24)
+                if (width * Settings.defaultCharScale > 23)
                 {
                     double scaleConst = (double) 23 / width;
                     foreach (Coord p in pixels)
