@@ -138,12 +138,13 @@ namespace HardsubIsNotOk
 
                 file.WriteLine(Settings.minCharPixelSize);
                 file.WriteLine(Settings.minSpaceWidth);
-                
+                file.WriteLine(Settings.lineDistance);
+                file.WriteLine(Settings.defaultCharScale);
+
                 file.WriteLine(Settings.whiteAndBlack);
                 file.WriteLine(Settings.discardNonPassingThroughTheCenterLines);
                 file.WriteLine(Settings.discardNonCenteredLines);
                 file.WriteLine(Settings.nonCenteredThreshold);
-
                 file.Close();
                 Enabled = true;
             }
@@ -228,6 +229,8 @@ namespace HardsubIsNotOk
 
                 Settings.minCharPixelSize = int.Parse(file.ReadLine());
                 Settings.minSpaceWidth = int.Parse(file.ReadLine());
+                Settings.lineDistance = int.Parse(file.ReadLine());
+                Settings.defaultCharScale = double.Parse(file.ReadLine());
 
                 Settings.whiteAndBlack = bool.Parse(file.ReadLine());
                 Settings.discardNonPassingThroughTheCenterLines = bool.Parse(file.ReadLine());
@@ -254,19 +257,24 @@ namespace HardsubIsNotOk
             {
                 Enabled = false;
                 string toSave = "";
-                int c = 0;
-                foreach (Subtitle sub in ConversionThread.subtitles)
+                for(int c = 0; c < ConversionThread.subtitles.Count; c++)
                 {
+                    Subtitle sub = ConversionThread.subtitles[c];
                     if (sub.value == "")
+                    {
+                        ConversionThread.subtitles.RemoveAt(c);
+                        c--;
                         continue;
-                    c++;
+                    }
+                    if (sub.startFrame <= ConversionThread.subtitles[c - 1].endFrame)
+                        sub.startFrame = ConversionThread.subtitles[c - 1].endFrame + 1;
                     toSave += c + "\n";
                     TimeSpan time = TimeSpan.FromSeconds(sub.startFrame / Settings.frameRate);
                     toSave += time.ToString("g");
                     toSave += " --> ";
                     time = TimeSpan.FromSeconds(sub.endFrame / Settings.frameRate);
                     toSave += time.ToString("g");
-                    toSave += sub.top ? "\n{\a6}" + sub.value + "\n" : "\n" + sub.value + "\n";
+                    toSave += sub.top ? '\n' + @"{\a6}" + sub.value + '\n' : '\n' + sub.value + '\n';
                 }
                 File.WriteAllText(saveFileDialog.FileName, toSave);
                 Enabled = true;

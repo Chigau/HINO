@@ -32,6 +32,7 @@ namespace HardsubIsNotOk
                 graphics.DrawRectangle(borderPen, Rectangle.FromLTRB(0, Settings.cutBottom, image.Width, image.Height));
             }
             preview.Image = image;
+            label1.Text = "Frame: " + sub.startFrame + "-" + sub.endFrame;
             this.sub = sub;
         }
         public FramePreview(Bitmap image)
@@ -141,7 +142,7 @@ namespace HardsubIsNotOk
         {
             if (textBox1.Visible)
             {
-                corrected = textBox1.Text;
+                corrected = textBox1.Text + '\n';
                 exitStatus = GuessLetter.Result.subRewrited;
                 Close();
             }

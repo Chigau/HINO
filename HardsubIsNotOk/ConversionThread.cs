@@ -410,6 +410,7 @@ namespace HardsubIsNotOk
                         converted += word;
                         break;
                     case WordNotFound.Result.skipSub:
+                        subtitles.RemoveAt(subIndex);
                         converted = null;
                         break;
                     case WordNotFound.Result.subChanged:
@@ -483,10 +484,7 @@ namespace HardsubIsNotOk
                         if (get != null)
                         {
                             if (subtitle == null)
-                                subtitle = new Subtitle()
-                                {
-                                    top = true
-                                };
+                                subtitle = new Subtitle();
                             subtitle.AddLetter(get);
                         }
                     }
@@ -512,7 +510,10 @@ namespace HardsubIsNotOk
                         if (get != null)
                         {
                             if (subtitle == null)
-                                subtitle = new Subtitle();
+                                subtitle = new Subtitle()
+                                {
+                                    top = true
+                                };
                             subtitle.AddLetter(get);
                         }
                     }

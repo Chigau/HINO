@@ -24,7 +24,7 @@ namespace HardsubIsNotOk
         public static int lineDistance = 10;
         public static int minCharPixelSize = 20;
         public static int maxCharPixelSize = 500;
-        public static double defaultCharScale = 1;
+        public static double defaultCharScale = 0.638;
 
         public static float newCharacterThreshold = 5;
         public static float sameCharacterThreshold = 30;

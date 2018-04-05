@@ -55,6 +55,8 @@ namespace HardsubIsNotOk
             checkBox3.Checked = Settings.discardNonPassingThroughTheCenterLines;
             checkBox4.Checked = Settings.discardNonCenteredLines;
             numericUpDown1.Value = Settings.nonCenteredThreshold;
+
+            defaultCharScale.Text = Settings.defaultCharScale.ToString();
         }
 
 
