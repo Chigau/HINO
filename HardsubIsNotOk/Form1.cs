@@ -266,7 +266,7 @@ namespace HardsubIsNotOk
                         c--;
                         continue;
                     }
-                    if (sub.startFrame <= ConversionThread.subtitles[c - 1].endFrame)
+                    if (c > 0 && sub.startFrame <= ConversionThread.subtitles[c - 1].endFrame)
                         sub.startFrame = ConversionThread.subtitles[c - 1].endFrame + 1;
                     toSave += c + "\n";
                     TimeSpan time = TimeSpan.FromSeconds(sub.startFrame / Settings.frameRate);

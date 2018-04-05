@@ -1,5 +1,5 @@
-archer
 arcer
+archer
 archer
 assassin
 berserker
@@ -12,11 +12,13 @@ graal
 hana
 illya
 illyasviel
+issei
 kirei
 kojirou
 kotomine
 kuzuki
 lancer
+lssei
 matou
 mitsuzuri
 rin
