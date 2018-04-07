@@ -25,6 +25,9 @@ namespace HardsubIsNotOk
 
             textBox7.Text = Settings.maxDictionaryError.ToString();
             textBox6.Text = (Settings.minDictionaryCorrectness * 100).ToString();
+
+            textBox9.Text = Settings.maxLearningThreads.ToString();
+            checkBox2.Checked = Settings.learningDisabled;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -41,6 +44,9 @@ namespace HardsubIsNotOk
 
                 Settings.maxDictionaryError = double.Parse(textBox7.Text);
                 Settings.minDictionaryCorrectness = double.Parse(textBox6.Text) / 100;
+
+                Settings.maxLearningThreads = int.Parse(textBox9.Text);
+                Settings.learningDisabled = checkBox2.Checked;
                 Close();
             }
             catch(FormatException ex)

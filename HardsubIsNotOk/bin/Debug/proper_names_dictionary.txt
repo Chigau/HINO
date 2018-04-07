@@ -5,9 +5,11 @@ assassin
 berserker
 caster
 chihiro
+colchide
 einzbern
 fuji
 fujimura
+gilgamesh
 graal
 hana
 illya
@@ -18,9 +20,14 @@ kojirou
 kotomine
 kuzuki
 lancer
+leys
+leysritt
 lssei
 matou
+medea
+melloi
 mitsuzuri
+padron
 rin
 ryuudou
 saber
@@ -30,6 +37,7 @@ sasaki
 shinji
 shinto
 shirou
+souichirou
 tohsaka
 von
 zzz

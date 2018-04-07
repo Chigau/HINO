@@ -7,7 +7,8 @@ namespace HardsubIsNotOk
     public class Letter
     {
         public string value, secondChoice;
-        public double correctness = 1;
+        public double error = 1;
+        public double firstOverSecondCorrectness = 1;
         public double[] pixelsMatrix = new double[24*24];
         public HashSet<Coord> pixels = new HashSet<Coord>();
         public HashSet<Coord> outlinePixels;
@@ -31,17 +32,6 @@ namespace HardsubIsNotOk
             if (coord.y < yMin)
                 yMin = coord.y;
         }
-        /*
-        public Bitmap ToBitmap()
-        {
-            Bitmap toRet = new Bitmap(xMax - xMin + 1, yMax - yMin + 1);
-            foreach (Coord c in pixels)
-            {
-                toRet.SetPixel(c.x - xMin, c.y - yMin, Color.Black);
-            }
-            return toRet;
-        }
-        */
         public Bitmap ArrayToBitmap()
         {
             Bitmap toRet = new Bitmap(24, 24);
@@ -125,6 +115,43 @@ namespace HardsubIsNotOk
                 if (coord.y < yMin)
                     yMin = coord.y;
             }
+        }
+        public void Recognize()
+        {
+            if (Program.neuralNetwork.Count < Settings.maxLearningThreads)
+                return;
+            double higher = 0;
+            double err = 0;
+            //Console.WriteLine("Riconoscimento lettera");
+            List<string> keys = new List<string>(Program.neuralNetwork.Keys);
+
+            foreach (String s in keys)
+            {
+                Program.neuralNetwork[s].SetLetter(this);
+                double output = Program.neuralNetwork[s].GetOutput();
+                err += output * output;
+                if (output > higher)
+                {
+                    firstOverSecondCorrectness = higher;
+                    secondChoice = value;
+
+                    higher = output;
+                    value = Program.neuralNetwork[s].value;
+                }
+                else if (output > firstOverSecondCorrectness)
+                {
+                    firstOverSecondCorrectness = output;
+                    secondChoice = Program.neuralNetwork[s].value;
+                }
+                //Console.WriteLine("Caso " + nn.value + ": " + output);
+            }
+            firstOverSecondCorrectness = higher - firstOverSecondCorrectness;
+
+            err -= higher * higher;
+            err += (1 - higher) * (1 - higher);
+            err /= Program.neuralNetwork.Count;
+            //Console.WriteLine("Risultato: " + to);
+            error = Math.Sqrt(err);
         }
     }
     public class Space : Letter { }

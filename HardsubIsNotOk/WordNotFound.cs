@@ -19,10 +19,10 @@ namespace HardsubIsNotOk
         public int line, start, end;
         public enum Result
         {
-            correct = 0,
-            correctWithoutLearning = 1,
+            incorrect = 0,
+            incorrectWithoutLearning = 1,
             add = 2,
-            skip = 3,
+            dontCare = 3,
             skipSub = 4,
             subChanged = 5,
             subRewrited = 6,
@@ -32,13 +32,13 @@ namespace HardsubIsNotOk
 
         private void button1_Click(object sender, EventArgs e)
         {
-            result = Result.skip;
+            result = Result.dontCare;
             Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            result = Result.correct;
+            result = Result.incorrect;
             Close();
         }
 
@@ -51,7 +51,7 @@ namespace HardsubIsNotOk
         private void button5_Click(object sender, EventArgs e)
         {
             Settings.dictionaryMode = false;
-            result = Result.correct;
+            result = Result.incorrect;
             Close();
         }
 
@@ -63,7 +63,7 @@ namespace HardsubIsNotOk
 
         private void button7_Click(object sender, EventArgs e)
         {
-            result = Result.correctWithoutLearning;
+            result = Result.incorrectWithoutLearning;
             Close();
         }
 

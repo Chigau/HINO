@@ -257,6 +257,17 @@ namespace HardsubIsNotOk
             {
                 Enabled = false;
                 string toSave = "";
+
+                /*
+                int index = 0;
+                foreach(Subtitle s in ConversionThread.waitForUser)
+                {
+                    while (index < ConversionThread.subtitles.Count && ConversionThread.subtitles[index].startFrame < s.startFrame)
+                        index++;
+                    ConversionThread.subtitles.Insert(index, s);
+                }
+                */
+
                 for(int c = 0; c < ConversionThread.subtitles.Count; c++)
                 {
                     Subtitle sub = ConversionThread.subtitles[c];
@@ -266,8 +277,13 @@ namespace HardsubIsNotOk
                         c--;
                         continue;
                     }
-                    if (c > 0 && sub.startFrame <= ConversionThread.subtitles[c - 1].endFrame)
-                        sub.startFrame = ConversionThread.subtitles[c - 1].endFrame + 1;
+
+                    int d;
+                    for (d = c - 1; d > 0 && ConversionThread.subtitles[c].top != ConversionThread.subtitles[d].top; d--) ;
+
+                    if (d >= 0 && sub.startFrame < ConversionThread.subtitles[d].endFrame)
+                        sub.startFrame = ConversionThread.subtitles[d].endFrame;
+
                     toSave += c + "\n";
                     TimeSpan time = TimeSpan.FromSeconds(sub.startFrame / Settings.frameRate);
                     toSave += time.ToString("g");

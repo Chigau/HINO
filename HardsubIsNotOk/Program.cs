@@ -24,7 +24,7 @@ namespace HardsubIsNotOk
         public static int lineDistance = 10;
         public static int minCharPixelSize = 20;
         public static int maxCharPixelSize = 500;
-        public static double defaultCharScale = 0.638;
+        public static double defaultCharScale = 1;
 
         public static float newCharacterThreshold = 5;
         public static float sameCharacterThreshold = 30;
@@ -49,6 +49,8 @@ namespace HardsubIsNotOk
         public static bool discardNonPassingThroughTheCenterLines = true;
         public static bool discardNonCenteredLines = true;
         public static int nonCenteredThreshold = 10;
+
+        public static bool learningDisabled = false;
     }
     static class Program
     {
@@ -204,7 +206,7 @@ namespace HardsubIsNotOk
 
         public static void AddLearningThread(string l)
         {
-            if (l == "" || learningThreads.Contains(l))
+            if (l == null || learningThreads.Contains(l))
                 return;
             if (learningThreads.Count < 5)
             {
@@ -241,12 +243,12 @@ namespace HardsubIsNotOk
         }
         public static void AddLearningThread(string l1, string l2)
         {
-            if (learningThreads.Contains(l1))
+            if (l1 == null || learningThreads.Contains(l1))
             {
                 AddLearningThread(l2);
                 return;
             }
-            if (learningThreads.Contains(l2))
+            if (l2 == null || learningThreads.Contains(l2))
             {
                 AddLearningThread(l1);
                 return;

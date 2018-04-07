@@ -9,7 +9,6 @@ namespace HardsubIsNotOk
         public string value;
         public List<Neuron>[] neurons;
         public LearningThread learning;
-        bool wait = false;
 
         public Network(string value, params int[] lengths)
         {
@@ -59,8 +58,11 @@ namespace HardsubIsNotOk
             return learning.lastErrorRate;
         }
 
-        public double SetLetter(Letter l) //ATTENZIONE: ritorna l'errore
+        bool busy = false;
+        public double SetLetter(Letter l)
         {
+            while (busy) ;
+            busy = true;
             for (int c = 0; c < l.pixelsMatrix.Length; c++)
                 neurons[0][c].output = l.pixelsMatrix[c];
 
@@ -70,9 +72,11 @@ namespace HardsubIsNotOk
 
             int output = neurons.Length - 1;
             neurons[output][0].CalculateOutput();
-            return value != l.value ? neurons[output][0].output * neurons[output][0].output / 2 : (1 - neurons[output][0].output) * (1 - neurons[output][0].output) / 2;
+            double err = value != l.value ? neurons[output][0].output * neurons[output][0].output / 2 : (1 - neurons[output][0].output) * (1 - neurons[output][0].output) / 2;
+            busy = false;
+            return err;
         }
-        public double SetLearningLetter(Letter l) //ATTENZIONE: ritorna l'errore
+        public double SetLearningLetter(Letter l)
         {
             for (int c = 0; c < l.pixelsMatrix.Length; c++)
                 neurons[0][c].learningOutput = l.pixelsMatrix[c];

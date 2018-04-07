@@ -26,8 +26,15 @@ namespace HardsubIsNotOk
             subRewrited = 5,
             none = 6,
         }
-        public GuessLetter(Subtitle sub, Letter lett, string message = "Lettera non riconosciuta.")
+        public GuessLetter(Subtitle sub, Letter lett)
         {
+            string message = 
+                "Recognition: " + lett.value + 
+                "\nAverage error: " + lett.error + 
+                "\nSecond choice: " + lett.secondChoice + 
+                "\nFirst over second choice correctness: " + (int)(lett.firstOverSecondCorrectness * 100) + 
+                "%\nFrame: " + sub.startFrame + "-" + sub.endFrame;
+
             InitializeComponent();
             letterBox.Image = lett.ArrayToBitmap();
             this.sub = sub;

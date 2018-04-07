@@ -20,15 +20,14 @@ namespace HardsubIsNotOk
 
         public static bool[,] filled;
         private static Letter newLetter;
-        public static List<Subtitle> subtitles;
+        public static List<Subtitle> subtitles = new List<Subtitle>();
+        public static List<Subtitle> waitForUser = new List<Subtitle>();
         private static bool notALetterFlag;
         static int bufferSize, whatBuffer = 0;
         static bool bufferingPause, bufferingComplete;
 
         public static void Go()
         {
-            var watch = Stopwatch.StartNew();
-
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
@@ -47,7 +46,10 @@ namespace HardsubIsNotOk
             while (!bufferingPause) ;
 
             Subtitle subTop = null, subBottom = null;
-            Thread subRec = new Thread(RecognizeSubtitle);
+            Thread subRec = new Thread(RecognizeSubtitles);
+            subRec.IsBackground = true;
+            subRec.Start();
+            subRec = new Thread(RecognizeWaitForUser);
             subRec.IsBackground = true;
             subRec.Start();
 
@@ -161,14 +163,14 @@ namespace HardsubIsNotOk
             bufferingComplete = true;
         }
 
-        static int subIndex = 0;
-        public static void RecognizeSubtitle()
+        public static void RecognizeSubtitles()
         {
-            while(true)
+            int subIndex = 0;
+            while (true)
             {
                 while (subtitles.Count <= subIndex)
                 {
-                    if(frameIndex == Program.reader.FrameCount)
+                    if (frameIndex >= Program.reader.FrameCount)
                     {
                         Form1.progressBar.Invoke(new Form1.EventHandle(() => Form1.recognitionBar.Value = 1000));
                         Program.StopLearning();
@@ -177,120 +179,155 @@ namespace HardsubIsNotOk
                         return;
                     }
                 }
+                WordNotFound.Result exit;
+                Form1.progressBar.Invoke(new Form1.EventHandle(() => Form1.recognitionBar.Value = (int)(((double)subIndex / (subtitles.Count + waitForUser.Count)) * 1000)));
 
-                Form1.progressBar.Invoke(new Form1.EventHandle(() => Form1.recognitionBar.Value = (int)(((double)subIndex / subtitles.Count) * 1000)));
-
-                //Thread.Sleep(10);
-                string converted = "";
-                int wordStart = 0, wordEnd = 0;
-
-                foreach (Subtitle.Line line in subtitles[subIndex].lines)
+                StringBuilder converted = new StringBuilder();
+                int wordStart = 0;
+                for (int lineIndex = 0; lineIndex < subtitles[subIndex].lines.Count; lineIndex++)
                 {
+                    Subtitle.Line line = subtitles[subIndex].lines[lineIndex];
                     for (int c = 0; c < line.letters.Count; c++)
                     {
                         if (line.letters[c] is Space)
                         {
-                            CorrectWord(subtitles[subIndex], subtitles[subIndex].lines.IndexOf(line), wordStart, wordEnd, ref converted);
-                            if (converted == null)
-                                goto skipSub;
-                            converted += ' ';
-                            wordEnd++;
-                            wordStart = wordEnd;
+                            if (!TryToCorrectWithDictionary(subtitles[subIndex], lineIndex, wordStart, c, converted))
+                            {
+                                if (Settings.dictionaryMode)
+                                {
+                                    waitForUser.Add(subtitles[subIndex]);
+                                    //subtitles.RemoveAt(subIndex);
+                                    subIndex++;
+                                    goto skipSub;
+                                }
+                                else
+                                {
+                                    exit = ShowDictionaryDialog(subtitles[subIndex], lineIndex, wordStart, c, converted);
+                                    switch (exit)
+                                    {
+                                        case WordNotFound.Result.skipSub:
+                                            subtitles.RemoveAt(subIndex);
+                                            goto skipSub;
+                                        case WordNotFound.Result.subChanged:
+                                            goto skipSub;
+                                        case WordNotFound.Result.subRewrited:
+                                            subIndex++;
+                                            goto skipSub;
+                                    }
+                                }
+                            }
+                            converted.Append(' ');
+                            wordStart = c + 1;
                             continue;
                         }
                         line.letters[c].GenerateArray();
-                        string guess, secondChoice;
-                        double corr = 0;
-                        double err = Convert(line.letters[c], out guess, out secondChoice, out corr);
-                        if (corr < 0.5) //parametrizzabile
-                        {
-                            line.letters[c].secondChoice = secondChoice;
-                            line.letters[c].correctness = corr;
-                        }
-                        if(Settings.dictionaryMode ? err > Settings.maxDictionaryError || corr < Settings.minDictionaryCorrectness : err > Settings.maxError || corr < Settings.minCorrectness)
-                        {
-                            GuessLetter alert = new GuessLetter(subtitles[subIndex], line.letters[c], "Recognition: " + guess + "\nAverage error: " + err + "\nSecond choice: " + secondChoice + "\nFirst over second choice correctness: " + (int)(corr * 100) + "%\nFrame: " + subtitles[subIndex].startFrame + "-" + subtitles[subIndex].endFrame);
-                            alert.StartPosition = FormStartPosition.CenterScreen;
-                            alert.ShowDialog();
+                        line.letters[c].Recognize();
 
-                            switch(alert.result)
+                        if (line.letters[c].firstOverSecondCorrectness > 0.5) //parametrizzabile
+                            line.letters[c].secondChoice = null;
+
+                        if (Settings.dictionaryMode)
+                        {
+                            if (line.letters[c].error > Settings.maxDictionaryError || line.letters[c].firstOverSecondCorrectness < Settings.minDictionaryCorrectness)
                             {
-                                case GuessLetter.Result.incorrect:
-                                    if (alert.correction == guess)
-                                        goto case GuessLetter.Result.correct;
-                                    line.letters[c].value = alert.correction;
-                                    Program.examples.Add(line.letters[c]);
-
-                                    bool newNet = !Program.neuralNetwork.ContainsKey(alert.correction);
-                                    if (newNet)
-                                        Program.neuralNetwork.Add(alert.correction, new Network(alert.correction, 24 * 24, Settings.nnSize, Settings.nnSize));
-
-                                    Program.AddLearningThread(guess, alert.correction);
-
-                                    guess = alert.correction;
-
-                                    if (newNet && Program.neuralNetwork.Count >= Settings.maxLearningThreads)
-                                        Thread.Sleep(1000);
-                                    break;
-
-                                case GuessLetter.Result.correct:
-                                    line.letters[c].value = guess;
-                                    Program.examples.Add(line.letters[c]);
-                                    Program.AddLearningThread(guess, secondChoice);
-                                    break;
-                                    
-                                case GuessLetter.Result.notALetter:
-                                    guess = "";
-                                    line.letters.RemoveAt(c);
-                                    c--;
-                                    //Program.examples.Add(l);
-                                    continue;
-
-                                case GuessLetter.Result.skipSub:
-                                    subtitles.RemoveAt(subIndex);
-                                    goto skipSub;
-
-                                case GuessLetter.Result.subChanged:
-                                    goto skipSub;
-
-                                case GuessLetter.Result.subRewrited:
-                                    subtitles[subIndex].value = alert.correction;
-                                    subIndex++;
-                                    goto skipSub;
+                                waitForUser.Add(subtitles[subIndex]);
+                                //subtitles.RemoveAt(subIndex);
+                                subIndex++;
+                                goto skipSub;
                             }
                         }
                         else
                         {
-                            line.letters[c].value = guess;
-                        }
-                        if (guess != "")
-                        {
-                            if (IsLetter(guess))
-                                wordEnd++;
-                            else
+                            if (line.letters[c].error > Settings.maxError || line.letters[c].firstOverSecondCorrectness < Settings.minCorrectness)
                             {
-                                CorrectWord(subtitles[subIndex], subtitles[subIndex].lines.IndexOf(line), wordStart, wordEnd, ref converted);
-                                if (converted == null)
-                                    goto skipSub;
-                                wordEnd++;
-                                wordStart = wordEnd;
+                                GuessLetter.Result e = ShowCorrectLetterDialog(subtitles[subIndex], lineIndex, c);
+                                switch (e)
+                                {
+                                    case GuessLetter.Result.notALetter:
+                                        line.letters.RemoveAt(c);
+                                        c--;
+                                        continue;
+                                    case GuessLetter.Result.skipSub:
+                                        subtitles.RemoveAt(subIndex);
+                                        goto skipSub;
+                                    case GuessLetter.Result.subChanged:
+                                        goto skipSub;
+                                    case GuessLetter.Result.subRewrited:
+                                        subIndex++;
+                                        goto skipSub;
+
+                                }
                             }
-                            converted += guess;
+                        }
+
+                        if (line.letters[c].value != "")
+                        {
+                            if (!IsLetter(line.letters[c].value))
+                            {
+                                if (!TryToCorrectWithDictionary(subtitles[subIndex], lineIndex, wordStart, c, converted))
+                                {
+                                    if (Settings.dictionaryMode)
+                                    {
+                                        waitForUser.Add(subtitles[subIndex]);
+                                        //subtitles.RemoveAt(subIndex);
+                                        subIndex++;
+                                        goto skipSub;
+                                    }
+                                    else
+                                    {
+                                        exit = ShowDictionaryDialog(subtitles[subIndex], lineIndex, wordStart, c, converted);
+                                        switch (exit)
+                                        {
+                                            case WordNotFound.Result.skipSub:
+                                                subtitles.RemoveAt(subIndex);
+                                                goto skipSub;
+                                            case WordNotFound.Result.subChanged:
+                                                goto skipSub;
+                                            case WordNotFound.Result.subRewrited:
+                                                subIndex++;
+                                                goto skipSub;
+                                        }
+                                    }
+                                }
+                                wordStart = c + 1;
+                            }
+                            converted.Append(line.letters[c].value);
                         }
                     }
-                    CorrectWord(subtitles[subIndex], subtitles[subIndex].lines.IndexOf(line), wordStart, wordEnd, ref converted);
-                    if (converted == null)
-                        goto skipSub;
-                    if (converted != "" && converted[converted.Length - 1] != '\n')
-                        converted += '\n';
+                    if (!TryToCorrectWithDictionary(subtitles[subIndex], lineIndex, wordStart, line.letters.Count, converted))
+                    {
+                        if (Settings.dictionaryMode)
+                        {
+                            waitForUser.Add(subtitles[subIndex]);
+                            //subtitles.RemoveAt(subIndex);
+                            subIndex++;
+                            goto skipSub;
+                        }
+                        else
+                        {
+                            exit = ShowDictionaryDialog(subtitles[subIndex], lineIndex, wordStart, line.letters.Count, converted);
+                            switch (exit)
+                            {
+                                case WordNotFound.Result.skipSub:
+                                    subtitles.RemoveAt(subIndex);
+                                    goto skipSub;
+                                case WordNotFound.Result.subChanged:
+                                    goto skipSub;
+                                case WordNotFound.Result.subRewrited:
+                                    subIndex++;
+                                    goto skipSub;
+                            }
+                        }
+                    }
+                    if (converted.Length != 0 && converted[converted.Length - 1] != '\n')
+                        converted.Append('\n');
                     wordStart = 0;
-                    wordEnd = 0;
                 }
-                if (converted == "")
+                if (converted.Length == 0)
                 {
                     subtitles.RemoveAt(subIndex);
                 }
-                else if (subIndex > 0 && converted == subtitles[subIndex - 1].value && subtitles[subIndex].startFrame - 1 <= subtitles[subIndex - 1].endFrame)
+                else if (subIndex > 0 && converted.ToString() == subtitles[subIndex - 1].value && subtitles[subIndex].startFrame - 1 <= subtitles[subIndex - 1].endFrame)
                 {
                     subtitles[subIndex - 1].endFrame = subtitles[subIndex].endFrame;
                     subtitles.RemoveAt(subIndex);
@@ -298,8 +335,140 @@ namespace HardsubIsNotOk
                 else
                 {
                     //Console.Write(converted);
-                    subtitles[subIndex].value = converted;
+                    subtitles[subIndex].value = converted.ToString();
                     subIndex++;
+                }
+                skipSub:;
+            }
+        }
+        public static void RecognizeWaitForUser() //like the recognizeSubtitles, but it works on a separated list made of the subtitles that need user intervent (for processing the main list while waiting for the user)
+        {
+            while (true)
+            {
+                while (waitForUser.Count == 0) ;
+                Thread.Sleep(20);
+
+                WordNotFound.Result exit;
+
+                StringBuilder converted = new StringBuilder();
+                int wordStart = 0;
+                for (int lineIndex = 0; lineIndex < waitForUser[0].lines.Count; lineIndex++)
+                {
+                    Subtitle.Line line = waitForUser[0].lines[lineIndex];
+                    for (int c = 0; c < line.letters.Count; c++)
+                    {
+                        if (line.letters[c] is Space)
+                        {
+                            if (!TryToCorrectWithDictionary(waitForUser[0], lineIndex, wordStart, c, converted))
+                            {
+                                exit = ShowDictionaryDialog(waitForUser[0], lineIndex, wordStart, c, converted);
+                                switch (exit)
+                                {
+                                    case WordNotFound.Result.skipSub:
+                                        //subtitles.Remove(waitForUser[0]);
+                                        waitForUser.RemoveAt(0);
+                                        goto skipSub;
+                                    case WordNotFound.Result.subChanged:
+                                        goto skipSub;
+                                    case WordNotFound.Result.subRewrited:
+                                        waitForUser.RemoveAt(0);
+                                        goto skipSub;
+                                }
+                            }
+                            converted.Append(' ');
+                            wordStart = c + 1;
+                            continue;
+                        }
+                        line.letters[c].GenerateArray();
+                        line.letters[c].Recognize();
+
+                        if (line.letters[c].firstOverSecondCorrectness > 0.5) //parametrizzabile
+                            line.letters[c].secondChoice = null;
+                        
+                        if (line.letters[c].error > Settings.maxDictionaryError || line.letters[c].firstOverSecondCorrectness < Settings.minDictionaryCorrectness)
+                        {
+                            GuessLetter.Result e = ShowCorrectLetterDialog(waitForUser[0], lineIndex, c);
+                            switch (e)
+                            {
+                                case GuessLetter.Result.notALetter:
+                                    line.letters.RemoveAt(c);
+                                    c--;
+                                    continue;
+                                case GuessLetter.Result.skipSub:
+                                    //subtitles.Remove(waitForUser[0]);
+                                    waitForUser.RemoveAt(0);
+                                    goto skipSub;
+                                case GuessLetter.Result.subChanged:
+                                    goto skipSub;
+                                case GuessLetter.Result.subRewrited:
+                                    waitForUser.RemoveAt(0);
+                                    goto skipSub;
+
+                            }
+                        }
+
+                        if (line.letters[c].value != "")
+                        {
+                            if (!IsLetter(line.letters[c].value))
+                            {
+                                if (!TryToCorrectWithDictionary(waitForUser[0], lineIndex, wordStart, c, converted))
+                                {
+                                    exit = ShowDictionaryDialog(waitForUser[0], lineIndex, wordStart, c, converted);
+                                    switch (exit)
+                                    {
+                                        case WordNotFound.Result.skipSub:
+                                            //subtitles.Remove(waitForUser[0]);
+                                            waitForUser.RemoveAt(0);
+                                            goto skipSub;
+                                        case WordNotFound.Result.subChanged:
+                                            goto skipSub;
+                                        case WordNotFound.Result.subRewrited:
+                                            waitForUser.RemoveAt(0);
+                                            goto skipSub;
+                                    }
+                                }
+                                wordStart = c + 1;
+                            }
+                            converted.Append(line.letters[c].value);
+                        }
+                    }
+                    if (!TryToCorrectWithDictionary(waitForUser[0], lineIndex, wordStart, waitForUser[0].lines.Count, converted))
+                    {
+                        exit = ShowDictionaryDialog(waitForUser[0], lineIndex, wordStart, waitForUser[0].lines.Count, converted);
+                        switch (exit)
+                        {
+                            case WordNotFound.Result.skipSub:
+                                //subtitles.Remove(waitForUser[0]);
+                                waitForUser.RemoveAt(0);
+                                goto skipSub;
+                            case WordNotFound.Result.subChanged:
+                                goto skipSub;
+                            case WordNotFound.Result.subRewrited:
+                                waitForUser.RemoveAt(0);
+                                goto skipSub;
+                        }
+                    }
+                    if (converted.Length != 0 && converted[converted.Length - 1] != '\n')
+                        converted.Append('\n');
+                    wordStart = 0;
+                }
+                int subIndex = subtitles.IndexOf(waitForUser[0]);
+                if (converted.Length == 0)
+                {
+                    subtitles.Remove(waitForUser[0]);
+                    waitForUser.RemoveAt(0);
+                }
+                else if (subIndex > 0 && converted.ToString() == subtitles[subIndex - 1].value && subtitles[subIndex].startFrame - 1 <= subtitles[subIndex - 1].endFrame)
+                {
+                    subtitles[subIndex - 1].endFrame = subtitles[subIndex].endFrame;
+                    subtitles.Remove(waitForUser[0]);
+                    waitForUser.RemoveAt(0);
+                }
+                else
+                {
+                    //Console.Write(converted);
+                    waitForUser[0].value = converted.ToString();
+                    waitForUser.RemoveAt(0);
                 }
                 skipSub:;
             }
@@ -312,8 +481,111 @@ namespace HardsubIsNotOk
                     return false;
             return true;
         }
+        public static GuessLetter.Result ShowCorrectLetterDialog(Subtitle sub, int line, int letter)
+        {
+            Letter l = sub.lines[line].letters[letter];
 
-        public static void CorrectWord(Subtitle sub, int line, int start, int end, ref string converted)
+            GuessLetter alert = new GuessLetter(sub, l);
+            alert.StartPosition = FormStartPosition.CenterScreen;
+            alert.ShowDialog();
+
+            switch (alert.result)
+            {
+                case GuessLetter.Result.incorrect:
+                    if (alert.correction == l.value)
+                        goto case GuessLetter.Result.correct;
+
+                    if (!Settings.learningDisabled)
+                    {
+                        Program.examples.Add(l);
+
+                        bool newNet = !Program.neuralNetwork.ContainsKey(alert.correction);
+                        if (newNet)
+                            Program.neuralNetwork.Add(alert.correction, new Network(alert.correction, 24 * 24, Settings.nnSize, Settings.nnSize));
+
+                        Program.AddLearningThread(l.value, alert.correction);
+                        l.value = alert.correction;
+
+                        if (newNet && Program.neuralNetwork.Count >= Settings.maxLearningThreads)
+                            Thread.Sleep(1000);
+                    }
+                    break;
+
+                case GuessLetter.Result.correct:
+                    Program.examples.Add(l);
+                    if (!Settings.learningDisabled)
+                        Program.AddLearningThread(l.value, l.secondChoice);
+                    break;
+
+                case GuessLetter.Result.subRewrited:
+                    sub.value = alert.correction;
+                    break;
+            }
+            return alert.result;
+        }
+        public static WordNotFound.Result ShowDictionaryDialog(Subtitle sub, int line, int start, int end, StringBuilder converted)
+        {
+            string word = "";
+            for (int c = start; c < end; c++)
+                word += sub.lines[line].letters[c].value;
+
+            WordNotFound alert = new WordNotFound(sub, line, start, end);
+            alert.ShowDialog();
+
+            switch (alert.result)
+            {
+                case WordNotFound.Result.incorrect:
+                    string newWord = "";
+                    for (int c = start; c < end; c++)
+                    {
+                        string corrected = alert.correction[c - start].Text;
+                        newWord += corrected;
+                        if (sub.lines[line].letters[c].value != corrected)
+                        {
+                            string wrong = sub.lines[line].letters[c].value;
+                            sub.lines[line].letters[c].value = corrected;
+                            if (!Settings.learningDisabled)
+                            {
+                                Program.examples.Add(sub.lines[line].letters[c]);
+
+                                bool newNet = !Program.neuralNetwork.ContainsKey(corrected);
+                                if (newNet)
+                                    Program.neuralNetwork.Add(corrected, new Network(corrected, 24 * 24, Settings.nnSize, Settings.nnSize));
+
+                                Program.AddLearningThread(wrong, corrected);
+                            }
+                        }
+                    }
+                    converted.Append(newWord);
+                    break;
+                case WordNotFound.Result.incorrectWithoutLearning:
+                    string n = "";
+                    for (int c = start; c < end; c++)
+                    {
+                        string corrected = alert.correction[c - start].Text;
+                        n += corrected;
+
+                    }
+                    converted.Append(n);
+                    break;
+                case WordNotFound.Result.add:
+                    converted.Append(word);
+                    Program.AddToDictionary(word);
+                    break;
+                case WordNotFound.Result.properName:
+                    converted.Append(word);
+                    Program.AddToProperNames(word);
+                    break;
+                case WordNotFound.Result.dontCare:
+                    converted.Append(word);
+                    break;
+                case WordNotFound.Result.subRewrited:
+                    sub.value = alert.subRewrited;
+                    break;
+            }
+            return alert.result;
+        }
+        public static bool TryToCorrectWithDictionary(Subtitle sub, int line, int start, int end, StringBuilder converted)
         {
             string word = "";
             for (int c = start; c < end; c++)
@@ -321,7 +593,7 @@ namespace HardsubIsNotOk
 
             if (word.Length > 0 && !Program.FindWord(word) && !Program.FindName(word))
             {
-                converted = converted.Remove(converted.Length - word.Length);
+                converted = converted.Remove(converted.Length - word.Length, word.Length);
                 word = "";
 
                 Dictionary<string, Letter> alternatives = new Dictionary<string, Letter>();
@@ -345,9 +617,9 @@ namespace HardsubIsNotOk
                     string index = "";
                     foreach(KeyValuePair<string, Letter> alt in alternatives)
                     {
-                        if(alt.Value.correctness < min)
+                        if(alt.Value.firstOverSecondCorrectness < min)
                         {
-                            min = alt.Value.correctness;
+                            min = alt.Value.firstOverSecondCorrectness;
                             index = alt.Key;
                         }
                     }
@@ -356,119 +628,19 @@ namespace HardsubIsNotOk
 
                     alternatives[index].value = corrected;
 
-                    Program.examples.Add(alternatives[index]);
-                    Program.AddLearningThread(wrong, corrected);
-                    converted += index;
-                    return;
+                    if (!Settings.learningDisabled)
+                    {
+                        Program.examples.Add(alternatives[index]);
+                        Program.AddLearningThread(wrong, corrected);
+                    }
+                    converted.Append(index);
+                    return true;
                 }
-
-                WordNotFound alert = new WordNotFound(sub, line, start, end);
-                alert.ShowDialog();
-
-                switch (alert.result)
-                {
-                    case WordNotFound.Result.correct:
-                        string newWord = "";
-                        for (int c = start; c < end; c++)
-                        {
-                            string corrected = alert.correction[c - start].Text;
-                            newWord += corrected;
-                            if (sub.lines[line].letters[c].value != corrected)
-                            {
-                                string wrong = sub.lines[line].letters[c].value;
-                                sub.lines[line].letters[c].value = corrected;
-                                Program.examples.Add(sub.lines[line].letters[c]);
-
-                                bool newNet = !Program.neuralNetwork.ContainsKey(corrected);
-                                if (newNet)
-                                    Program.neuralNetwork.Add(corrected, new Network(corrected, 24 * 24, Settings.nnSize, Settings.nnSize));
-
-                                Program.AddLearningThread(wrong, corrected);
-                            }
-                        }
-                        converted += newWord;
-                        break;
-                    case WordNotFound.Result.correctWithoutLearning:
-                        string n = "";
-                        for (int c = start; c < end; c++)
-                        {
-                            string corrected = alert.correction[c - start].Text;
-                            n += corrected;
-
-                        }
-                        converted += n;
-                        break;
-                    case WordNotFound.Result.add:
-                        converted += word;
-                        Program.AddToDictionary(word);
-                        break;
-                    case WordNotFound.Result.properName:
-                        converted += word;
-                        Program.AddToProperNames(word);
-                        break;
-                    case WordNotFound.Result.skip:
-                        converted += word;
-                        break;
-                    case WordNotFound.Result.skipSub:
-                        subtitles.RemoveAt(subIndex);
-                        converted = null;
-                        break;
-                    case WordNotFound.Result.subChanged:
-                        converted = null;
-                        break;
-                    case WordNotFound.Result.subRewrited:
-                        sub.value = alert.subRewrited;
-                        subIndex++;
-                        converted = null;
-                        break;
-                }
-
+                return false;
             }
+            return true;
         }
-
-        public static double Convert(Letter l, out string to, out string secondChoice, out double perc) //ritorna l'errore
-        {
-            to = "";
-            secondChoice = "";
-            perc = 0;
-            if (Program.neuralNetwork.Count < Settings.maxLearningThreads)
-                return 1;
-            double higher = 0;
-            double err = 0;
-            //Console.WriteLine("Riconoscimento lettera");
-            foreach (Network nn in Program.neuralNetwork.Values)
-            {
-                //bool restart = nn.learning.running;
-                //nn.StopLearning();
-                nn.SetLetter(l);
-                double output = nn.GetOutput();
-                err += output * output;
-                if (output > higher)
-                {
-                    perc = higher;
-                    secondChoice = to;
-
-                    higher = output;
-                    to = nn.value;
-                }
-                else if (output > perc)
-                {
-                    perc = output;
-                    secondChoice = nn.value;
-                }
-                //Console.WriteLine("Caso " + nn.value + ": " + output);
-                //if(restart)
-                //    nn.StartLearning();
-            }
-            perc = higher - perc;
-
-            err -= higher * higher;
-            err += (1 - higher) * (1 - higher);
-            err /= Program.neuralNetwork.Count;
-            //Console.WriteLine("Risultato: " + to);
-            return Math.Sqrt(err);
-        }
-
+        
         private static Subtitle GetSubtitleBottom()
         {
             filled = new bool[frame.Width, frame.Height];
