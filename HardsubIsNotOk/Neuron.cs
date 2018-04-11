@@ -7,11 +7,11 @@ namespace HardsubIsNotOk
     {
         public int index;
         public List<Neuron> inputs, outputs;
-        public double[] weights, learningWeights;
+        public float[] weights, learningWeights;
 
-        public double[] partDerivativesWeights, partDerivativesInputs;
+        public float[] partDerivativesWeights, partDerivativesInputs;
 
-        public double output = 1, learningOutput = 1;
+        public float output = 1, learningOutput = 1;
 
         public Neuron(int index, List<Neuron> inputs)
         {
@@ -19,13 +19,13 @@ namespace HardsubIsNotOk
             this.inputs = inputs;
             if (inputs.Count > 0)
             {
-                weights = new double[inputs.Count];
-                learningWeights = new double[inputs.Count];
-                partDerivativesWeights = new double[inputs.Count];
-                partDerivativesInputs = new double[inputs.Count];
+                weights = new float[inputs.Count];
+                learningWeights = new float[inputs.Count];
+                partDerivativesWeights = new float[inputs.Count];
+                partDerivativesInputs = new float[inputs.Count];
                 for (int c = 0; c < weights.Length; c++)
                 {
-                    weights[c] = Program.rand.NextDouble() * 2 - 1;
+                    weights[c] = (float)Program.rand.NextDouble() * 2 - 1;
                     learningWeights[c] = weights[c];
                 }
             }
@@ -33,21 +33,21 @@ namespace HardsubIsNotOk
 
         public void CalculateOutput()
         {
-            double z = 0;
+            float z = 0;
             for (int c = 0; c < inputs.Count; c++)
                 z -= inputs[c].output * weights[c];
-            output = 1 / (1 + Math.Exp(z));
+            output = (float)(1 / (1 + Math.Exp(z)));
         }
         public void CalculateLearningOutput()
         {
-            double z = 0;
+            float z = 0;
             for (int c = 0; c < inputs.Count; c++)
                 z -= inputs[c].learningOutput * learningWeights[c];
-            learningOutput = 1 / (1 + Math.Exp(z));
+            learningOutput = (float)(1 / (1 + Math.Exp(z)));
         }
-        public void CalculateDerivatives(double target = -1)
+        public void CalculateDerivatives(float target = -1)
         {
-            double out_net, etot_out;
+            float out_net, etot_out;
             out_net = learningOutput * (1 - learningOutput);
             if (target != -1)
                 etot_out = learningOutput - target;
@@ -66,7 +66,7 @@ namespace HardsubIsNotOk
                 partDerivativesInputs[c] = weights[c] * out_net * etot_out;
             }
         }
-        public void UpdateLearningWeights(double n)
+        public void UpdateLearningWeights(float n)
         {
             for (int c = 0; c < inputs.Count; c++)
                 learningWeights[c] -= n * partDerivativesWeights[c];
@@ -80,7 +80,7 @@ namespace HardsubIsNotOk
         {
             string serialized = "";
             if (weights != null)
-                foreach (double d in weights)
+                foreach (float d in weights)
                     serialized += d.ToString("r") + ";";
             return serialized;
         }
@@ -94,7 +94,7 @@ namespace HardsubIsNotOk
                     w += s[c];
                 else
                 {
-                    weights[index] = double.Parse(w);
+                    weights[index] = float.Parse(w);
                     learningWeights[index] = weights[index];
                     w = "";
                     index++;

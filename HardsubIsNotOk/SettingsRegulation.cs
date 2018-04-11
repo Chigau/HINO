@@ -22,12 +22,12 @@ namespace HardsubIsNotOk
         public SettingsRegulation()
         {
             InitializeComponent();
-            p = new PlayingThread(Settings.fileName);
+            p = new PlayingThread(Program.videos.First().Key);
             pictureBox2.Image = new Bitmap(p.currentFrame);
 
-            trackBar1.Maximum = Program.reader.Height / 2;
-            trackBar2.Maximum = Program.reader.Height / 2;
-            trackBar1.Location = new Point(trackBar1.Location.X, pictureBox1.Location.Y + Program.reader.Height - trackBar1.Height);
+            trackBar1.Maximum = Program.videos.First().Value.Height / 2;
+            trackBar2.Maximum = Program.videos.First().Value.Height / 2;
+            trackBar1.Location = new Point(trackBar1.Location.X, pictureBox1.Location.Y + Program.videos.First().Value.Height - trackBar1.Height);
 
             trackBar1.Value = trackBar1.Maximum * 2 - Settings.cutBottom;
             trackBar2.Value = trackBar1.Maximum - Settings.cutTop;
@@ -379,7 +379,7 @@ namespace HardsubIsNotOk
                         if (height > max)
                             max = height;
                     }
-                defaultCharScale.Text = ((double)23 / max).ToString();
+                defaultCharScale.Text = ((float)23 / max).ToString();
             }
         }
 
@@ -413,9 +413,9 @@ namespace HardsubIsNotOk
             {
                 Image b = pictureBox6.Image;
 
-                double imageRatio = (double)b.Width / b.Height;
+                float imageRatio = (float)b.Width / b.Height;
 
-                double boxRatio = (double)pictureBox6.Width / pictureBox6.Height;
+                float boxRatio = (float)pictureBox6.Width / pictureBox6.Height;
 
                 int x, y;
                 if(imageRatio > boxRatio)
@@ -423,16 +423,16 @@ namespace HardsubIsNotOk
                     int newWidth = pictureBox6.Width;
                     int newHeight = (int)(newWidth / imageRatio);
 
-                    x = (int)(((double)b.Width / newWidth) * e.X);
-                    y = (int)(((double)b.Height / newHeight) * (e.Y - (pictureBox6.Height - newHeight) / 2));
+                    x = (int)(((float)b.Width / newWidth) * e.X);
+                    y = (int)(((float)b.Height / newHeight) * (e.Y - (pictureBox6.Height - newHeight) / 2));
                 }
                 else
                 {
                     int newHeight = pictureBox6.Height;
                     int newWidth = (int)(newHeight * imageRatio);
 
-                    x = (int)(((double)b.Width / newWidth) * (e.X - (pictureBox6.Width - newWidth) / 2));
-                    y = (int)(((double)b.Height / newHeight) * e.Y);
+                    x = (int)(((float)b.Width / newWidth) * (e.X - (pictureBox6.Width - newWidth) / 2));
+                    y = (int)(((float)b.Height / newHeight) * e.Y);
                 }
 
                 if (x < b.Width && x >= 0 && y < b.Height && y >= 0)
@@ -588,7 +588,7 @@ namespace HardsubIsNotOk
         {
             try
             {
-                Settings.defaultCharScale = double.Parse(defaultCharScale.Text);
+                Settings.defaultCharScale = float.Parse(defaultCharScale.Text);
             }
             catch (FormatException ex) { }
         }
@@ -652,9 +652,9 @@ namespace HardsubIsNotOk
         }
 
         // distance between two hues:
-        static double GetHueDistance(double hue1, double hue2)
+        static float GetHueDistance(float hue1, float hue2)
         {
-            double d = Math.Abs(hue1 - hue2);
+            float d = Math.Abs(hue1 - hue2);
             return d > 180 ? 360 - d : d;
         }
         // distance in RGB space
@@ -692,7 +692,7 @@ namespace HardsubIsNotOk
         }
 
         float idealHue = Settings.outSubtitleColor.GetHue();
-        double diff; int tot;
+        float diff; int tot;
         void CheckEdges(Coord coord, int distance = 0)
         {
             if (!IsFilled(coord))
@@ -705,7 +705,7 @@ namespace HardsubIsNotOk
                         foreach (Coord c in coord.Edge)
                             CheckEdges(c, distance + 1);
 
-                    double hue = frame.GetPixel(coord.x, coord.y).GetHue();
+                    float hue = frame.GetPixel(coord.x, coord.y).GetHue();
                     diff += GetHueDistance(idealHue, hue);
                     tot++;
                 }
@@ -741,7 +741,7 @@ namespace HardsubIsNotOk
             Coord cStart = new Coord(x, y);
             diff = 0; tot = 0;
             Fill(cStart);
-            double letter = diff / tot;
+            float letter = diff / tot;
             if (notALetterFlag || letter > Settings.outlineThreshold)
                 return null;
             return newLetter;

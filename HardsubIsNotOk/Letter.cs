@@ -7,9 +7,9 @@ namespace HardsubIsNotOk
     public class Letter
     {
         public string value, secondChoice;
-        public double error = 1;
-        public double firstOverSecondCorrectness = 1;
-        public double[] pixelsMatrix = new double[24*24];
+        public float error = 1;
+        public float firstOverSecondCorrectness = 1;
+        public float[] pixelsMatrix = new float[24*24];
         public HashSet<Coord> pixels = new HashSet<Coord>();
         public HashSet<Coord> outlinePixels;
         public int xMax = 0, xMin = int.MaxValue, yMax = 0, yMin = int.MaxValue;
@@ -17,7 +17,7 @@ namespace HardsubIsNotOk
         public Letter(Letter from)
         {
             value = from.value;
-            pixelsMatrix = (double[])from.pixelsMatrix.Clone();
+            pixelsMatrix = (float[])from.pixelsMatrix.Clone();
         }
         public void AddPixel(Coord coord)
         {
@@ -47,14 +47,14 @@ namespace HardsubIsNotOk
         }
         public void GenerateArray()
         {
-            pixelsMatrix = new double[24 * 24];
+            pixelsMatrix = new float[24 * 24];
             int width = xMax - xMin;
             int height = yMax - yMin;
             if(height > width)
             {
                 if(height * Settings.defaultCharScale > 23)
                 {
-                    double scaleConst = (double) 23 / height;
+                    float scaleConst = (float) 23 / height;
                     foreach(Coord p in pixels)
                     {
                         int x = RoundToInt((p.x - xMin) * scaleConst);
@@ -76,7 +76,7 @@ namespace HardsubIsNotOk
             {
                 if (width * Settings.defaultCharScale > 23)
                 {
-                    double scaleConst = (double) 23 / width;
+                    float scaleConst = (float) 23 / width;
                     foreach (Coord p in pixels)
                     {
                         int x = RoundToInt((p.x - xMin) * scaleConst);
@@ -95,7 +95,7 @@ namespace HardsubIsNotOk
                 }
             }
         }
-        static int RoundToInt(double n)
+        static int RoundToInt(float n)
         {
             int result = (int)n;
             return n - result < 0.5 ? result : result + 1;
@@ -120,15 +120,15 @@ namespace HardsubIsNotOk
         {
             if (Program.neuralNetwork.Count < Settings.maxLearningThreads)
                 return;
-            double higher = 0;
-            double err = 0;
+            float higher = 0;
+            float err = 0;
             //Console.WriteLine("Riconoscimento lettera");
             List<string> keys = new List<string>(Program.neuralNetwork.Keys);
 
             foreach (String s in keys)
             {
                 Program.neuralNetwork[s].SetLetter(this);
-                double output = Program.neuralNetwork[s].GetOutput();
+                float output = Program.neuralNetwork[s].GetOutput();
                 err += output * output;
                 if (output > higher)
                 {
@@ -151,7 +151,7 @@ namespace HardsubIsNotOk
             err += (1 - higher) * (1 - higher);
             err /= Program.neuralNetwork.Count;
             //Console.WriteLine("Risultato: " + to);
-            error = Math.Sqrt(err);
+            error = (float)Math.Sqrt(err);
         }
     }
     public class Space : Letter { }
@@ -201,9 +201,9 @@ namespace HardsubIsNotOk
         {
             return x + "," + y;
         }
-        public static double Distance(Coord c1, Coord c2)
+        public static float Distance(Coord c1, Coord c2)
         {
-            return Math.Sqrt(Math.Pow(c1.x - c2.x, 2) + Math.Pow(c1.y - c2.y, 2));
+            return (float)Math.Sqrt(Math.Pow(c1.x - c2.x, 2) + Math.Pow(c1.y - c2.y, 2));
         }
     }
 }

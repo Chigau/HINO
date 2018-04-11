@@ -36,14 +36,14 @@ namespace HardsubIsNotOk
             {
                 Settings.dictionaryPath = textBox2.Text;
                 Settings.properNamesDictionaryPath = textBox1.Text;
-                Settings.frameRate = double.Parse(textBox3.Text);
+                Settings.frameRate = float.Parse(textBox3.Text);
                 Settings.dictionaryMode = checkBox1.Checked;
 
-                Settings.maxError = double.Parse(textBox4.Text);
-                Settings.minCorrectness = double.Parse(textBox5.Text) / 100;
+                Settings.maxError = float.Parse(textBox4.Text);
+                Settings.minCorrectness = float.Parse(textBox5.Text) / 100;
 
-                Settings.maxDictionaryError = double.Parse(textBox7.Text);
-                Settings.minDictionaryCorrectness = double.Parse(textBox6.Text) / 100;
+                Settings.maxDictionaryError = float.Parse(textBox7.Text);
+                Settings.minDictionaryCorrectness = float.Parse(textBox6.Text) / 100;
 
                 Settings.maxLearningThreads = int.Parse(textBox9.Text);
                 Settings.learningDisabled = checkBox2.Checked;

@@ -9,12 +9,12 @@ namespace HardsubIsNotOk
         public bool running;
         public bool stop = false;
         //public List<Letter> confusions = new List<Letter>();
-        public double lastErrorRate = 0;
-        private double errorRate = 0;
+        public float lastErrorRate = 0;
+        private float errorRate = 0;
         Network nn;
-        double rate;
+        float rate;
 
-        public LearningThread(Network nn, double rate)
+        public LearningThread(Network nn, float rate)
         {
             this.nn = nn;
             this.rate = rate;

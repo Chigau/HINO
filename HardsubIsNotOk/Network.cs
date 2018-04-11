@@ -13,7 +13,7 @@ namespace HardsubIsNotOk
         public Network(string value, params int[] lengths)
         {
             this.value = value;
-            learning = new LearningThread(this, 0.1);
+            learning = new LearningThread(this, 0.1f);
             neurons = new List<Neuron>[lengths.Length + 1];
             for (int c = 0; c < neurons.Length - 1; c++)
             {
@@ -53,13 +53,13 @@ namespace HardsubIsNotOk
                 //learning.stop = false;
             }
         }
-        public double GetLastError()
+        public float GetLastError()
         {
             return learning.lastErrorRate;
         }
 
         bool busy = false;
-        public double SetLetter(Letter l)
+        public float SetLetter(Letter l)
         {
             while (busy) ;
             busy = true;
@@ -72,11 +72,11 @@ namespace HardsubIsNotOk
 
             int output = neurons.Length - 1;
             neurons[output][0].CalculateOutput();
-            double err = value != l.value ? neurons[output][0].output * neurons[output][0].output / 2 : (1 - neurons[output][0].output) * (1 - neurons[output][0].output) / 2;
+            float err = value != l.value ? neurons[output][0].output * neurons[output][0].output / 2 : (1 - neurons[output][0].output) * (1 - neurons[output][0].output) / 2;
             busy = false;
             return err;
         }
-        public double SetLearningLetter(Letter l)
+        public float SetLearningLetter(Letter l)
         {
             for (int c = 0; c < l.pixelsMatrix.Length; c++)
                 neurons[0][c].learningOutput = l.pixelsMatrix[c];
@@ -90,10 +90,10 @@ namespace HardsubIsNotOk
             return value != l.value ? neurons[output][0].learningOutput * neurons[output][0].learningOutput / 2 : (1 - neurons[output][0].learningOutput) * (1 - neurons[output][0].learningOutput) / 2;
         }
 
-        public double Learn(Letter l, double n)
+        public float Learn(Letter l, float n)
         {
             int output = neurons.Length - 1;
-            double err = SetLearningLetter(l);
+            float err = SetLearningLetter(l);
             
             if (value == l.value)
                 neurons[output][0].CalculateDerivatives(1);
@@ -117,11 +117,11 @@ namespace HardsubIsNotOk
                     neurons[layer][c].ConfirmLearningWeights();
         }
 
-        public double GetOutput()
+        public float GetOutput()
         {
             return neurons[neurons.Length - 1][0].output;
         }
-        public double GetLearningOutput()
+        public float GetLearningOutput()
         {
             return neurons[neurons.Length - 1][0].learningOutput;
         }

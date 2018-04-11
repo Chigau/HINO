@@ -13,18 +13,19 @@ namespace HardsubIsNotOk
 {
     static class Settings
     {
-        public static string dictionaryPath = "it_dictionary.txt";
+        public static string dictionaryPath = "en_dictionary.txt";
         public static string properNamesDictionaryPath = "proper_names_dictionary.txt";
+        public static string saveSubsPath = "";
         public static int nnSize = 25;
         public static int maxLearningThreads = 4;
-        public static string fileName = "";
+        //public static string fileName = "";
 
         public static int cutTop = -1, cutBottom = -1;
         public static int minSpaceWidth = 7;
         public static int lineDistance = 10;
         public static int minCharPixelSize = 20;
         public static int maxCharPixelSize = 500;
-        public static double defaultCharScale = 1;
+        public static float defaultCharScale = 1;
 
         public static float newCharacterThreshold = 5;
         public static float sameCharacterThreshold = 30;
@@ -34,14 +35,14 @@ namespace HardsubIsNotOk
         public static Color subColor = Color.White, outSubtitleColor = Color.Black;
         public static int minSubLength = 8; //in frames
 
-        public static double maxError = 0.075;
-        public static double minCorrectness = 0.35; //in centesimi
-        public static double maxDictionaryError = 0.15;
-        public static double minDictionaryCorrectness = 0.05; //in centesimi
+        public static float maxError = 0.075f;
+        public static float minCorrectness = 0.35f; //in centesimi
+        public static float maxDictionaryError = 0.15f;
+        public static float minDictionaryCorrectness = 0.05f; //in centesimi
 
-        public static double frameRate = 23.976;
-        //public static double frameRate = 30;
-        public static double sameSubRange = 0.98; //in centesimi
+        public static float frameRate = 23.976f;
+        //public static float frameRate = 30;
+        public static float sameSubRange = 0.98f; //in centesimi
 
         public static bool whiteAndBlack = false;
         public static bool dictionaryMode = false;
@@ -59,7 +60,7 @@ namespace HardsubIsNotOk
         public static List<string> learningThreads = new List<string>();
         public static List<string> dictionary, namesDictionary;
 
-        public static VideoFileReader reader = new VideoFileReader();
+        public static Dictionary<string, VideoFileReader> videos = new Dictionary<string, VideoFileReader>();
         public static List<Letter> examples = new List<Letter>();
 
         [STAThread]
@@ -208,12 +209,12 @@ namespace HardsubIsNotOk
         {
             if (l == null || learningThreads.Contains(l))
                 return;
-            if (learningThreads.Count < 5)
+            if (learningThreads.Count < Settings.maxLearningThreads - 1)
             {
                 learningThreads.Add(l);
                 Console.WriteLine("Adding: " + l);
             }
-            else if (learningThreads.Count == 5)
+            else if (learningThreads.Count == Settings.maxLearningThreads - 1)
             {
                 learningThreads.Add(l);
                 Console.WriteLine("Adding: " + l + ", starting");
@@ -222,11 +223,11 @@ namespace HardsubIsNotOk
             }
             else
             {
-                double min = double.MaxValue;
+                float min = float.MaxValue;
                 string toReplace = "";
                 foreach (string ln in learningThreads)
                 {
-                    double err = neuralNetwork[ln].GetLastError();
+                    float err = neuralNetwork[ln].GetLastError();
                     if (err < min)
                     {
                         min = err;
@@ -253,21 +254,21 @@ namespace HardsubIsNotOk
                 AddLearningThread(l1);
                 return;
             }
-            if (learningThreads.Count < 6)
+            if (learningThreads.Count < Settings.maxLearningThreads)
             {
                 AddLearningThread(l1);
                 AddLearningThread(l2);
                 return;
             }
 
-            double min1 = double.MaxValue;
-            double min2 = double.MaxValue;
+            float min1 = float.MaxValue;
+            float min2 = float.MaxValue;
             string toReplace1 = "";
             string toReplace2 = "";
 
             foreach (string ln in learningThreads)
             {
-                double err = neuralNetwork[ln].GetLastError();
+                float err = neuralNetwork[ln].GetLastError();
                 if (err < min1)
                 {
                     min2 = min1;

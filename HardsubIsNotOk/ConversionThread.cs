@@ -7,20 +7,21 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using System.Text;
+using System.Linq;
 
 namespace HardsubIsNotOk
 {
     class ConversionThread
     {
         public const int MinSubPixels = 500;
-
+        //public static string vIndex;
         public static LockBitmap frame;
         public static long frameIndex;
         static LockBitmap[] buffer, buffer1, buffer2;
 
         public static bool[,] filled;
         private static Letter newLetter;
-        public static List<Subtitle> subtitles = new List<Subtitle>();
+        public static List<List<Subtitle>> subtitles = new List<List<Subtitle>>();
         public static List<Subtitle> waitForUser = new List<Subtitle>();
         private static bool notALetterFlag;
         static int bufferSize, whatBuffer = 0;
@@ -31,20 +32,6 @@ namespace HardsubIsNotOk
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            subtitles = new List<Subtitle>();
-            
-            bufferSize = Program.reader.FrameRate / 2;
-
-            buffer1 = new LockBitmap[bufferSize];
-            buffer2 = new LockBitmap[bufferSize];
-
-            Thread bufferThread = new Thread(Buffering);
-            bufferThread.IsBackground = true;
-            bufferingComplete = false;
-            bufferingPause = false;
-            bufferThread.Start();
-            while (!bufferingPause) ;
-
             Subtitle subTop = null, subBottom = null;
             Thread subRec = new Thread(RecognizeSubtitles);
             subRec.IsBackground = true;
@@ -53,50 +40,64 @@ namespace HardsubIsNotOk
             subRec.IsBackground = true;
             subRec.Start();
 
-
-            while (!bufferingComplete)
+            foreach (string k in Program.videos.Keys)
             {
+                subtitles.Add(new List<Subtitle>());
+                bufferSize = Program.videos[k].FrameRate / 2;
 
-                buffer = whatBuffer == 0 ? buffer2 : buffer1;
+                buffer1 = new LockBitmap[bufferSize];
+                buffer2 = new LockBitmap[bufferSize];
 
+                Thread bufferThread = new Thread(() => Buffering(k));
+                bufferThread.IsBackground = true;
+                bufferingComplete = false;
                 bufferingPause = false;
-
-                frameIndex += buffer.Length;
-                frame = buffer[bufferSize - 1];
-                if (!Settings.ignoreTopSubtitles)
-                {
-                    if (subTop == null)
-                    {
-                        subTop = GetSubtitleTop();
-                        if (subTop != null)
-                            subTop.GetStartFromBuffer(buffer);
-                    }
-                    else if (subTop.GetEndFromBuffer(buffer))
-                    {
-                        if(subTop.endFrame - subTop.startFrame >= Settings.minSubLength)
-                            subtitles.Add(subTop);
-                        subTop = GetSubtitleTop();
-                        if (subTop != null)
-                            subTop.GetStartFromBuffer(buffer);
-                    }
-                }
-
-                if (subBottom == null)
-                {
-                    subBottom = GetSubtitleBottom();
-                    if (subBottom != null)
-                        subBottom.GetStartFromBuffer(buffer);
-                }
-                else if (subBottom.GetEndFromBuffer(buffer))
-                {
-                    if (subBottom.endFrame - subBottom.startFrame >= Settings.minSubLength)
-                        subtitles.Add(subBottom);
-                    subBottom = GetSubtitleBottom();
-                    if (subBottom != null)
-                        subBottom.GetStartFromBuffer(buffer);
-                }
-
+                bufferThread.Start();
                 while (!bufferingPause) ;
+
+                while (!bufferingComplete)
+                {
+                    buffer = whatBuffer == 0 ? buffer2 : buffer1;
+
+                    bufferingPause = false;
+
+                    frameIndex += buffer.Length;
+                    frame = buffer[bufferSize - 1];
+                    if (!Settings.ignoreTopSubtitles)
+                    {
+                        if (subTop == null)
+                        {
+                            subTop = GetSubtitleTop();
+                            if (subTop != null)
+                                subTop.GetStartFromBuffer(buffer);
+                        }
+                        else if (subTop.GetEndFromBuffer(buffer))
+                        {
+                            if (subTop.endFrame - subTop.startFrame >= Settings.minSubLength)
+                                subtitles.Last().Add(subTop);
+                            subTop = GetSubtitleTop();
+                            if (subTop != null)
+                                subTop.GetStartFromBuffer(buffer);
+                        }
+                    }
+
+                    if (subBottom == null)
+                    {
+                        subBottom = GetSubtitleBottom();
+                        if (subBottom != null)
+                            subBottom.GetStartFromBuffer(buffer);
+                    }
+                    else if (subBottom.GetEndFromBuffer(buffer))
+                    {
+                        if (subBottom.endFrame - subBottom.startFrame >= Settings.minSubLength)
+                            subtitles.Last().Add(subBottom);
+                        subBottom = GetSubtitleBottom();
+                        if (subBottom != null)
+                            subBottom.GetStartFromBuffer(buffer);
+                    }
+
+                    while (!bufferingPause) ;
+                }
             }
             Form1.progressBar.Invoke(new Form1.EventHandle(() => Form1.progressBar.Value = 1000));
 
@@ -104,7 +105,7 @@ namespace HardsubIsNotOk
             Console.WriteLine("-------------TEMPO DI ESTRAZIONE-----------");
             Console.WriteLine(stopWatch.Elapsed);
         }
-        public static void Buffering()
+        public static void Buffering(string vIndex)
         {
             Bitmap b;
             int bufferIndex;
@@ -113,7 +114,7 @@ namespace HardsubIsNotOk
             bufferIndex = 0;
             if (whatBuffer == 0)
             {
-                while ((b = Program.reader.ReadVideoFrame()) != null)
+                while ((b = Program.videos[vIndex].ReadVideoFrame()) != null)
                 {
                     try
                     {
@@ -124,8 +125,8 @@ namespace HardsubIsNotOk
                     buffer1[bufferIndex].LockBits();
                     bufferIndex++;
                     //frameIndex++;
-                    if (frameIndex % 50 == 0 && Program.reader.FrameCount != 0)
-                        Form1.progressBar.Invoke(new Form1.EventHandle(() => Form1.progressBar.Value = (int)(((float)frameIndex / Program.reader.FrameCount) * 1000)));
+                    if (frameIndex % 50 == 0 && Program.videos[vIndex].FrameCount != 0)
+                        Form1.progressBar.Invoke(new Form1.EventHandle(() => Form1.progressBar.Value = (int)(((float)frameIndex / Program.videos[vIndex].FrameCount) * 1000 / Program.videos.Count + Program.videos.Keys.ToList().IndexOf(vIndex) * 1000 / Program.videos.Count)));
                     if (bufferIndex == bufferSize)
                     {
                         whatBuffer = 1;
@@ -137,7 +138,7 @@ namespace HardsubIsNotOk
             }
             else
             {
-                while ((b = Program.reader.ReadVideoFrame()) != null)
+                while ((b = Program.videos[vIndex].ReadVideoFrame()) != null)
                 {
                     try
                     {
@@ -148,8 +149,8 @@ namespace HardsubIsNotOk
                     buffer2[bufferIndex].LockBits();
                     bufferIndex++;
                     //frameIndex++;
-                    if (frameIndex % 50 == 0 && Program.reader.FrameCount != 0)
-                        Form1.progressBar.Invoke(new Form1.EventHandle(() => Form1.progressBar.Value = (int)(((float)frameIndex / Program.reader.FrameCount) * 1000)));
+                    if (frameIndex % 50 == 0 && Program.videos[vIndex].FrameCount != 0)
+                        Form1.progressBar.Invoke(new Form1.EventHandle(() => Form1.progressBar.Value = (int)(((float)frameIndex / Program.videos[vIndex].FrameCount) * 1000 / Program.videos.Count + Program.videos.Keys.ToList().IndexOf(vIndex) * 1000 / Program.videos.Count)));
                     if (bufferIndex == bufferSize)
                     {
                         whatBuffer = 0;
@@ -166,47 +167,46 @@ namespace HardsubIsNotOk
         public static void RecognizeSubtitles()
         {
             int subIndex = 0;
+            int vIndex = 0;
             while (true)
             {
-                while (subtitles.Count <= subIndex)
+                while (subtitles[vIndex].Count <= subIndex)
                 {
-                    if (frameIndex >= Program.reader.FrameCount)
+                    if (frameIndex >= Program.videos.ElementAt(vIndex).Value.FrameCount && subtitles.Count > vIndex + 1)
                     {
-                        Form1.progressBar.Invoke(new Form1.EventHandle(() => Form1.recognitionBar.Value = 1000));
-                        Program.StopLearning();
-                        SubtitlesWindow w = new SubtitlesWindow();
-                        w.Show();
-                        return;
+                        vIndex++;
+                        subIndex = 0;
+                        break;
                     }
                 }
                 WordNotFound.Result exit;
-                Form1.progressBar.Invoke(new Form1.EventHandle(() => Form1.recognitionBar.Value = (int)(((double)subIndex / (subtitles.Count + waitForUser.Count)) * 1000)));
+                Form1.progressBar.Invoke(new Form1.EventHandle(() => Form1.recognitionBar.Value = (int)(((float)subIndex / (subtitles[vIndex].Count + waitForUser.Count)) * 1000)));
 
                 StringBuilder converted = new StringBuilder();
                 int wordStart = 0;
-                for (int lineIndex = 0; lineIndex < subtitles[subIndex].lines.Count; lineIndex++)
+                for (int lineIndex = 0; lineIndex < subtitles[vIndex][subIndex].lines.Count; lineIndex++)
                 {
-                    Subtitle.Line line = subtitles[subIndex].lines[lineIndex];
+                    Subtitle.Line line = subtitles[vIndex][subIndex].lines[lineIndex];
                     for (int c = 0; c < line.letters.Count; c++)
                     {
                         if (line.letters[c] is Space)
                         {
-                            if (!TryToCorrectWithDictionary(subtitles[subIndex], lineIndex, wordStart, c, converted))
+                            if (!TryToCorrectWithDictionary(subtitles[vIndex][subIndex], lineIndex, wordStart, c, converted))
                             {
                                 if (Settings.dictionaryMode)
                                 {
-                                    waitForUser.Add(subtitles[subIndex]);
+                                    waitForUser.Add(subtitles[vIndex][subIndex]);
                                     //subtitles.RemoveAt(subIndex);
                                     subIndex++;
                                     goto skipSub;
                                 }
                                 else
                                 {
-                                    exit = ShowDictionaryDialog(subtitles[subIndex], lineIndex, wordStart, c, converted);
+                                    exit = ShowDictionaryDialog(subtitles[vIndex][subIndex], lineIndex, wordStart, c, converted);
                                     switch (exit)
                                     {
                                         case WordNotFound.Result.skipSub:
-                                            subtitles.RemoveAt(subIndex);
+                                            subtitles[vIndex].RemoveAt(subIndex);
                                             goto skipSub;
                                         case WordNotFound.Result.subChanged:
                                             goto skipSub;
@@ -230,7 +230,7 @@ namespace HardsubIsNotOk
                         {
                             if (line.letters[c].error > Settings.maxDictionaryError || line.letters[c].firstOverSecondCorrectness < Settings.minDictionaryCorrectness)
                             {
-                                waitForUser.Add(subtitles[subIndex]);
+                                waitForUser.Add(subtitles[vIndex][subIndex]);
                                 //subtitles.RemoveAt(subIndex);
                                 subIndex++;
                                 goto skipSub;
@@ -240,7 +240,7 @@ namespace HardsubIsNotOk
                         {
                             if (line.letters[c].error > Settings.maxError || line.letters[c].firstOverSecondCorrectness < Settings.minCorrectness)
                             {
-                                GuessLetter.Result e = ShowCorrectLetterDialog(subtitles[subIndex], lineIndex, c);
+                                GuessLetter.Result e = ShowCorrectLetterDialog(subtitles[vIndex][subIndex], lineIndex, c);
                                 switch (e)
                                 {
                                     case GuessLetter.Result.notALetter:
@@ -248,7 +248,7 @@ namespace HardsubIsNotOk
                                         c--;
                                         continue;
                                     case GuessLetter.Result.skipSub:
-                                        subtitles.RemoveAt(subIndex);
+                                        subtitles[vIndex].RemoveAt(subIndex);
                                         goto skipSub;
                                     case GuessLetter.Result.subChanged:
                                         goto skipSub;
@@ -264,22 +264,22 @@ namespace HardsubIsNotOk
                         {
                             if (!IsLetter(line.letters[c].value))
                             {
-                                if (!TryToCorrectWithDictionary(subtitles[subIndex], lineIndex, wordStart, c, converted))
+                                if (!TryToCorrectWithDictionary(subtitles[vIndex][subIndex], lineIndex, wordStart, c, converted))
                                 {
                                     if (Settings.dictionaryMode)
                                     {
-                                        waitForUser.Add(subtitles[subIndex]);
+                                        waitForUser.Add(subtitles[vIndex][subIndex]);
                                         //subtitles.RemoveAt(subIndex);
                                         subIndex++;
                                         goto skipSub;
                                     }
                                     else
                                     {
-                                        exit = ShowDictionaryDialog(subtitles[subIndex], lineIndex, wordStart, c, converted);
+                                        exit = ShowDictionaryDialog(subtitles[vIndex][subIndex], lineIndex, wordStart, c, converted);
                                         switch (exit)
                                         {
                                             case WordNotFound.Result.skipSub:
-                                                subtitles.RemoveAt(subIndex);
+                                                subtitles[vIndex].RemoveAt(subIndex);
                                                 goto skipSub;
                                             case WordNotFound.Result.subChanged:
                                                 goto skipSub;
@@ -294,22 +294,22 @@ namespace HardsubIsNotOk
                             converted.Append(line.letters[c].value);
                         }
                     }
-                    if (!TryToCorrectWithDictionary(subtitles[subIndex], lineIndex, wordStart, line.letters.Count, converted))
+                    if (!TryToCorrectWithDictionary(subtitles[vIndex][subIndex], lineIndex, wordStart, line.letters.Count, converted))
                     {
                         if (Settings.dictionaryMode)
                         {
-                            waitForUser.Add(subtitles[subIndex]);
+                            waitForUser.Add(subtitles[vIndex][subIndex]);
                             //subtitles.RemoveAt(subIndex);
                             subIndex++;
                             goto skipSub;
                         }
                         else
                         {
-                            exit = ShowDictionaryDialog(subtitles[subIndex], lineIndex, wordStart, line.letters.Count, converted);
+                            exit = ShowDictionaryDialog(subtitles[vIndex][subIndex], lineIndex, wordStart, line.letters.Count, converted);
                             switch (exit)
                             {
                                 case WordNotFound.Result.skipSub:
-                                    subtitles.RemoveAt(subIndex);
+                                    subtitles[vIndex].RemoveAt(subIndex);
                                     goto skipSub;
                                 case WordNotFound.Result.subChanged:
                                     goto skipSub;
@@ -325,17 +325,17 @@ namespace HardsubIsNotOk
                 }
                 if (converted.Length == 0)
                 {
-                    subtitles.RemoveAt(subIndex);
+                    subtitles[vIndex].RemoveAt(subIndex);
                 }
-                else if (subIndex > 0 && converted.ToString() == subtitles[subIndex - 1].value && subtitles[subIndex].startFrame - 1 <= subtitles[subIndex - 1].endFrame)
+                else if (subIndex > 0 && converted.ToString() == subtitles[vIndex][subIndex - 1].value && subtitles[vIndex][subIndex].startFrame - 1 <= subtitles[vIndex][subIndex - 1].endFrame)
                 {
-                    subtitles[subIndex - 1].endFrame = subtitles[subIndex].endFrame;
-                    subtitles.RemoveAt(subIndex);
+                    subtitles[vIndex][subIndex - 1].endFrame = subtitles[vIndex][subIndex].endFrame;
+                    subtitles[vIndex].RemoveAt(subIndex);
                 }
                 else
                 {
                     //Console.Write(converted);
-                    subtitles[subIndex].value = converted.ToString();
+                    subtitles[vIndex][subIndex].value = converted.ToString();
                     subIndex++;
                 }
                 skipSub:;
@@ -452,18 +452,19 @@ namespace HardsubIsNotOk
                         converted.Append('\n');
                     wordStart = 0;
                 }
-                int subIndex = subtitles.IndexOf(waitForUser[0]);
+                //int subIndex = subtitles[vIndex].IndexOf(waitForUser[0]);
                 if (converted.Length == 0)
                 {
-                    subtitles.Remove(waitForUser[0]);
+                    //subtitles.Remove(waitForUser[0]);
                     waitForUser.RemoveAt(0);
                 }
-                else if (subIndex > 0 && converted.ToString() == subtitles[subIndex - 1].value && subtitles[subIndex].startFrame - 1 <= subtitles[subIndex - 1].endFrame)
-                {
-                    subtitles[subIndex - 1].endFrame = subtitles[subIndex].endFrame;
-                    subtitles.Remove(waitForUser[0]);
-                    waitForUser.RemoveAt(0);
-                }
+                //else if (subIndex > 0 && converted.ToString() == subtitles[vIndex][subIndex - 1].value && subtitles[vIndex][subIndex].startFrame - 1 <= subtitles[vIndex][subIndex - 1].endFrame)
+                //{
+                //    subtitles[vIndex][subIndex - 1].endFrame = subtitles[vIndex][subIndex].endFrame;
+                    //subtitles.Remove(waitForUser[0]);
+                //    waitForUser[0].value = "";
+                //    waitForUser.RemoveAt(0);
+                //}
                 else
                 {
                     //Console.Write(converted);
@@ -613,7 +614,7 @@ namespace HardsubIsNotOk
                 }
                 if(alternatives.Count > 0)
                 {
-                    double min = 1;
+                    float min = 1;
                     string index = "";
                     foreach(KeyValuePair<string, Letter> alt in alternatives)
                     {
@@ -768,9 +769,9 @@ namespace HardsubIsNotOk
         }
 
         // distance between two hues:
-        static double GetHueDistance(double hue1, double hue2)
+        static float GetHueDistance(float hue1, float hue2)
         {
-            double d = Math.Abs(hue1 - hue2);
+            float d = Math.Abs(hue1 - hue2);
             return d > 180 ? 360 - d : d;
         }
         // distance in RGB space
@@ -807,7 +808,7 @@ namespace HardsubIsNotOk
             return valid;
         }
         static float idealHue = Settings.outSubtitleColor.GetHue();
-        static double diff;
+        static float diff;
         static int tot;
         static void CheckEdges(Coord coord, int distance = 0)
         {
@@ -820,7 +821,7 @@ namespace HardsubIsNotOk
                         foreach (Coord c in coord.Edge)
                             CheckEdges(c, distance + 1);
 
-                    double hue = frame.GetPixel(coord.x, coord.y).GetHue();
+                    float hue = frame.GetPixel(coord.x, coord.y).GetHue();
                     diff += GetHueDistance(idealHue, hue);
                     tot++;
                 }
@@ -854,7 +855,7 @@ namespace HardsubIsNotOk
             Coord cStart = new Coord(x, y);
             diff = 0; tot = 0;
             Fill(cStart);
-            double letter = diff / tot;
+            float letter = diff / tot;
             if (notALetterFlag || letter > Settings.outlineThreshold)
                 return null;
             return newLetter;

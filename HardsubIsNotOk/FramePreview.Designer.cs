@@ -43,9 +43,10 @@
             this.preview.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.preview.Location = new System.Drawing.Point(12, 12);
+            this.preview.Location = new System.Drawing.Point(11, 8);
+            this.preview.Margin = new System.Windows.Forms.Padding(2);
             this.preview.Name = "preview";
-            this.preview.Size = new System.Drawing.Size(1364, 1073);
+            this.preview.Size = new System.Drawing.Size(891, 429);
             this.preview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.preview.TabIndex = 0;
             this.preview.TabStop = false;
@@ -55,9 +56,10 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button1.BackColor = System.Drawing.Color.IndianRed;
-            this.button1.Location = new System.Drawing.Point(12, 1164);
+            this.button1.Location = new System.Drawing.Point(11, 441);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(205, 54);
+            this.button1.Size = new System.Drawing.Size(137, 35);
             this.button1.TabIndex = 1;
             this.button1.Text = "Discard subtitle";
             this.button1.UseVisualStyleBackColor = false;
@@ -66,9 +68,10 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(1171, 1164);
+            this.button2.Location = new System.Drawing.Point(765, 441);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(205, 54);
+            this.button2.Size = new System.Drawing.Size(137, 35);
             this.button2.TabIndex = 2;
             this.button2.Text = "Close";
             this.button2.UseVisualStyleBackColor = true;
@@ -78,9 +81,10 @@
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button3.BackColor = System.Drawing.Color.LightCoral;
-            this.button3.Location = new System.Drawing.Point(223, 1164);
+            this.button3.Location = new System.Drawing.Point(152, 441);
+            this.button3.Margin = new System.Windows.Forms.Padding(2);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(205, 54);
+            this.button3.Size = new System.Drawing.Size(137, 35);
             this.button3.TabIndex = 3;
             this.button3.Text = "Remove errors";
             this.button3.UseVisualStyleBackColor = false;
@@ -90,9 +94,10 @@
             // 
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button4.BackColor = System.Drawing.Color.MistyRose;
-            this.button4.Location = new System.Drawing.Point(434, 1164);
+            this.button4.Location = new System.Drawing.Point(293, 441);
+            this.button4.Margin = new System.Windows.Forms.Padding(2);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(205, 54);
+            this.button4.Size = new System.Drawing.Size(137, 35);
             this.button4.TabIndex = 4;
             this.button4.Text = "Write manually";
             this.button4.UseVisualStyleBackColor = false;
@@ -102,28 +107,30 @@
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(13, 1091);
+            this.textBox1.Location = new System.Drawing.Point(9, 709);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(1363, 67);
+            this.textBox1.Size = new System.Drawing.Size(910, 45);
             this.textBox1.TabIndex = 5;
             this.textBox1.Visible = false;
             // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.Location = new System.Drawing.Point(885, 1181);
+            this.label1.Location = new System.Drawing.Point(574, 463);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(280, 20);
+            this.label1.Size = new System.Drawing.Size(187, 13);
             this.label1.TabIndex = 6;
             this.label1.Text = "Frame count";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // FramePreview
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1388, 1230);
+            this.ClientSize = new System.Drawing.Size(913, 487);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button4);
@@ -132,6 +139,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.preview);
             this.HelpButton = true;
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FramePreview";
             this.Text = "FramePreview";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

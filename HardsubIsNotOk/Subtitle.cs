@@ -101,7 +101,7 @@ namespace HardsubIsNotOk
         public bool GetEndFromBuffer(LockBitmap[] buffer)
         {
             int c;
-            double ok, total;
+            float ok, total;
             ok = 0; total = 0;
             foreach (Line line in lines)
                 foreach (Letter l in line.letters)
@@ -140,7 +140,7 @@ namespace HardsubIsNotOk
         public void GetStartFromBuffer(LockBitmap[] buffer)
         {
             int c;
-            double ok, total;
+            float ok, total;
             for (c = buffer.Length - 2; c >= 0; c--)
             {
                 ok = 0; total = 0;
