@@ -11,7 +11,7 @@ namespace HardsubIsNotOk
         public float firstOverSecondCorrectness = 1;
         public float[] pixelsMatrix = new float[24*24];
         public HashSet<Coord> pixels = new HashSet<Coord>();
-        public HashSet<Coord> outlinePixels;
+        public HashSet<Coord> outlinePixels = new HashSet<Coord>();
         public int xMax = 0, xMin = int.MaxValue, yMax = 0, yMin = int.MaxValue;
         public Letter() { }
         public Letter(Letter from)
