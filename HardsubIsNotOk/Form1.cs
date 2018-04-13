@@ -50,6 +50,11 @@ namespace HardsubIsNotOk
         }
         void AddVideo(string path)
         {
+            if (Program.videos.ContainsKey(path))
+            {
+                MessageBox.Show("Video '" + path + "' is duplicated. It will be removed.", "Duplicated video", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
             VideoFileReader reader = new VideoFileReader();
             reader.Open(path);
 
@@ -162,7 +167,9 @@ namespace HardsubIsNotOk
                 file.WriteLine(Settings.outlineWidth);
 
                 file.WriteLine(Settings.minCharPixelSize);
+                file.WriteLine(Settings.maxCharPixelSize);
                 file.WriteLine(Settings.minSpaceWidth);
+                file.WriteLine(Settings.charDistance);
                 file.WriteLine(Settings.lineDistance);
                 file.WriteLine(Settings.defaultCharScale);
 
@@ -253,7 +260,9 @@ namespace HardsubIsNotOk
                 Settings.outlineWidth = int.Parse(file.ReadLine());
 
                 Settings.minCharPixelSize = int.Parse(file.ReadLine());
+                Settings.maxCharPixelSize = int.Parse(file.ReadLine());
                 Settings.minSpaceWidth = int.Parse(file.ReadLine());
+                Settings.charDistance = int.Parse(file.ReadLine());
                 Settings.lineDistance = int.Parse(file.ReadLine());
                 Settings.defaultCharScale = float.Parse(file.ReadLine());
 

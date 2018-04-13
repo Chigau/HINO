@@ -44,6 +44,7 @@ namespace HardsubIsNotOk
             trackBar8.Value = Settings.minCharPixelSize;
             trackBar9.Value = Settings.outlineWidth;
             trackBar10.Value = Settings.lineDistance;
+            trackBar11.Value = Settings.charDistance;
 
             colorSubtitle.Color = Settings.subColor;
             button7.BackColor = Settings.subColor;
@@ -497,6 +498,10 @@ namespace HardsubIsNotOk
         {
             lineDistance.Text = trackBar10.Value.ToString();
         }
+        private void trackBar11_ValueChanged(object sender, EventArgs e)
+        {
+            charDistance.Text = trackBar11.Value.ToString();
+        }
 
         private void sameCharacterThreshold_TextChanged(object sender, EventArgs e)
         {
@@ -558,6 +563,17 @@ namespace HardsubIsNotOk
             try
             {
                 Settings.minSpaceWidth = int.Parse(minSpaceWidth.Text);
+                if (p.frameCount != 0)
+                    UpdateStep5Image();
+            }
+            catch (FormatException ex) { }
+        }
+
+        private void charDistance_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                Settings.charDistance = int.Parse(charDistance.Text);
                 if (p.frameCount != 0)
                     UpdateStep5Image();
             }

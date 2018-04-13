@@ -13,7 +13,7 @@ namespace HardsubIsNotOk
 {
     static class Settings
     {
-        public static string dictionaryPath = "en_dictionary.txt";
+        public static string dictionaryPath = "it_dictionary.txt";
         public static string properNamesDictionaryPath = "proper_names_dictionary.txt";
         public static string saveSubsPath = "";
         public static int nnSize = 25;
@@ -22,13 +22,14 @@ namespace HardsubIsNotOk
 
         public static int cutTop = -1, cutBottom = -1;
         public static int minSpaceWidth = 7;
+        public static int charDistance = 2;
         public static int lineDistance = 10;
-        public static int minCharPixelSize = 20;
-        public static int maxCharPixelSize = 500;
+        public static int minCharPixelSize = 10;
+        public static int maxCharPixelSize = 1000;
         public static float defaultCharScale = 1;
 
         public static float newCharacterThreshold = 5;
-        public static float sameCharacterThreshold = 30;
+        public static float sameCharacterThreshold = 50;
         public static float outlineThreshold = 20;
         public static int outlineWidth = 2;
 
@@ -49,7 +50,7 @@ namespace HardsubIsNotOk
         public static bool ignoreTopSubtitles = false;
         public static bool discardNonPassingThroughTheCenterLines = true;
         public static bool discardNonCenteredLines = true;
-        public static int nonCenteredThreshold = 10;
+        public static int nonCenteredThreshold = 20;
 
         public static bool learningDisabled = false;
     }

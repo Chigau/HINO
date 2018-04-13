@@ -13,8 +13,6 @@ namespace HardsubIsNotOk
 {
     class ConversionThread
     {
-        public const int MinSubPixels = 500;
-        //public static string vIndex;
         public static LockBitmap frame;
         public static long frameIndex;
         static LockBitmap[] buffer, buffer1, buffer2;
@@ -43,6 +41,7 @@ namespace HardsubIsNotOk
 
             foreach (string k in Program.videos.Keys)
             {
+                frameIndex = 0;
                 subtitles.Add(new List<Subtitle>());
                 bufferSize = Program.videos[k].FrameRate / 2;
 
@@ -117,11 +116,9 @@ namespace HardsubIsNotOk
             {
                 while ((b = Program.videos[vIndex].ReadVideoFrame()) != null)
                 {
-                    try
-                    {
+                    if(buffer1[bufferIndex] != null)
                         buffer1[bufferIndex].source.Dispose();
-                    }
-                    catch { }
+
                     buffer1[bufferIndex] = new LockBitmap(b);
                     buffer1[bufferIndex].LockBits();
                     bufferIndex++;
@@ -141,11 +138,9 @@ namespace HardsubIsNotOk
             {
                 while ((b = Program.videos[vIndex].ReadVideoFrame()) != null)
                 {
-                    try
-                    {
+                    if (buffer1[bufferIndex] != null)
                         buffer2[bufferIndex].source.Dispose();
-                    }
-                    catch { }
+
                     buffer2[bufferIndex] = new LockBitmap(b);
                     buffer2[bufferIndex].LockBits();
                     bufferIndex++;
@@ -177,7 +172,7 @@ namespace HardsubIsNotOk
                     {
                         vIndex++;
                         subIndex = 0;
-                        break;
+                        //break;
                     }
                 }
                 WordNotFound.Result exit;
@@ -590,9 +585,15 @@ namespace HardsubIsNotOk
         public static bool TryToCorrectWithDictionary(Subtitle sub, int line, int start, int end, StringBuilder converted)
         {
             string word = "";
-            for (int c = start; c < end; c++)
-                word += sub.lines[line].letters[c].value;
+            try
+            {
+                for (int c = start; c < end; c++)
+                    word += sub.lines[line].letters[c].value;
+            }
+            catch
+            {
 
+            }
             if (word.Length > 0 && !Program.FindWord(word) && !Program.FindName(word))
             {
                 converted = converted.Remove(converted.Length - word.Length, word.Length);
@@ -632,7 +633,7 @@ namespace HardsubIsNotOk
 
                     if (!Settings.learningDisabled)
                     {
-                        Program.examples.Add(alternatives[index]);
+                        //Program.examples.Add(alternatives[index]);
                         Program.AddLearningThread(wrong, corrected);
                     }
                     converted.Append(index);

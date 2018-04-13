@@ -16,7 +16,6 @@ namespace HardsubIsNotOk
         public string value = "";
 
         private List<int> SubtitleMinHeight = new List<int>(), SubtitleMaxHeight = new List<int>();
-
         public void AddLetter(Letter l1)
         {
             if (l1 == null)
@@ -33,23 +32,33 @@ namespace HardsubIsNotOk
             {
                 Letter l2 = lines[index].Last;
                 int min, max;
-                
-                if(l1.xMin - l2.xMax < 2) //potrei ottimizzarlo ciclando solo i pixel sugli estremi
+
+                int minX = int.MaxValue; //checking distance between two letters
+                if (l1.xMin - l2.xMax < 2) 
                 {
                     foreach(Coord c1 in l1.pixels)
                         foreach (Coord c2 in l2.pixels)
                         {
-                            if(Math.Abs(c1.x - c2.x) + Math.Abs(c1.y - c2.y) < 3)
+                            int distX = c1.x - c2.x;
+                            int distYAbs = Math.Abs(c1.y - c2.y);
+                            if (Math.Abs(distX) + distYAbs < 3) //parametrizzabile?
                             {
                                 foreach (Coord c in l1.pixels)
                                     l2.AddPixel(c);
                                 lines[index].Update(l2);
                                 return;
                             }
+                            if (distYAbs < 2 && distX < minX)
+                                minX = distX;
                         }
                 }
+                if (minX > Settings.charDistance && minX != int.MaxValue)
+                {
+                    lines[index].AddLetter(l1);
+                    return;
+                }
                 
-
+                
                 //DA RIVEDERE
                 if (l1.xMax - l1.xMin < l2.xMax - l2.xMin)
                 {
@@ -77,6 +86,7 @@ namespace HardsubIsNotOk
                 }
                 else
                     lines[index].AddLetter(l1);
+                    
             }
         }
 
@@ -163,16 +173,24 @@ namespace HardsubIsNotOk
         }
         public void CalculateSpaces()
         {
+
             foreach(Line l in lines)
             {
                 for(int c = 0; c < l.letters.Count - 1; c++)
                 {
                     Letter l1 = l.letters[c], l2 = l.letters[c + 1];
-                    if(l2.xMin - l1.xMax > Settings.minSpaceWidth)
+                    if (l2.xMin - l1.xMax <= Settings.minSpaceWidth)
                     {
-                        c++;
-                        l.letters.Insert(c, new Space());
+                        foreach (Coord c1 in l1.pixels)
+                            foreach (Coord c2 in l2.pixels)
+                            {
+                                if (Math.Abs(c1.x - c2.x) + Math.Abs(c1.y - c2.y) < Settings.minSpaceWidth)
+                                    goto checkNext;
+                            }
                     }
+                    c++;
+                    l.letters.Insert(c, new Space());
+                    checkNext:;
                 }
             }
             List<Line> newLines = new List<Line>();
