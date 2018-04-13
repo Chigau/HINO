@@ -116,9 +116,11 @@ namespace HardsubIsNotOk
             {
                 while ((b = Program.videos[vIndex].ReadVideoFrame()) != null)
                 {
-                    if(buffer1[bufferIndex] != null)
+                    try
+                    {
                         buffer1[bufferIndex].source.Dispose();
-
+                    }
+                    catch { }
                     buffer1[bufferIndex] = new LockBitmap(b);
                     buffer1[bufferIndex].LockBits();
                     bufferIndex++;
@@ -138,9 +140,11 @@ namespace HardsubIsNotOk
             {
                 while ((b = Program.videos[vIndex].ReadVideoFrame()) != null)
                 {
-                    if (buffer1[bufferIndex] != null)
+                    try
+                    {
                         buffer2[bufferIndex].source.Dispose();
-
+                    }
+                    catch { }
                     buffer2[bufferIndex] = new LockBitmap(b);
                     buffer2[bufferIndex].LockBits();
                     bufferIndex++;

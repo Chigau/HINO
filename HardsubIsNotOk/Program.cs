@@ -13,7 +13,7 @@ namespace HardsubIsNotOk
 {
     static class Settings
     {
-        public static string dictionaryPath = "it_dictionary.txt";
+        public static string dictionaryPath = "en_dictionary.txt";
         public static string properNamesDictionaryPath = "proper_names_dictionary.txt";
         public static string saveSubsPath = "";
         public static int nnSize = 25;
@@ -21,7 +21,7 @@ namespace HardsubIsNotOk
         //public static string fileName = "";
 
         public static int cutTop = -1, cutBottom = -1;
-        public static int minSpaceWidth = 7;
+        public static int minSpaceWidth = 10;
         public static int charDistance = 2;
         public static int lineDistance = 10;
         public static int minCharPixelSize = 10;
