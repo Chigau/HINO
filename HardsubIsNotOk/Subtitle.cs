@@ -32,32 +32,21 @@ namespace HardsubIsNotOk
             {
                 Letter l2 = lines[index].Last;
                 int min, max;
-
-                int minX = int.MaxValue; //checking distance between two letters
+                
                 if (l1.xMin - l2.xMax < 2) 
                 {
-                    foreach(Coord c1 in l1.pixels)
+                    foreach(Coord c1 in l1.pixels) //for join attached letters
                         foreach (Coord c2 in l2.pixels)
                         {
-                            int distX = c1.x - c2.x;
-                            int distYAbs = Math.Abs(c1.y - c2.y);
-                            if (Math.Abs(distX) + distYAbs < 3) //parametrizzabile?
+                            if (Math.Abs(c1.x - c2.x) + Math.Abs(c1.y - c2.y) < 3) //parametrizzabile?
                             {
                                 foreach (Coord c in l1.pixels)
                                     l2.AddPixel(c);
                                 lines[index].Update(l2);
                                 return;
                             }
-                            if (distYAbs < 2 && distX < minX)
-                                minX = distX;
                         }
                 }
-                if (minX > Settings.charDistance && minX != int.MaxValue)
-                {
-                    lines[index].AddLetter(l1);
-                    return;
-                }
-                
                 
                 //DA RIVEDERE
                 if (l1.xMax - l1.xMin < l2.xMax - l2.xMin)
@@ -71,6 +60,13 @@ namespace HardsubIsNotOk
                     l2.xMax++;
                 }
                 //----------
+
+                int distance = (l1.xMax - l2.xMin) / 2;
+                if (distance > Settings.charDistance)
+                {
+                    lines[index].AddLetter(l1);
+                    return;
+                }
 
                 min = l1.xMin > l2.xMin ? l1.xMin : l2.xMin;
                 max = l1.xMax < l2.xMax ? l1.xMax : l2.xMax;
@@ -179,18 +175,11 @@ namespace HardsubIsNotOk
                 for(int c = 0; c < l.letters.Count - 1; c++)
                 {
                     Letter l1 = l.letters[c], l2 = l.letters[c + 1];
-                    if (l2.xMin - l1.xMax <= Settings.minSpaceWidth)
+                    if (l2.xMin - l1.xMax > Settings.minSpaceWidth)
                     {
-                        foreach (Coord c1 in l1.pixels)
-                            foreach (Coord c2 in l2.pixels)
-                            {
-                                if (Math.Abs(c1.x - c2.x) + Math.Abs(c1.y - c2.y) < Settings.minSpaceWidth)
-                                    goto checkNext;
-                            }
+                        c++;
+                        l.letters.Insert(c, new Space());
                     }
-                    c++;
-                    l.letters.Insert(c, new Space());
-                    checkNext:;
                 }
             }
             List<Line> newLines = new List<Line>();

@@ -110,9 +110,11 @@ namespace HardsubIsNotOk
             this.line = line;
             this.start = start;
             this.end = end;
-
-
+            
             button5.Enabled = Settings.dictionaryMode;
+
+            if (Settings.dictionaryMode)
+                Text = "Training - " + ConversionThread.waitForUser.Count;
         }
 
         private void button4_Click(object sender, EventArgs e)

@@ -15,7 +15,9 @@ namespace HardsubIsNotOk
     {
         public static LockBitmap frame;
         public static long frameIndex;
+        static int videoIndex = 0;
         static LockBitmap[] buffer, buffer1, buffer2;
+
 
         public static bool[,] filled;
         private static Letter newLetter;
@@ -98,6 +100,7 @@ namespace HardsubIsNotOk
 
                     while (!bufferingPause) ;
                 }
+                videoIndex++;
             }
             Form1.progressBar.Invoke(new Form1.EventHandle(() => Form1.progressBar.Value = 1000));
 
@@ -172,7 +175,7 @@ namespace HardsubIsNotOk
             {
                 while (subtitles[vIndex].Count <= subIndex)
                 {
-                    if (frameIndex >= Program.videos.ElementAt(vIndex).Value.FrameCount && subtitles.Count > vIndex + 1)
+                    if (videoIndex > vIndex && subtitles.Count > vIndex + 1)
                     {
                         vIndex++;
                         subIndex = 0;
