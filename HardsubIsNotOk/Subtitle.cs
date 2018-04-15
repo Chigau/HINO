@@ -42,6 +42,8 @@ namespace HardsubIsNotOk
                             {
                                 foreach (Coord c in l1.pixels)
                                     l2.AddPixel(c);
+                                foreach (Coord c in l1.outlinePixels)
+                                    l2.outlinePixels.Add(c);
                                 lines[index].Update(l2);
                                 return;
                             }
@@ -78,6 +80,8 @@ namespace HardsubIsNotOk
                 {
                     foreach (Coord c in l1.pixels)
                         l2.AddPixel(c);
+                    foreach (Coord c in l1.outlinePixels)
+                        l2.outlinePixels.Add(c);
                     lines[index].Update(l2);
                 }
                 else
@@ -114,7 +118,7 @@ namespace HardsubIsNotOk
                     foreach (Coord p in l.pixels)
                     {
                         total++;
-                        if (ConversionThread.AreSimilar(ConversionThread.frame.GetPixel(p.x, p.y), Settings.subColor))
+                        if (ConversionThread.ColorDiff(ConversionThread.frame.GetPixel(p.x, p.y), Settings.subColor) < Settings.sameCharacterThreshold)
                             ok++;
                     }
             if (ok / total > Settings.sameSubRange)
@@ -128,7 +132,7 @@ namespace HardsubIsNotOk
                         foreach (Coord p in l.pixels)
                         {
                             total++;
-                            if (ConversionThread.AreSimilar(buffer[c].GetPixel(p.x, p.y), Settings.subColor))
+                            if (ConversionThread.ColorDiff(buffer[c].GetPixel(p.x, p.y), Settings.subColor) < Settings.sameCharacterThreshold)
                                 ok++;
                         }
                 if (ok / total > Settings.sameSubRange)
@@ -155,7 +159,7 @@ namespace HardsubIsNotOk
                         foreach (Coord p in l.pixels)
                         {
                             total++;
-                            if (ConversionThread.AreSimilar(buffer[c].GetPixel(p.x, p.y), Settings.subColor))
+                            if (ConversionThread.ColorDiff(buffer[c].GetPixel(p.x, p.y), Settings.subColor) < Settings.sameCharacterThreshold)
                                 ok++;
                         }
                 if (ok / total < Settings.sameSubRange)

@@ -13,7 +13,7 @@ namespace HardsubIsNotOk
 {
     static class Settings
     {
-        public static string dictionaryPath = "it_dictionary.txt";
+        public static string dictionaryPath = "en_dictionary.txt";
         public static string properNamesDictionaryPath = "proper_names_dictionary.txt";
         public static string saveSubsPath = "";
         public static int nnSize = 25;

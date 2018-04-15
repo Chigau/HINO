@@ -224,16 +224,21 @@ namespace HardsubIsNotOk
 
             Subtitle bottom = GetSubtitleBottom();
             target = new Bitmap(cropRect.Width, cropRect.Height);
+            
             for (int x = 0; x < filled.GetLength(0); x++)
                 for (int y = 0; y < filled.GetLength(1); y++)
                     if (filled[x, y])
+                        newBit.SetPixel(x, y, Color.LightCoral);
+                        
+            if (bottom != null)
+                foreach (Subtitle.Line line in bottom.lines)
+                    foreach(Letter lett in line.letters)
                     {
-                        if(ColorDiff(frame.GetPixel(x, y), Settings.subColor) >= Settings.sameCharacterThreshold)
-                            newBit.SetPixel(x, y, Color.LightPink);
-                        else
-                            newBit.SetPixel(x, y, Color.Red);
+                        foreach (Coord c in lett.pixels)
+                            newBit.SetPixel(c.x, c.y, Color.Red);
+                        foreach (Coord c in lett.outlinePixels)
+                            newBit.SetPixel(c.x, c.y, Color.LightPink);
                     }
-
             using (Graphics g = Graphics.FromImage(target))
             {
                 g.DrawImage(newBit, new Rectangle(0, 0, target.Width, target.Height),
@@ -706,142 +711,146 @@ namespace HardsubIsNotOk
                 {
                     //TOP
                     Coord edge = coord.Top;
-                    c1 = frame.GetPixel(edge.x, edge.y);
-                    if (ColorDiff(c1, c2) >= Settings.sameCharacterThreshold)
-                        for (int c = 0; c < Settings.outlineWidth; c++)
+                    for (int c = 0; c < Settings.outlineWidth; c++)
+                    {
+                        c1 = frame.GetPixel(edge.x, edge.y);
+                        if (ColorDiff(c1, c2) < Settings.sameCharacterThreshold)
+                            break;
+                        if (newLetter.outlinePixels.Add(edge))
                         {
-                            if (newLetter.outlinePixels.Add(edge))
-                            {
-                                filled[edge.x, edge.y] = true;
-                                c1 = frame.GetPixel(edge.x, edge.y);
-                                byte smaller = Math.Min(c1.R, Math.Min(c1.G, c1.B));
-                                c1 = Color.FromArgb(255, c1.R - smaller, c1.G - smaller, c1.B - smaller);
-                                diff += ColorDiff(c1, Color.Black);
-                                tot++;
-                            }
-                            edge = edge.Top;
+                            //filled[edge.x, edge.y] = true;
+                            byte smaller = Math.Min(c1.R, Math.Min(c1.G, c1.B));
+                            c1 = Color.FromArgb(255, c1.R - smaller, c1.G - smaller, c1.B - smaller);
+                            diff += ColorDiff(c1, Color.Black);
+                            tot++;
                         }
+                        edge = edge.Top;
+                    }
 
                     //BOTTOM
                     edge = coord.Bottom;
-                    c1 = frame.GetPixel(edge.x, edge.y);
-                    if (ColorDiff(c1, c2) >= Settings.sameCharacterThreshold)
-                        for (int c = 0; c < Settings.outlineWidth; c++)
+                    for (int c = 0; c < Settings.outlineWidth; c++)
+                    {
+                        c1 = frame.GetPixel(edge.x, edge.y);
+                        if (ColorDiff(c1, c2) < Settings.sameCharacterThreshold)
+                            break;
+                        if (newLetter.outlinePixels.Add(edge))
                         {
-                            if (newLetter.outlinePixels.Add(edge))
-                            {
-                                filled[edge.x, edge.y] = true;
-                                c1 = frame.GetPixel(edge.x, edge.y);
-                                byte smaller = Math.Min(c1.R, Math.Min(c1.G, c1.B));
-                                c1 = Color.FromArgb(255, c1.R - smaller, c1.G - smaller, c1.B - smaller);
-                                diff += ColorDiff(c1, Color.Black);
-                                tot++;
-                            }
-                            edge = edge.Bottom;
+                            //filled[edge.x, edge.y] = true;
+                            byte smaller = Math.Min(c1.R, Math.Min(c1.G, c1.B));
+                            c1 = Color.FromArgb(255, c1.R - smaller, c1.G - smaller, c1.B - smaller);
+                            diff += ColorDiff(c1, Color.Black);
+                            tot++;
+                        }
+                        edge = edge.Bottom;
                         }
 
                     //RIGHT
                     edge = coord.Right;
-                    c1 = frame.GetPixel(edge.x, edge.y);
-                    if (ColorDiff(c1, c2) >= Settings.sameCharacterThreshold)
-                        for (int c = 0; c < Settings.outlineWidth; c++)
+                    for (int c = 0; c < Settings.outlineWidth; c++)
+                    {
+                        c1 = frame.GetPixel(edge.x, edge.y);
+                        if (ColorDiff(c1, c2) < Settings.sameCharacterThreshold)
+                            break;
+                        if (newLetter.outlinePixels.Add(edge))
                         {
-                            if (newLetter.outlinePixels.Add(edge))
-                            {
-                                filled[edge.x, edge.y] = true;
-                                c1 = frame.GetPixel(edge.x, edge.y);
-                                byte smaller = Math.Min(c1.R, Math.Min(c1.G, c1.B));
-                                c1 = Color.FromArgb(255, c1.R - smaller, c1.G - smaller, c1.B - smaller);
-                                diff += ColorDiff(c1, Color.Black);
-                                tot++;
-                            }
-                            edge = edge.Right;
+                            //filled[edge.x, edge.y] = true;
+                            byte smaller = Math.Min(c1.R, Math.Min(c1.G, c1.B));
+                            c1 = Color.FromArgb(255, c1.R - smaller, c1.G - smaller, c1.B - smaller);
+                            diff += ColorDiff(c1, Color.Black);
+                            tot++;
                         }
+                        edge = edge.Right;
+                    }
 
                     //LEFT
                     edge = coord.Left;
-                    c1 = frame.GetPixel(edge.x, edge.y);
-                    if (ColorDiff(c1, c2) >= Settings.sameCharacterThreshold)
-                        for (int c = 0; c < Settings.outlineWidth; c++)
+                    for (int c = 0; c < Settings.outlineWidth; c++)
+                    {
+                        c1 = frame.GetPixel(edge.x, edge.y);
+                        if (ColorDiff(c1, c2) < Settings.sameCharacterThreshold)
+                            break;
+                        if (newLetter.outlinePixels.Add(edge))
                         {
-                            if (newLetter.outlinePixels.Add(edge))
-                            {
-                                filled[edge.x, edge.y] = true;
-                                c1 = frame.GetPixel(edge.x, edge.y);
-                                byte smaller = Math.Min(c1.R, Math.Min(c1.G, c1.B));
-                                c1 = Color.FromArgb(255, c1.R - smaller, c1.G - smaller, c1.B - smaller);
-                                diff += ColorDiff(c1, Color.Black);
-                                tot++;
-                            }
-                            edge = edge.Left;
+                            //filled[edge.x, edge.y] = true;
+                            byte smaller = Math.Min(c1.R, Math.Min(c1.G, c1.B));
+                            c1 = Color.FromArgb(255, c1.R - smaller, c1.G - smaller, c1.B - smaller);
+                            diff += ColorDiff(c1, Color.Black);
+                            tot++;
                         }
+                        edge = edge.Left;
+                    }
                 }
                 else
                 {
                     float hue;
                     //TOP
                     Coord edge = coord.Top;
-                    c1 = frame.GetPixel(edge.x, edge.y);
-                    if (ColorDiff(c1, c2) >= Settings.sameCharacterThreshold)
-                        for (int c = 0; c < Settings.outlineWidth; c++)
+                    for (int c = 0; c < Settings.outlineWidth; c++)
+                    {
+                        c1 = frame.GetPixel(edge.x, edge.y);
+                        if (ColorDiff(c1, c2) < Settings.sameCharacterThreshold)
+                            break;
+                        if (newLetter.outlinePixels.Add(edge))
                         {
-                            if (newLetter.outlinePixels.Add(edge))
-                            {
-                                filled[edge.x, edge.y] = true;
-                                hue = frame.GetPixel(edge.x, edge.y).GetHue();
-                                diff += GetHueDistance(idealHue, hue);
-                                tot++;
-                            }
-                            edge = edge.Top;
+                            //filled[edge.x, edge.y] = true;
+                            hue = frame.GetPixel(edge.x, edge.y).GetHue();
+                            diff += GetHueDistance(idealHue, hue);
+                            tot++;
                         }
+                        edge = edge.Top;
+                    }
 
                     //BOTTOM
                     edge = coord.Bottom;
-                    c1 = frame.GetPixel(edge.x, edge.y);
-                    if (ColorDiff(c1, c2) >= Settings.sameCharacterThreshold)
-                        for (int c = 0; c < Settings.outlineWidth; c++)
+                    for (int c = 0; c < Settings.outlineWidth; c++)
+                    {
+                        c1 = frame.GetPixel(edge.x, edge.y);
+                        if (ColorDiff(c1, c2) < Settings.sameCharacterThreshold)
+                            break;
+                        if (newLetter.outlinePixels.Add(edge))
                         {
-                            if (newLetter.outlinePixels.Add(edge))
-                            {
-                                filled[edge.x, edge.y] = true;
-                                hue = frame.GetPixel(edge.x, edge.y).GetHue();
-                                diff += GetHueDistance(idealHue, hue);
-                                tot++;
-                            }
-                            edge = edge.Bottom;
+                            //filled[edge.x, edge.y] = true;
+                            hue = frame.GetPixel(edge.x, edge.y).GetHue();
+                            diff += GetHueDistance(idealHue, hue);
+                            tot++;
                         }
+                        edge = edge.Bottom;
+                    }
 
                     //RIGHT
                     edge = coord.Right;
+                    for (int c = 0; c < Settings.outlineWidth; c++)
+                    {
                     c1 = frame.GetPixel(edge.x, edge.y);
-                    if (ColorDiff(c1, c2) >= Settings.sameCharacterThreshold)
-                        for (int c = 0; c < Settings.outlineWidth; c++)
+                    if (ColorDiff(c1, c2) < Settings.sameCharacterThreshold)
+                        break;
+                    if (newLetter.outlinePixels.Add(edge))
                         {
-                            if (newLetter.outlinePixels.Add(edge))
-                            {
-                                filled[edge.x, edge.y] = true;
-                                hue = frame.GetPixel(edge.x, edge.y).GetHue();
-                                diff += GetHueDistance(idealHue, hue);
-                                tot++;
-                            }
-                            edge = edge.Right;
+                            //filled[edge.x, edge.y] = true;
+                            hue = frame.GetPixel(edge.x, edge.y).GetHue();
+                            diff += GetHueDistance(idealHue, hue);
+                            tot++;
                         }
+                        edge = edge.Right;
+                    }
 
                     //LEFT
                     edge = coord.Left;
-                    c1 = frame.GetPixel(edge.x, edge.y);
-                    if (ColorDiff(c1, c2) >= Settings.sameCharacterThreshold)
-                        for (int c = 0; c < Settings.outlineWidth; c++)
+                    for (int c = 0; c < Settings.outlineWidth; c++)
+                    {
+                        c1 = frame.GetPixel(edge.x, edge.y);
+                        if (ColorDiff(c1, c2) < Settings.sameCharacterThreshold)
+                            break;
+                        if (newLetter.outlinePixels.Add(edge))
                         {
-                            if (newLetter.outlinePixels.Add(edge))
-                            {
-                                filled[edge.x, edge.y] = true;
-                                hue = frame.GetPixel(edge.x, edge.y).GetHue();
-                                diff += GetHueDistance(idealHue, hue);
-                                tot++;
-                            }
-                            edge = edge.Left;
+                            //filled[edge.x, edge.y] = true;
+                            hue = frame.GetPixel(edge.x, edge.y).GetHue();
+                            diff += GetHueDistance(idealHue, hue);
+                            tot++;
                         }
+                        edge = edge.Left;
+                    }
                 }
                 return true;
             }
