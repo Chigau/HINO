@@ -5,7 +5,9 @@ archer
 archer
 assassin
 atm
+aubade
 ayame
+belchero
 berserker
 caster
 chihiro
@@ -20,6 +22,8 @@ fuwa
 gilgamesh
 gouriki
 graal
+habo
+habolg
 hana
 hoji
 hyouka
@@ -32,6 +36,7 @@ kajou
 katou
 keisuke
 kirei
+kiyui
 kojirou
 kosuri
 kotomine
@@ -40,6 +45,7 @@ lancer
 leys
 leysritt
 lssei
+lyza
 machida
 makoto
 masashi
@@ -49,14 +55,18 @@ medea
 melloi
 midorizu
 mitsuzuri
+nat
 nishikinomiya
 nukumi
 oboro
 okuma
 onigashira
+orth
 otome
+ozen
 padron
 raiki
+riko
 rin
 ryuudou
 saber
@@ -64,6 +74,7 @@ saegusa
 sakura
 saotome
 sasaki
+shiggy
 shinji
 shinrin
 shinto
@@ -77,6 +88,7 @@ tanukichi
 tohsaka
 tohto
 tokioka
+torka
 tsukimigusa
 von
 yatsugamori

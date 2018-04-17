@@ -973,20 +973,6 @@ namespace HardsubIsNotOk
                 return null;
             return newLetter;
         }
-        /*
-        private static void Fill(Coord point)
-        {
-            if (IsFilled(point) || !IsValid(point))
-                return;
-            filled[point.x, point.y] = true;
-            newLetter.AddPixel(point);
-
-            Fill(point.Bottom);
-            Fill(point.Right);
-            Fill(point.Top);
-            Fill(point.Left);
-        }
-        */
         private static void Fill(Coord p)
         {
             Queue<Coord> q = new Queue<Coord>();
@@ -1020,6 +1006,31 @@ namespace HardsubIsNotOk
                     filled[p.Right.x, p.Right.y] = true;
                     newLetter.AddPixel(p.Right);
                     q.Enqueue(p.Right);
+                }
+                
+                if (!IsFilled(p.TopLeft) && IsValid(p.TopLeft))
+                {
+                    filled[p.TopLeft.x, p.TopLeft.y] = true;
+                    newLetter.AddPixel(p.TopLeft);
+                    q.Enqueue(p.TopLeft);
+                }
+                if (!IsFilled(p.TopRight) && IsValid(p.TopRight))
+                {
+                    filled[p.TopRight.x, p.TopRight.y] = true;
+                    newLetter.AddPixel(p.TopRight);
+                    q.Enqueue(p.TopRight);
+                }
+                if (!IsFilled(p.BottomLeft) && IsValid(p.BottomLeft))
+                {
+                    filled[p.BottomLeft.x, p.BottomLeft.y] = true;
+                    newLetter.AddPixel(p.BottomLeft);
+                    q.Enqueue(p.BottomLeft);
+                }
+                if (!IsFilled(p.BottomRight) && IsValid(p.BottomRight))
+                {
+                    filled[p.BottomRight.x, p.BottomRight.y] = true;
+                    newLetter.AddPixel(p.BottomRight);
+                    q.Enqueue(p.BottomRight);
                 }
             }
         }

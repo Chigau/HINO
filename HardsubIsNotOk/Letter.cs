@@ -174,9 +174,21 @@ namespace HardsubIsNotOk
         {
             get { return new Coord(x - 1, y); }
         }
-        public Coord[] Edge
+        public Coord TopRight
         {
-            get { return new Coord[] { Top, Bottom, Left, Right, Top.Left, Top.Right, Bottom.Left, Bottom.Right }; }
+            get { return new Coord(x + 1, y - 1); }
+        }
+        public Coord TopLeft
+        {
+            get { return new Coord(x - 1, y - 1); }
+        }
+        public Coord BottomRight
+        {
+            get { return new Coord(x + 1, y + 1); }
+        }
+        public Coord BottomLeft
+        {
+            get { return new Coord(x - 1, y + 1); }
         }
         public Coord(int x, int y)
         {
@@ -200,10 +212,6 @@ namespace HardsubIsNotOk
         public override string ToString()
         {
             return x + "," + y;
-        }
-        public static float Distance(Coord c1, Coord c2)
-        {
-            return (float)Math.Sqrt(Math.Pow(c1.x - c2.x, 2) + Math.Pow(c1.y - c2.y, 2));
         }
     }
 }

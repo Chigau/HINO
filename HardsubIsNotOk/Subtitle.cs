@@ -31,24 +31,6 @@ namespace HardsubIsNotOk
             else
             {
                 Letter l2 = lines[index].Last;
-                int min, max;
-                
-                if (l1.xMin - l2.xMax < 2) 
-                {
-                    foreach(Coord c1 in l1.pixels) //for join attached letters
-                        foreach (Coord c2 in l2.pixels)
-                        {
-                            if (Math.Abs(c1.x - c2.x) + Math.Abs(c1.y - c2.y) < 3) //parametrizzabile?
-                            {
-                                foreach (Coord c in l1.pixels)
-                                    l2.AddPixel(c);
-                                foreach (Coord c in l1.outlinePixels)
-                                    l2.outlinePixels.Add(c);
-                                lines[index].Update(l2);
-                                return;
-                            }
-                        }
-                }
                 
                 //DA RIVEDERE
                 if (l1.xMax - l1.xMin < l2.xMax - l2.xMin)
@@ -69,9 +51,9 @@ namespace HardsubIsNotOk
                     lines[index].AddLetter(l1);
                     return;
                 }
-
-                min = l1.xMin > l2.xMin ? l1.xMin : l2.xMin;
-                max = l1.xMax < l2.xMax ? l1.xMax : l2.xMax;
+                
+                int min = l1.xMin > l2.xMin ? l1.xMin : l2.xMin;
+                int max = l1.xMax < l2.xMax ? l1.xMax : l2.xMax;
 
                 max -= min;
 
@@ -179,7 +161,17 @@ namespace HardsubIsNotOk
                 for(int c = 0; c < l.letters.Count - 1; c++)
                 {
                     Letter l1 = l.letters[c], l2 = l.letters[c + 1];
-                    if (l2.xMin - l1.xMax > Settings.minSpaceWidth)
+
+                    int minDist = int.MaxValue;
+                    foreach (Coord c1 in l1.pixels) //for join attached letters
+                        foreach (Coord c2 in l2.pixels)
+                        {
+                            int dist = Math.Abs(c1.x - c2.x) + Math.Abs(c1.y - c2.y);
+                            if (dist < minDist)
+                                minDist = dist;
+                        }
+                    //if (l2.xMin - l1.xMax > Settings.minSpaceWidth)
+                    if (minDist > Settings.minSpaceWidth)
                     {
                         c++;
                         l.letters.Insert(c, new Space());

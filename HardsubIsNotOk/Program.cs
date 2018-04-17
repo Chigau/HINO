@@ -92,7 +92,8 @@ namespace HardsubIsNotOk
                 else
                     return true;
             }
-            return word == dictionary[min] || word == dictionary[max];
+            return false;
+            //return word == dictionary[min] || word == dictionary[max];
         }
         public static bool FindName(string word)
         {
@@ -112,7 +113,8 @@ namespace HardsubIsNotOk
                 else
                     return true;
             }
-            return word == namesDictionary[min] || word == namesDictionary[max];
+            return false;
+            //return word == namesDictionary[min] || word == namesDictionary[max];
         }
 
         public static void AddToDictionary(string word)

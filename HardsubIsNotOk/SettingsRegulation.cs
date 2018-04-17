@@ -510,101 +510,128 @@ namespace HardsubIsNotOk
 
         private void sameCharacterThreshold_TextChanged(object sender, EventArgs e)
         {
-            try
+            int val;
+            if(int.TryParse(sameCharacterThreshold.Text, out val) && Settings.sameCharacterThreshold != val)
             {
-                Settings.sameCharacterThreshold = float.Parse(sameCharacterThreshold.Text);
+                if (val > trackBar3.Maximum)
+                    val = trackBar3.Maximum;
+                Settings.sameCharacterThreshold = val;
+                trackBar3.Value = val;
                 if (p.frameCount != 0)
                     UpdateStep34Image();
             }
-            catch (FormatException ex) { }
         }
 
         private void newCharacterThreshold_TextChanged(object sender, EventArgs e)
         {
-            try
+            int val;
+            if (int.TryParse(newCharacterThreshold.Text, out val) && Settings.newCharacterThreshold != val)
             {
-                Settings.newCharacterThreshold = float.Parse(newCharacterThreshold.Text);
+                if (val > trackBar4.Maximum)
+                    val = trackBar4.Maximum;
+                Settings.newCharacterThreshold = val;
+                trackBar4.Value = val;
                 if (p.frameCount != 0)
                     UpdateStep34Image();
             }
-            catch (FormatException ex) { }
         }
 
         private void outlineThreshold_TextChanged(object sender, EventArgs e)
         {
-            try
+            int val;
+            if (int.TryParse(outlineThreshold.Text, out val) && Settings.outlineThreshold != val)
             {
-                Settings.outlineThreshold = float.Parse(outlineThreshold.Text);
+                if (val > trackBar5.Maximum)
+                    val = trackBar5.Maximum;
+                Settings.outlineThreshold = val;
+                trackBar5.Value = val;
                 if (p.frameCount != 0)
                     UpdateStep34Image();
             }
-            catch (FormatException ex) { }
         }
 
         private void minCharPixelSize_TextChanged(object sender, EventArgs e)
         {
-            try
+            int val;
+            if (int.TryParse(minCharPixelSize.Text, out val) && Settings.minCharPixelSize != val)
             {
-                Settings.minCharPixelSize = int.Parse(minCharPixelSize.Text);
+                if (val > trackBar8.Maximum)
+                    val = trackBar8.Maximum;
+                Settings.minCharPixelSize = val;
+                trackBar8.Value = val;
                 if (p.frameCount != 0)
                     UpdateStep34Image();
             }
-            catch (FormatException ex) { }
         }
 
         private void maxCharPixelSize_TextChanged(object sender, EventArgs e)
         {
-            try
+            int val;
+            if (int.TryParse(maxCharPixelSize.Text, out val) && Settings.maxCharPixelSize != val)
             {
-                Settings.maxCharPixelSize = int.Parse(maxCharPixelSize.Text);
+                if (val > trackBar6.Maximum)
+                    val = trackBar6.Maximum;
+                Settings.maxCharPixelSize = val;
+                trackBar6.Value = val;
                 if (p.frameCount != 0)
                     UpdateStep34Image();
             }
-            catch (FormatException ex) { }
         }
 
         private void minSpaceWidth_TextChanged(object sender, EventArgs e)
         {
-            try
+            int val;
+            if (int.TryParse(minSpaceWidth.Text, out val) && Settings.minSpaceWidth != val)
             {
-                Settings.minSpaceWidth = int.Parse(minSpaceWidth.Text);
+                if (val > trackBar7.Maximum)
+                    val = trackBar7.Maximum;
+                Settings.minSpaceWidth = val;
+                trackBar7.Value = val;
                 if (p.frameCount != 0)
                     UpdateStep5Image();
             }
-            catch (FormatException ex) { }
         }
 
         private void charDistance_TextChanged(object sender, EventArgs e)
         {
-            try
+            int val;
+            if (int.TryParse(charDistance.Text, out val) && Settings.charDistance != val)
             {
-                Settings.charDistance = int.Parse(charDistance.Text);
+                if (val > trackBar11.Maximum)
+                    val = trackBar11.Maximum;
+                Settings.charDistance = val;
+                trackBar11.Value = val;
                 if (p.frameCount != 0)
                     UpdateStep5Image();
             }
-            catch (FormatException ex) { }
         }
 
         private void lineDistance_TextChanged(object sender, EventArgs e)
         {
-            try
+            int val;
+            if (int.TryParse(lineDistance.Text, out val) && Settings.lineDistance != val)
             {
-                Settings.lineDistance = int.Parse(lineDistance.Text);
+                if (val > trackBar10.Maximum)
+                    val = trackBar10.Maximum;
+                Settings.lineDistance = val;
+                trackBar10.Value = val;
                 if (p.frameCount != 0)
                     UpdateStep5Image();
             }
-            catch (FormatException ex) { }
         }
 
         private void outlineWidth_TextChanged(object sender, EventArgs e)
         {
-            try
+            int val;
+            if (int.TryParse(outlineWidth.Text, out val) && Settings.outlineWidth != val)
             {
-                Settings.outlineWidth = int.Parse(outlineWidth.Text);
+                if (val > trackBar9.Maximum)
+                    val = trackBar9.Maximum;
+                Settings.outlineWidth = val;
+                trackBar9.Value = val;
                 if (p.frameCount != 0)
                     UpdateStep34Image();
             }
-            catch (FormatException ex) { }
         }
         private void defaultCharScale_TextChanged(object sender, EventArgs e)
         {
@@ -873,7 +900,7 @@ namespace HardsubIsNotOk
                 return null;
             return newLetter;
         }
-        private void Fill(Coord p)
+        void Fill(Coord p)
         {
             Queue<Coord> q = new Queue<Coord>();
             filled[p.x, p.y] = true;
@@ -907,8 +934,32 @@ namespace HardsubIsNotOk
                     newLetter.AddPixel(p.Right);
                     q.Enqueue(p.Right);
                 }
-            }
 
+                if (!IsFilled(p.TopLeft) && IsValid(p.TopLeft))
+                {
+                    filled[p.TopLeft.x, p.TopLeft.y] = true;
+                    newLetter.AddPixel(p.TopLeft);
+                    q.Enqueue(p.TopLeft);
+                }
+                if (!IsFilled(p.TopRight) && IsValid(p.TopRight))
+                {
+                    filled[p.TopRight.x, p.TopRight.y] = true;
+                    newLetter.AddPixel(p.TopRight);
+                    q.Enqueue(p.TopRight);
+                }
+                if (!IsFilled(p.BottomLeft) && IsValid(p.BottomLeft))
+                {
+                    filled[p.BottomLeft.x, p.BottomLeft.y] = true;
+                    newLetter.AddPixel(p.BottomLeft);
+                    q.Enqueue(p.BottomLeft);
+                }
+                if (!IsFilled(p.BottomRight) && IsValid(p.BottomRight))
+                {
+                    filled[p.BottomRight.x, p.BottomRight.y] = true;
+                    newLetter.AddPixel(p.BottomRight);
+                    q.Enqueue(p.BottomRight);
+                }
+            }
         }
         bool IsFilled(Coord point)
         {
