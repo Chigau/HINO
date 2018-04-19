@@ -151,8 +151,17 @@ namespace HardsubIsNotOk
             }
             else
             {
+                button4.Enabled = false;
+                textBox1.Text = "Loading...";
+                textBox1.Enabled = false;
                 textBox1.Visible = true;
+                textBox1.Refresh();
+                textBox1.Text = sub.GetGeneratedValue();
+                textBox1.Enabled = true;
+                textBox1.Focus();
+                textBox1.SelectAll();
                 button4.Text = "Confirm";
+                button4.Enabled = true;
             }
         }
     }

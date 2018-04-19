@@ -136,12 +136,12 @@ namespace HardsubIsNotOk
                     secondChoice = value;
 
                     higher = output;
-                    value = Program.neuralNetwork[s].value;
+                    value = s;
                 }
                 else if (output > firstOverSecondCorrectness)
                 {
                     firstOverSecondCorrectness = output;
-                    secondChoice = Program.neuralNetwork[s].value;
+                    secondChoice = s;
                 }
                 //Console.WriteLine("Caso " + nn.value + ": " + output);
             }

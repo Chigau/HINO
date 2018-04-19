@@ -208,6 +208,34 @@ namespace HardsubIsNotOk
 
             return toRet;
         }
+        public string GetGeneratedValue()
+        {
+            string ret = "";
+            int c = 0;
+            while(true)
+            {
+                foreach(Letter l in lines[c].letters)
+                {
+                    if (l is Space)
+                    {
+                        ret += ' ';
+                        continue;
+                    }
+                    if (l.value == null)
+                    {
+                        l.GenerateArray();
+                        l.Recognize();
+                    }
+                    ret += l.value;
+                }
+                c++;
+                if (c < lines.Count)
+                    ret += Environment.NewLine;
+                else
+                    break;
+            }
+            return ret;
+        }
 
         public class Line
         {
