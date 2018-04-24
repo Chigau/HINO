@@ -67,11 +67,45 @@ namespace HardsubIsNotOk
         [STAThread]
         static void Main()
         {
-            dictionary = new List<string>(File.ReadAllLines(Settings.dictionaryPath));
-            dictionary.Sort();
-            namesDictionary = new List<string>(File.ReadAllLines(Settings.properNamesDictionaryPath));
-            namesDictionary.Sort();
             Thread.CurrentThread.CurrentCulture = new CultureInfo("it-IT");
+
+            if (File.Exists("settings.txt"))
+            {
+                StreamReader file = new StreamReader("settings.txt");
+                
+                Settings.dictionaryPath = file.ReadLine();
+                Settings.properNamesDictionaryPath = file.ReadLine();
+                Settings.frameRate = float.Parse(file.ReadLine());
+                Settings.maxError = float.Parse(file.ReadLine());
+                Settings.minCorrectness = float.Parse(file.ReadLine());
+                Settings.maxDictionaryError = float.Parse(file.ReadLine());
+                Settings.minDictionaryCorrectness = float.Parse(file.ReadLine());
+                Settings.maxLearningThreads = int.Parse(file.ReadLine());
+
+                file.Close();
+            }
+            if (File.Exists(Settings.dictionaryPath))
+            {
+                dictionary = new List<string>(File.ReadAllLines(Settings.dictionaryPath));
+                dictionary.Sort();
+            }
+            else
+            {
+                File.Create(Settings.dictionaryPath).Dispose();
+                dictionary = new List<string>();
+            }
+
+            if (File.Exists(Settings.properNamesDictionaryPath))
+            {
+                namesDictionary = new List<string>(File.ReadAllLines(Settings.properNamesDictionaryPath));
+                namesDictionary.Sort();
+            }
+            else
+            {
+                File.Create(Settings.properNamesDictionaryPath).Dispose();
+                namesDictionary = new List<string>();
+            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

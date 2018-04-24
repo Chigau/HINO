@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace HardsubIsNotOk
 {
@@ -76,12 +77,15 @@ namespace HardsubIsNotOk
             for (int c = 0; c < inputs.Count; c++)
                 weights[c] = learningWeights[c];
         }
-        public string Serialize()
+        public StringBuilder Serialize()
         {
-            string serialized = "";
+            StringBuilder serialized = new StringBuilder();
             if (weights != null)
                 foreach (float d in weights)
-                    serialized += d.ToString("r") + ";";
+                {
+                    serialized.Append(d.ToString("r"));
+                    serialized.Append(';');
+                }
             return serialized;
         }
         public void Load(string s)

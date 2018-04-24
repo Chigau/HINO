@@ -28,21 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup5 = new System.Windows.Forms.ListViewGroup("Informazioni video", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup6 = new System.Windows.Forms.ListViewGroup("Settaggi", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Informazioni video", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Settaggi", System.Windows.Forms.HorizontalAlignment.Left);
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.extraction = new System.Windows.Forms.ProgressBar();
             this.listView1 = new System.Windows.Forms.ListView();
             this.name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.value = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.start = new System.Windows.Forms.Button();
-            this.recognition = new System.Windows.Forms.ProgressBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addVideoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openSubtitlesWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSubtitlesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveSubtitlesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.saveDictionaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openSubtitlesWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reteNeuraleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSettingsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,7 +53,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.saveSubtitlesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -76,23 +75,22 @@
             // 
             // listView1
             // 
-            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.name,
             this.value});
-            listViewGroup5.Header = "Informazioni video";
-            listViewGroup5.Name = "Informazioni video";
-            listViewGroup6.Header = "Settaggi";
-            listViewGroup6.Name = "Settaggi";
+            listViewGroup1.Header = "Informazioni video";
+            listViewGroup1.Name = "Informazioni video";
+            listViewGroup2.Header = "Settaggi";
+            listViewGroup2.Name = "Settaggi";
             this.listView1.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup5,
-            listViewGroup6});
+            listViewGroup1,
+            listViewGroup2});
             this.listView1.LabelWrap = false;
-            this.listView1.Location = new System.Drawing.Point(13, 278);
+            this.listView1.Location = new System.Drawing.Point(12, 372);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(1346, 244);
+            this.listView1.Size = new System.Drawing.Size(1346, 262);
             this.listView1.TabIndex = 3;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -119,17 +117,6 @@
             this.start.UseVisualStyleBackColor = true;
             this.start.Click += new System.EventHandler(this.start_Click);
             // 
-            // recognition
-            // 
-            this.recognition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.recognition.Location = new System.Drawing.Point(12, 610);
-            this.recognition.MarqueeAnimationSpeed = 10;
-            this.recognition.Maximum = 1000;
-            this.recognition.Name = "recognition";
-            this.recognition.Size = new System.Drawing.Size(1346, 23);
-            this.recognition.TabIndex = 5;
-            // 
             // menuStrip1
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
@@ -139,7 +126,7 @@
             this.opzioniToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1370, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1370, 33);
             this.menuStrip1.TabIndex = 7;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -152,36 +139,43 @@
             this.saveDictionaryToolStripMenuItem,
             this.openSubtitlesWindowToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(50, 29);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // addVideoToolStripMenuItem
             // 
             this.addVideoToolStripMenuItem.Name = "addVideoToolStripMenuItem";
-            this.addVideoToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.addVideoToolStripMenuItem.Size = new System.Drawing.Size(291, 30);
             this.addVideoToolStripMenuItem.Text = "Add video...";
             this.addVideoToolStripMenuItem.Click += new System.EventHandler(this.apriVideoToolStripMenuItem_Click);
-            // 
-            // openSubtitlesWindowToolStripMenuItem
-            // 
-            this.openSubtitlesWindowToolStripMenuItem.Name = "openSubtitlesWindowToolStripMenuItem";
-            this.openSubtitlesWindowToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.openSubtitlesWindowToolStripMenuItem.Text = "Open subtitles window";
-            this.openSubtitlesWindowToolStripMenuItem.Click += new System.EventHandler(this.apriFinestraSottotitoliToolStripMenuItem_Click);
             // 
             // saveSubtitlesToolStripMenuItem
             // 
             this.saveSubtitlesToolStripMenuItem.Name = "saveSubtitlesToolStripMenuItem";
-            this.saveSubtitlesToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.saveSubtitlesToolStripMenuItem.Size = new System.Drawing.Size(291, 30);
             this.saveSubtitlesToolStripMenuItem.Text = "Save subtitles";
             this.saveSubtitlesToolStripMenuItem.Click += new System.EventHandler(this.salvaSottotitoliToolStripMenuItem_Click_1);
+            // 
+            // saveSubtitlesToolStripMenuItem1
+            // 
+            this.saveSubtitlesToolStripMenuItem1.Name = "saveSubtitlesToolStripMenuItem1";
+            this.saveSubtitlesToolStripMenuItem1.Size = new System.Drawing.Size(291, 30);
+            this.saveSubtitlesToolStripMenuItem1.Text = "Change subtitles folder...";
+            this.saveSubtitlesToolStripMenuItem1.Click += new System.EventHandler(this.saveSubtitlesToolStripMenuItem1_Click);
             // 
             // saveDictionaryToolStripMenuItem
             // 
             this.saveDictionaryToolStripMenuItem.Name = "saveDictionaryToolStripMenuItem";
-            this.saveDictionaryToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.saveDictionaryToolStripMenuItem.Size = new System.Drawing.Size(291, 30);
             this.saveDictionaryToolStripMenuItem.Text = "Save dictionary";
             this.saveDictionaryToolStripMenuItem.Click += new System.EventHandler(this.salvaLeModificheAlDizionarioToolStripMenuItem_Click);
+            // 
+            // openSubtitlesWindowToolStripMenuItem
+            // 
+            this.openSubtitlesWindowToolStripMenuItem.Name = "openSubtitlesWindowToolStripMenuItem";
+            this.openSubtitlesWindowToolStripMenuItem.Size = new System.Drawing.Size(291, 30);
+            this.openSubtitlesWindowToolStripMenuItem.Text = "Open subtitles window";
+            this.openSubtitlesWindowToolStripMenuItem.Click += new System.EventHandler(this.apriFinestraSottotitoliToolStripMenuItem_Click);
             // 
             // reteNeuraleToolStripMenuItem
             // 
@@ -191,32 +185,32 @@
             this.toolStripSeparator1,
             this.examplesToolStripMenuItem});
             this.reteNeuraleToolStripMenuItem.Name = "reteNeuraleToolStripMenuItem";
-            this.reteNeuraleToolStripMenuItem.Size = new System.Drawing.Size(100, 20);
+            this.reteNeuraleToolStripMenuItem.Size = new System.Drawing.Size(144, 29);
             this.reteNeuraleToolStripMenuItem.Text = "Neural network";
             // 
             // loadSettingsToolStripMenuItem
             // 
             this.loadSettingsToolStripMenuItem.Name = "loadSettingsToolStripMenuItem";
-            this.loadSettingsToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.loadSettingsToolStripMenuItem.Size = new System.Drawing.Size(272, 30);
             this.loadSettingsToolStripMenuItem.Text = "Load settings...";
             this.loadSettingsToolStripMenuItem.Click += new System.EventHandler(this.caricaStatoToolStripMenuItem_Click);
             // 
             // saveSettingsStripMenuItem
             // 
             this.saveSettingsStripMenuItem.Name = "saveSettingsStripMenuItem";
-            this.saveSettingsStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.saveSettingsStripMenuItem.Size = new System.Drawing.Size(272, 30);
             this.saveSettingsStripMenuItem.Text = "Save current settings...";
             this.saveSettingsStripMenuItem.Click += new System.EventHandler(this.salvaStatoToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(189, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(269, 6);
             // 
             // examplesToolStripMenuItem
             // 
             this.examplesToolStripMenuItem.Name = "examplesToolStripMenuItem";
-            this.examplesToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.examplesToolStripMenuItem.Size = new System.Drawing.Size(272, 30);
             this.examplesToolStripMenuItem.Text = "Examples list";
             this.examplesToolStripMenuItem.Click += new System.EventHandler(this.listaEsempiToolStripMenuItem_Click);
             // 
@@ -225,13 +219,13 @@
             this.opzioniToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem});
             this.opzioniToolStripMenuItem.Name = "opzioniToolStripMenuItem";
-            this.opzioniToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.opzioniToolStripMenuItem.Size = new System.Drawing.Size(88, 29);
             this.opzioniToolStripMenuItem.Text = "Options";
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
             this.settingsToolStripMenuItem.Text = "Conversion settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
@@ -254,10 +248,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
+            this.listBox1.ItemHeight = 25;
             this.listBox1.Location = new System.Drawing.Point(13, 28);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(1345, 244);
+            this.listBox1.Size = new System.Drawing.Size(1345, 329);
             this.listBox1.TabIndex = 9;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             this.listBox1.DragDrop += new System.Windows.Forms.DragEventHandler(this.listBox1_DragDrop);
@@ -270,27 +264,19 @@
             this.label1.BackColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(22, 38);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(122, 17);
+            this.label1.Size = new System.Drawing.Size(167, 25);
             this.label1.TabIndex = 10;
             this.label1.Text = "No files added yet";
             // 
-            // saveSubtitlesToolStripMenuItem1
-            // 
-            this.saveSubtitlesToolStripMenuItem1.Name = "saveSubtitlesToolStripMenuItem1";
-            this.saveSubtitlesToolStripMenuItem1.Size = new System.Drawing.Size(205, 22);
-            this.saveSubtitlesToolStripMenuItem1.Text = "Change subtitles folder...";
-            this.saveSubtitlesToolStripMenuItem1.Click += new System.EventHandler(this.saveSubtitlesToolStripMenuItem1_Click);
-            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1370, 749);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.recognition);
             this.Controls.Add(this.start);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.extraction);
@@ -316,7 +302,6 @@
         private System.Windows.Forms.ColumnHeader name;
         private System.Windows.Forms.ColumnHeader value;
         private System.Windows.Forms.Button start;
-        private System.Windows.Forms.ProgressBar recognition;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addVideoToolStripMenuItem;

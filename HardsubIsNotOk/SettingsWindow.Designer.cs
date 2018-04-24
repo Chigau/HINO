@@ -49,11 +49,11 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.textBox10 = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -246,6 +246,7 @@
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Location = new System.Drawing.Point(630, 684);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(111, 41);
@@ -256,6 +257,7 @@
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Location = new System.Drawing.Point(513, 684);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(111, 41);
@@ -280,23 +282,15 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Neural network";
             // 
-            // textBox9
+            // checkBox2
             // 
-            this.textBox9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox9.Location = new System.Drawing.Point(196, 29);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(533, 26);
-            this.textBox9.TabIndex = 7;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 32);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(146, 20);
-            this.label9.TabIndex = 7;
-            this.label9.Text = "N. learning threads:";
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(10, 113);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(148, 24);
+            this.checkBox2.TabIndex = 12;
+            this.checkBox2.Text = "Disable learning";
+            this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // textBox10
             // 
@@ -316,15 +310,23 @@
             this.label10.TabIndex = 10;
             this.label10.Text = "Learning rate:";
             // 
-            // checkBox2
+            // textBox9
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(10, 113);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(148, 24);
-            this.checkBox2.TabIndex = 12;
-            this.checkBox2.Text = "Disable learning";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.textBox9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox9.Location = new System.Drawing.Point(196, 29);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(533, 26);
+            this.textBox9.TabIndex = 7;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 32);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(146, 20);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "N. learning threads:";
             // 
             // SettingsWindow
             // 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 
 namespace HardsubIsNotOk
@@ -126,12 +127,15 @@ namespace HardsubIsNotOk
             return neurons[neurons.Length - 1][0].learningOutput;
         }
 
-        public string Serialize()
+        public StringBuilder Serialize()
         {
-            string serialized = "";
+            StringBuilder serialized = new StringBuilder();
             for (int layer = 1; layer < neurons.Length; layer++)
                 for (int c = 0; c < neurons[layer].Count; c++)
-                    serialized += neurons[layer][c].Serialize() + "\n";
+                {
+                    serialized.Append(neurons[layer][c].Serialize());
+                    serialized.Append('\n');
+                }
             return serialized;
         }
         public void Load(string[] data)

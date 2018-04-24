@@ -13,20 +13,25 @@ namespace HardsubIsNotOk
 {
     class ConversionThread
     {
-        public static LockBitmap frame;
-        public static long frameIndex;
-        static int videoIndex = 0;
-        static LockBitmap[] buffer, buffer1, buffer2;
+        public static LockBitmap frame; //the current frame where we're searching for subtitles
+        public static long frameIndex; //the index of the current frame
+        public static bool[,] filled; //pixels of the current frame that have been already checked
 
+        public static List<List<Subtitle>> subtitles = new List<List<Subtitle>>(); //one array of subtitle foreach video
+        public static List<Subtitle> waitForUser = new List<Subtitle>(); //subtitles that are in wait for user action
 
-        public static bool[,] filled;
-        private static Letter newLetter;
-        public static List<List<Subtitle>> subtitles = new List<List<Subtitle>>();
-        public static List<Subtitle> waitForUser = new List<Subtitle>();
-        private static bool notALetterFlag;
-        static int bufferSize, whatBuffer = 0;
+        static LockBitmap[] buffer, buffer1, buffer2; //buffer 1 & 2 are for buffering with a separated thread. "Buffer" contains the reference to the buffer in use for recognize subtitles (ref to 1 or 2)
+        static int bufferSize, whatBuffer = 0; //for the buffering thread
         static bool bufferingPause, bufferingComplete;
 
+        static Letter newLetter; //it contains the letter for the filling
+        static bool notALetterFlag; //will be set true when the letter we're filling goes out of bounds
+
+        static float idealHue = Settings.outSubtitleColor.GetHue(); //ideal hue for the outline
+
+        /// <summary>
+        /// Main thread for find letters in the videos and convert them to a Letter List.
+        /// </summary>
         public static void Go()
         {
             idealHue = Settings.outSubtitleColor.GetHue();
@@ -100,7 +105,6 @@ namespace HardsubIsNotOk
 
                     while (!bufferingPause) ;
                 }
-                videoIndex++;
             }
             Form1.progressBar.Invoke(new Form1.EventHandle(() => Form1.progressBar.Value = 1000));
 
@@ -108,6 +112,10 @@ namespace HardsubIsNotOk
             Console.WriteLine("-------------TEMPO DI ESTRAZIONE-----------");
             Console.WriteLine(stopWatch.Elapsed);
         }
+        /// <summary>
+        /// Used as a thread for buffering the video in background.
+        /// </summary>
+        /// <param name="vIndex">Index of the video that have to be buffered</param>
         public static void Buffering(string vIndex)
         {
             Bitmap b;
@@ -167,6 +175,10 @@ namespace HardsubIsNotOk
             bufferingComplete = true;
         }
 
+        /// <summary>
+        /// Using a neural network to convert the letters extracted from the main thread from pixel array to strings.
+        /// It require user action if the network fail or the word isn't contained in dictionary
+        /// </summary>
         public static void RecognizeSubtitles()
         {
             int subIndex = 0;
@@ -175,15 +187,16 @@ namespace HardsubIsNotOk
             {
                 while (subtitles[vIndex].Count <= subIndex)
                 {
-                    if (videoIndex > vIndex && subtitles.Count > vIndex + 1)
+                    if (subtitles.Count > vIndex + 1)
                     {
+                        Form1.progressBar.Invoke(new Form1.EventHandle(() => Form1.SetRecognitionPerc(vIndex, subtitles[vIndex].Count, subtitles[vIndex].Count)));
                         vIndex++;
                         subIndex = 0;
                         //break;
                     }
                 }
                 WordNotFound.Result exit;
-                Form1.progressBar.Invoke(new Form1.EventHandle(() => Form1.recognitionBar.Value = (int)(((float)subIndex / (subtitles[vIndex].Count + waitForUser.Count)) * 1000)));
+                Form1.progressBar.Invoke(new Form1.EventHandle(() => Form1.SetRecognitionPerc(vIndex, subIndex , subtitles[vIndex].Count)));
 
                 StringBuilder converted = new StringBuilder();
                 int wordStart = 0;
@@ -344,7 +357,11 @@ namespace HardsubIsNotOk
                 skipSub:;
             }
         }
-        public static void RecognizeWaitForUser() //like the recognizeSubtitles, but it works on a separated list made of the subtitles that need user intervent (for processing the main list while waiting for the user)
+        /// <summary>
+        /// Like the recognizeSubtitles, but it works on a separated list of the subtitles that require user intervent.
+        /// This thread is actived by user with the "Dictionary Mode" to prevent the pausing of the recognition while waiting the user.
+        /// </summary>
+        public static void RecognizeWaitForUser() 
         {
             while (true)
             {
@@ -478,6 +495,10 @@ namespace HardsubIsNotOk
             }
         }
 
+        /// <summary>
+        /// Check if the a string contains only character A-Z, a-z.
+        /// Used for split the words
+        /// </summary>
         public static bool IsLetter(string s)
         {
             foreach (char c in s)
@@ -485,6 +506,13 @@ namespace HardsubIsNotOk
                     return false;
             return true;
         }
+        /// <summary>
+        /// It shows the alert window for correcting a not well recognized letter.
+        /// </summary>
+        /// <param name="sub">Subtitle that contains the letter</param>
+        /// <param name="line">Line index</param>
+        /// <param name="letter">Letter index</param>
+        /// <returns>The result of the alert window</returns>
         public static GuessLetter.Result ShowCorrectLetterDialog(Subtitle sub, int line, int letter)
         {
             Letter l = sub.lines[line].letters[letter];
@@ -527,6 +555,15 @@ namespace HardsubIsNotOk
             }
             return alert.result;
         }
+        /// <summary>
+        /// It shows the alert window for correcting a word that isn't contained in dictionary.
+        /// </summary>
+        /// <param name="sub">Subtitle that contains the word</param>
+        /// <param name="line">Line index</param>
+        /// <param name="start">First character of the word index</param>
+        /// <param name="end">Last character of the word index</param>
+        /// <param name="converted">It contains the string that is going to be converted from the subtitle</param>
+        /// <returns>The result of the alert window</returns>
         public static WordNotFound.Result ShowDictionaryDialog(Subtitle sub, int line, int start, int end, StringBuilder converted)
         {
             string word = "";
@@ -651,7 +688,11 @@ namespace HardsubIsNotOk
             return true;
         }
         
-        private static Subtitle GetSubtitleBottom()
+        /// <summary>
+        /// Check the frame pixel per pixel for find and extract the letters, in the bottom bound
+        /// </summary>
+        /// <returns>Extracted subtitle if found.</returns>
+        static Subtitle GetSubtitleBottom()
         {
             filled = new bool[frame.Width, frame.Height];
             Subtitle subtitle = null;
@@ -680,7 +721,11 @@ namespace HardsubIsNotOk
 
             return subtitle;
         }
-        private static Subtitle GetSubtitleTop()
+        /// <summary>
+        /// Check the frame pixel per pixel for find and extract the letters, in the top bound
+        /// </summary>
+        /// <returns>Extracted subtitle if found.</returns>
+        static Subtitle GetSubtitleTop()
         {
             filled = new bool[frame.Width, frame.Height];
             Subtitle subtitle = null;
@@ -710,6 +755,10 @@ namespace HardsubIsNotOk
             return subtitle;
         }
 
+        /// <summary>
+        /// For removing from the subtitle the letters that don't respect some filters setted by user
+        /// </summary>
+        /// <param name="subtitle">The reference to the subtitle that have to be validated</param>
         public static void ValidateSub(ref Subtitle subtitle)
         {
             for (int l = 0; l < subtitle.lines.Count; l++)
@@ -777,25 +826,98 @@ namespace HardsubIsNotOk
             }
         }
 
-        // distance between two hues:
-        static float GetHueDistance(float hue1, float hue2)
+        /// <summary>
+        /// Get the letter using flood fill algorithm from a point 
+        /// Return null if the letter doesn't respect some thresholds
+        /// </summary>
+        static Letter GetLetter(int x, int y)
         {
-            float d = Math.Abs(hue1 - hue2);
-            return d > 180 ? 360 - d : d;
+            newLetter = new Letter();
+            notALetterFlag = false;
+            Coord cStart = new Coord(x, y);
+            diff = 0; tot = 0;
+            Fill(cStart);
+            float letter = diff / tot;
+            if (notALetterFlag || letter > Settings.outlineThreshold)
+                return null;
+            return newLetter;
         }
-        // distance in RGB space
-        public static int ColorDiff(Color c1, Color c2)
+        /// <summary>
+        /// Flood fill algorithm
+        /// </summary>
+        /// <param name="p"></param>
+        static void Fill(Coord p)
         {
-            return (int)Math.Sqrt((c1.R - c2.R) * (c1.R - c2.R)
-                                   + (c1.G - c2.G) * (c1.G - c2.G)
-                                   + (c1.B - c2.B) * (c1.B - c2.B));
+            Queue<Coord> q = new Queue<Coord>();
+            filled[p.x, p.y] = true;
+            newLetter.AddPixel(p);
+            q.Enqueue(p);
+            while (q.Count > 0)
+            {
+                p = q.Dequeue();
+
+                if (!IsFilled(p.Top) && IsValid(p.Top))
+                {
+                    filled[p.Top.x, p.Top.y] = true;
+                    newLetter.AddPixel(p.Top);
+                    q.Enqueue(p.Top);
+                }
+                if (!IsFilled(p.Bottom) && IsValid(p.Bottom))
+                {
+                    filled[p.Bottom.x, p.Bottom.y] = true;
+                    newLetter.AddPixel(p.Bottom);
+                    q.Enqueue(p.Bottom);
+                }
+                if (!IsFilled(p.Left) && IsValid(p.Left))
+                {
+                    filled[p.Left.x, p.Left.y] = true;
+                    newLetter.AddPixel(p.Left);
+                    q.Enqueue(p.Left);
+                }
+                if (!IsFilled(p.Right) && IsValid(p.Right))
+                {
+                    filled[p.Right.x, p.Right.y] = true;
+                    newLetter.AddPixel(p.Right);
+                    q.Enqueue(p.Right);
+                }
+                
+                if (!IsFilled(p.TopLeft) && IsValid(p.TopLeft))
+                {
+                    filled[p.TopLeft.x, p.TopLeft.y] = true;
+                    newLetter.AddPixel(p.TopLeft);
+                    q.Enqueue(p.TopLeft);
+                }
+                if (!IsFilled(p.TopRight) && IsValid(p.TopRight))
+                {
+                    filled[p.TopRight.x, p.TopRight.y] = true;
+                    newLetter.AddPixel(p.TopRight);
+                    q.Enqueue(p.TopRight);
+                }
+                if (!IsFilled(p.BottomLeft) && IsValid(p.BottomLeft))
+                {
+                    filled[p.BottomLeft.x, p.BottomLeft.y] = true;
+                    newLetter.AddPixel(p.BottomLeft);
+                    q.Enqueue(p.BottomLeft);
+                }
+                if (!IsFilled(p.BottomRight) && IsValid(p.BottomRight))
+                {
+                    filled[p.BottomRight.x, p.BottomRight.y] = true;
+                    newLetter.AddPixel(p.BottomRight);
+                    q.Enqueue(p.BottomRight);
+                }
+            }
         }
-        
-        public static bool IsOut(int x, int y)
+        static bool IsFilled(Coord point)
         {
-            return x < 0 || y < 0 || x >= frame.Width || y >= frame.Height || (y < Settings.cutBottom && y > Settings.cutTop);
+            return point.x < 0 || point.x >= filled.GetLength(0) || point.y < 0 || point.y >= filled.GetLength(1) || filled[point.x, point.y];
         }
-        public static bool IsValid(Coord coord)
+
+        static float diff; //where the variance in the outline is stored
+        static int tot;
+        /// <summary>
+        /// Checks if a pixel is a valid letter pixel and eventually update the variance in the outline
+        /// </summary>
+        static bool IsValid(Coord coord)
         {
             if (IsOut(coord.x + Settings.outlineWidth, coord.y + Settings.outlineWidth) || IsOut(coord.x - Settings.outlineWidth, coord.y - Settings.outlineWidth))
             {
@@ -807,6 +929,8 @@ namespace HardsubIsNotOk
             bool valid = ColorDiff(c1, c2) < Settings.sameCharacterThreshold;
             if (valid)
             {
+                //CHECKING THE OUTLINE
+
                 if (Settings.whiteAndBlack)
                 {
                     //TOP
@@ -957,128 +1081,30 @@ namespace HardsubIsNotOk
 
             return false;
         }
-        static float idealHue = Settings.outSubtitleColor.GetHue();
-        static float diff;
-        static int tot;
-
-        private static Letter GetLetter(int x, int y)
+        /// <summary>
+        /// distance between two hues:
+        /// </summary>
+        static float GetHueDistance(float hue1, float hue2)
         {
-            newLetter = new Letter();
-            notALetterFlag = false;
-            Coord cStart = new Coord(x, y);
-            diff = 0; tot = 0;
-            Fill(cStart);
-            float letter = diff / tot;
-            if (notALetterFlag || letter > Settings.outlineThreshold)
-                return null;
-            return newLetter;
+            float d = Math.Abs(hue1 - hue2);
+            return d > 180 ? 360 - d : d;
         }
-        private static void Fill(Coord p)
+        /// <summary>
+        /// distance in RGB space
+        /// </summary>
+        public static int ColorDiff(Color c1, Color c2)
         {
-            Queue<Coord> q = new Queue<Coord>();
-            filled[p.x, p.y] = true;
-            newLetter.AddPixel(p);
-            q.Enqueue(p);
-            while (q.Count > 0)
-            {
-                p = q.Dequeue();
-
-                if (!IsFilled(p.Top) && IsValid(p.Top))
-                {
-                    filled[p.Top.x, p.Top.y] = true;
-                    newLetter.AddPixel(p.Top);
-                    q.Enqueue(p.Top);
-                }
-                if (!IsFilled(p.Bottom) && IsValid(p.Bottom))
-                {
-                    filled[p.Bottom.x, p.Bottom.y] = true;
-                    newLetter.AddPixel(p.Bottom);
-                    q.Enqueue(p.Bottom);
-                }
-                if (!IsFilled(p.Left) && IsValid(p.Left))
-                {
-                    filled[p.Left.x, p.Left.y] = true;
-                    newLetter.AddPixel(p.Left);
-                    q.Enqueue(p.Left);
-                }
-                if (!IsFilled(p.Right) && IsValid(p.Right))
-                {
-                    filled[p.Right.x, p.Right.y] = true;
-                    newLetter.AddPixel(p.Right);
-                    q.Enqueue(p.Right);
-                }
-                
-                if (!IsFilled(p.TopLeft) && IsValid(p.TopLeft))
-                {
-                    filled[p.TopLeft.x, p.TopLeft.y] = true;
-                    newLetter.AddPixel(p.TopLeft);
-                    q.Enqueue(p.TopLeft);
-                }
-                if (!IsFilled(p.TopRight) && IsValid(p.TopRight))
-                {
-                    filled[p.TopRight.x, p.TopRight.y] = true;
-                    newLetter.AddPixel(p.TopRight);
-                    q.Enqueue(p.TopRight);
-                }
-                if (!IsFilled(p.BottomLeft) && IsValid(p.BottomLeft))
-                {
-                    filled[p.BottomLeft.x, p.BottomLeft.y] = true;
-                    newLetter.AddPixel(p.BottomLeft);
-                    q.Enqueue(p.BottomLeft);
-                }
-                if (!IsFilled(p.BottomRight) && IsValid(p.BottomRight))
-                {
-                    filled[p.BottomRight.x, p.BottomRight.y] = true;
-                    newLetter.AddPixel(p.BottomRight);
-                    q.Enqueue(p.BottomRight);
-                }
-            }
+            return (int)Math.Sqrt((c1.R - c2.R) * (c1.R - c2.R)
+                                   + (c1.G - c2.G) * (c1.G - c2.G)
+                                   + (c1.B - c2.B) * (c1.B - c2.B));
         }
-        static bool IsFilled(Coord point)
+        /// <summary>
+        /// Check if a pixel is out of bounds
+        /// </summary>
+        static bool IsOut(int x, int y)
         {
-            return point.x < 0 || point.x >= filled.GetLength(0) || point.y < 0 || point.y >= filled.GetLength(1) || filled[point.x, point.y];
+            return x < 0 || y < 0 || x >= frame.Width || y >= frame.Height || (y < Settings.cutBottom && y > Settings.cutTop);
         }
 
-        private static void SaveWhatFilled() //DEBUG
-        {
-            Bitmap toSave = new Bitmap(filled.GetLength(0), filled.GetLength(1));
-            for (int x = 0; x < filled.GetLength(0); x++)
-            {
-                for (int y = 0; y < filled.GetLength(1); y++)
-                {
-                    toSave.SetPixel(x, y, filled[x, y] ? Color.White : Color.Black);
-                }
-            }
-            toSave.Save("viva_la_cacca.png");
-        }
-        private static void SaveLetter(Letter l, string name) //DEBUG
-        {
-            Bitmap toSave = new Bitmap(filled.GetLength(0), filled.GetLength(1));
-            /*
-            for (int x = 0; x < filled.GetLength(0); x++)
-                for (int y = 0; y < filled.GetLength(1); y++)
-                    toSave.SetPixel(x, y, Color.Black);
-            */
-            foreach (Coord c in l.pixels)
-                toSave.SetPixel(c.x, c.y, Color.White);
-
-            toSave.Save(name + ".png");
-        }
-        public static void SaveSub(Subtitle s, Bitmap frame)
-        {
-            if (s.lines.Count > 0)
-            {
-                string path = @"sub/Sottotitolo_DA_" + s.startFrame + "_A_" + s.endFrame;
-                DirectoryInfo di = Directory.CreateDirectory(path);
-                for (int c = 0; c < s.lines.Count; c++)
-                {
-                    for (int d = 0; d < s.lines[c].letters.Count; d++)
-                        SaveLetter(s.lines[c].letters[d], path + @"/riga_" + c + "_lettera_" + d);
-                }
-
-                frame.Save(path + "/frame.png");
-                Console.WriteLine("Sottotitoli: " + frameIndex / 23);
-            }
-        }
     }
 }

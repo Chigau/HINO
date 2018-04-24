@@ -14,8 +14,19 @@ namespace HardsubIsNotOk
 {
     public partial class Form1 : Form
     {
+        public static bool changingPerc = false;
+        public static ListBox videos;
         public static ListView info;
-        public static ProgressBar progressBar, recognitionBar;
+        public static ProgressBar progressBar;
+
+        public static void SetRecognitionPerc(int index, int min, int max)
+        {
+            changingPerc = true;
+            int perc = (int)(((float)min / max) * 100);
+            videos.Items[index] =  Program.videos.Keys.ElementAt(index) + "  -  Sub recognized: " + perc + "% (" + min + "/" + max + ")";
+            changingPerc = false;
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -78,28 +89,31 @@ namespace HardsubIsNotOk
         }
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (changingPerc)
+                return;
+
             info.Items.Clear();
             if (listBox1.SelectedItem == null)
                 return;
 
-            string index = listBox1.SelectedItem.ToString();
-            
+            string key = Program.videos.Keys.ElementAt(listBox1.SelectedIndex);
+
             // video attributes
-            info.Items.Add(new ListViewItem(new[] { "File name:", index }, info.Groups[0]));
-            info.Items.Add(new ListViewItem(new[] { "Width:", Program.videos[index].Width + "px" }, info.Groups[0]));
-            info.Items.Add(new ListViewItem(new[] { "Height:", Program.videos[index].Height + "px" }, info.Groups[0]));
-            if (Program.videos[index].FrameRate != 0)
-                info.Items.Add(new ListViewItem(new[] { "Fps:", Program.videos[index].FrameRate + "" }, info.Groups[0]));
-            if (Program.videos[index].FrameCount != 0)
-                info.Items.Add(new ListViewItem(new[] { "Frame count:", Program.videos[index].FrameCount + "" }, info.Groups[0]));
-            info.Items.Add(new ListViewItem(new[] { "Codec:", Program.videos[index].CodecName }, info.Groups[0]));
+            info.Items.Add(new ListViewItem(new[] { "File name:", key }, info.Groups[0]));
+            info.Items.Add(new ListViewItem(new[] { "Width:", Program.videos[key].Width + "px" }, info.Groups[0]));
+            info.Items.Add(new ListViewItem(new[] { "Height:", Program.videos[key].Height + "px" }, info.Groups[0]));
+            if (Program.videos[key].FrameRate != 0)
+                info.Items.Add(new ListViewItem(new[] { "Fps:", Program.videos[key].FrameRate + "" }, info.Groups[0]));
+            if (Program.videos[key].FrameCount != 0)
+                info.Items.Add(new ListViewItem(new[] { "Frame count:", Program.videos[key].FrameCount + "" }, info.Groups[0]));
+            info.Items.Add(new ListViewItem(new[] { "Codec:", Program.videos[key].CodecName }, info.Groups[0]));
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             info = listView1;
+            videos = listBox1;
             progressBar = extraction;
-            recognitionBar = recognition;
         }
 
         Thread conversion;

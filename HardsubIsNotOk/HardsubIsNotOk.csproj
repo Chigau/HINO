@@ -72,7 +72,6 @@
     <Compile Include="GuessLetter.Designer.cs">
       <DependentUpon>GuessLetter.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputString.cs" />
     <Compile Include="LearningExamples.cs">
       <SubType>Form</SubType>
     </Compile>
