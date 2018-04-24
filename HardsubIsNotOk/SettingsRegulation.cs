@@ -27,7 +27,7 @@ namespace HardsubIsNotOk
 
             trackBar1.Maximum = Program.videos.First().Value.Height / 2;
             trackBar2.Maximum = Program.videos.First().Value.Height / 2;
-            trackBar1.Location = new Point(trackBar1.Location.X, pictureBox1.Location.Y + Program.videos.First().Value.Height - trackBar1.Height);
+            //trackBar1.Location = new Point(trackBar1.Location.X, pictureBox1.Location.Y + Program.videos.First().Value.Height - trackBar1.Height);
 
             trackBar1.Value = trackBar1.Maximum * 2 - Settings.cutBottom;
             trackBar2.Value = trackBar1.Maximum - Settings.cutTop;

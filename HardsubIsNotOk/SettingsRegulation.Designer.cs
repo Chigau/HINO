@@ -140,10 +140,9 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(1021, 681);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Location = new System.Drawing.Point(1532, 1048);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(160, 40);
+            this.button1.Size = new System.Drawing.Size(240, 62);
             this.button1.TabIndex = 4;
             this.button1.Text = "Next >>>";
             this.button1.UseVisualStyleBackColor = true;
@@ -154,10 +153,9 @@
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button2.Enabled = false;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(8, 681);
-            this.button2.Margin = new System.Windows.Forms.Padding(2);
+            this.button2.Location = new System.Drawing.Point(12, 1048);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(160, 40);
+            this.button2.Size = new System.Drawing.Size(240, 62);
             this.button2.TabIndex = 5;
             this.button2.Text = "<<< Previous";
             this.button2.UseVisualStyleBackColor = true;
@@ -173,11 +171,10 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage5);
-            this.tabControl1.Location = new System.Drawing.Point(2, 11);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
+            this.tabControl1.Location = new System.Drawing.Point(3, 17);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(900, 465);
+            this.tabControl1.Size = new System.Drawing.Size(1350, 715);
             this.tabControl1.TabIndex = 6;
             this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
             // 
@@ -192,11 +189,10 @@
             this.tabPage1.Controls.Add(this.button3);
             this.tabPage1.Controls.Add(this.pictureBox2);
             this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage1.Size = new System.Drawing.Size(892, 439);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Size = new System.Drawing.Size(1342, 682);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Step 1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -204,10 +200,9 @@
             // button11
             // 
             this.button11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button11.Location = new System.Drawing.Point(207, 392);
-            this.button11.Margin = new System.Windows.Forms.Padding(2);
+            this.button11.Location = new System.Drawing.Point(310, 603);
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(34, 24);
+            this.button11.Size = new System.Drawing.Size(51, 37);
             this.button11.TabIndex = 24;
             this.button11.Text = "x8";
             this.button11.UseVisualStyleBackColor = true;
@@ -217,20 +212,18 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(726, 397);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Location = new System.Drawing.Point(1089, 611);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(49, 13);
+            this.label3.Size = new System.Drawing.Size(71, 20);
             this.label3.TabIndex = 23;
             this.label3.Text = "Seeking:";
             // 
             // textBox1
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(777, 395);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox1.Location = new System.Drawing.Point(1166, 608);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(81, 20);
+            this.textBox1.Size = new System.Drawing.Size(120, 26);
             this.textBox1.TabIndex = 22;
             this.textBox1.Text = "0:00:00,000";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -238,10 +231,9 @@
             // button6
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button6.Location = new System.Drawing.Point(169, 392);
-            this.button6.Margin = new System.Windows.Forms.Padding(2);
+            this.button6.Location = new System.Drawing.Point(254, 603);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(34, 24);
+            this.button6.Size = new System.Drawing.Size(51, 37);
             this.button6.TabIndex = 21;
             this.button6.Text = "x4";
             this.button6.UseVisualStyleBackColor = true;
@@ -250,10 +242,9 @@
             // button5
             // 
             this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button5.Location = new System.Drawing.Point(131, 392);
-            this.button5.Margin = new System.Windows.Forms.Padding(2);
+            this.button5.Location = new System.Drawing.Point(196, 603);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(34, 24);
+            this.button5.Size = new System.Drawing.Size(51, 37);
             this.button5.TabIndex = 20;
             this.button5.Text = "x2";
             this.button5.UseVisualStyleBackColor = true;
@@ -262,10 +253,9 @@
             // button4
             // 
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button4.Location = new System.Drawing.Point(87, 392);
-            this.button4.Margin = new System.Windows.Forms.Padding(2);
+            this.button4.Location = new System.Drawing.Point(130, 603);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(34, 24);
+            this.button4.Size = new System.Drawing.Size(51, 37);
             this.button4.TabIndex = 19;
             this.button4.Text = "x1";
             this.button4.UseVisualStyleBackColor = true;
@@ -274,10 +264,9 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button3.Location = new System.Drawing.Point(33, 392);
-            this.button3.Margin = new System.Windows.Forms.Padding(2);
+            this.button3.Location = new System.Drawing.Point(50, 603);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(50, 24);
+            this.button3.Size = new System.Drawing.Size(75, 37);
             this.button3.TabIndex = 18;
             this.button3.Text = "Play";
             this.button3.UseVisualStyleBackColor = true;
@@ -289,10 +278,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox2.Location = new System.Drawing.Point(33, 27);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox2.Location = new System.Drawing.Point(50, 42);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(825, 362);
+            this.pictureBox2.Size = new System.Drawing.Size(1236, 556);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 17;
             this.pictureBox2.TabStop = false;
@@ -301,10 +289,9 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.label2.Location = new System.Drawing.Point(4, 2);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(6, 3);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(349, 25);
+            this.label2.Size = new System.Drawing.Size(533, 36);
             this.label2.TabIndex = 16;
             this.label2.Text = "Stop the video on a frame with subtitles";
             // 
@@ -315,11 +302,10 @@
             this.tabPage2.Controls.Add(this.trackBar1);
             this.tabPage2.Controls.Add(this.trackBar2);
             this.tabPage2.Controls.Add(this.pictureBox1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage2.Size = new System.Drawing.Size(892, 439);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Size = new System.Drawing.Size(1342, 682);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Step 2";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -327,10 +313,9 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(70, 58);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBox1.Location = new System.Drawing.Point(105, 42);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(106, 17);
+            this.checkBox1.Size = new System.Drawing.Size(156, 24);
             this.checkBox1.TabIndex = 16;
             this.checkBox1.Text = "Skip top subtitles";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -340,25 +325,24 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.label1.Location = new System.Drawing.Point(4, 2);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(6, 3);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(152, 25);
+            this.label1.Size = new System.Drawing.Size(226, 36);
             this.label1.TabIndex = 15;
             this.label1.Text = "Select cut areas";
             // 
             // trackBar1
             // 
+            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.trackBar1.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.trackBar1.LargeChange = 10;
-            this.trackBar1.Location = new System.Drawing.Point(18, 410);
-            this.trackBar1.Margin = new System.Windows.Forms.Padding(2);
+            this.trackBar1.Location = new System.Drawing.Point(30, 376);
             this.trackBar1.Maximum = 360;
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.trackBar1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.trackBar1.RightToLeftLayout = true;
-            this.trackBar1.Size = new System.Drawing.Size(45, 234);
+            this.trackBar1.Size = new System.Drawing.Size(69, 300);
             this.trackBar1.TabIndex = 14;
             this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
@@ -368,14 +352,13 @@
             // 
             this.trackBar2.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.trackBar2.LargeChange = 10;
-            this.trackBar2.Location = new System.Drawing.Point(18, 78);
-            this.trackBar2.Margin = new System.Windows.Forms.Padding(2);
+            this.trackBar2.Location = new System.Drawing.Point(30, 72);
             this.trackBar2.Maximum = 360;
             this.trackBar2.Name = "trackBar2";
             this.trackBar2.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.trackBar2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.trackBar2.RightToLeftLayout = true;
-            this.trackBar2.Size = new System.Drawing.Size(45, 234);
+            this.trackBar2.Size = new System.Drawing.Size(69, 300);
             this.trackBar2.TabIndex = 13;
             this.trackBar2.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBar2.Value = 360;
@@ -386,10 +369,10 @@
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Location = new System.Drawing.Point(70, 78);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox1.Location = new System.Drawing.Point(105, 72);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(824, 332);
+            this.pictureBox1.Size = new System.Drawing.Size(1231, 604);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 12;
             this.pictureBox1.TabStop = false;
             // 
@@ -406,11 +389,10 @@
             this.tabPage3.Controls.Add(this.label4);
             this.tabPage3.Controls.Add(this.pictureBox3);
             this.tabPage3.Controls.Add(this.pictureBox6);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage3.Size = new System.Drawing.Size(892, 439);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage3.Size = new System.Drawing.Size(1342, 682);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Step 3";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -420,10 +402,9 @@
             this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.label16.Location = new System.Drawing.Point(2, 198);
-            this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label16.Location = new System.Drawing.Point(3, 305);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(159, 25);
+            this.label16.Size = new System.Drawing.Size(240, 36);
             this.label16.TabIndex = 44;
             this.label16.Text = "After processing:";
             // 
@@ -431,19 +412,17 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.label17.Location = new System.Drawing.Point(2, 27);
-            this.label17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label17.Location = new System.Drawing.Point(3, 42);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(148, 25);
+            this.label17.Size = new System.Drawing.Size(218, 36);
             this.label17.TabIndex = 43;
             this.label17.Text = "Example frame:";
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(385, 323);
-            this.button10.Margin = new System.Windows.Forms.Padding(2);
+            this.button10.Location = new System.Drawing.Point(578, 497);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(37, 25);
+            this.button10.Size = new System.Drawing.Size(56, 38);
             this.button10.TabIndex = 22;
             this.button10.Text = "Pick";
             this.button10.UseVisualStyleBackColor = true;
@@ -451,10 +430,9 @@
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(171, 323);
-            this.button9.Margin = new System.Windows.Forms.Padding(2);
+            this.button9.Location = new System.Drawing.Point(256, 497);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(37, 25);
+            this.button9.Size = new System.Drawing.Size(56, 38);
             this.button9.TabIndex = 7;
             this.button9.Text = "Pick";
             this.button9.UseVisualStyleBackColor = true;
@@ -463,10 +441,9 @@
             // button8
             // 
             this.button8.BackColor = System.Drawing.Color.Black;
-            this.button8.Location = new System.Drawing.Point(328, 317);
-            this.button8.Margin = new System.Windows.Forms.Padding(2);
+            this.button8.Location = new System.Drawing.Point(492, 488);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(53, 38);
+            this.button8.Size = new System.Drawing.Size(80, 58);
             this.button8.TabIndex = 21;
             this.button8.UseVisualStyleBackColor = false;
             this.button8.Click += new System.EventHandler(this.button8_Click);
@@ -474,30 +451,27 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(257, 329);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Location = new System.Drawing.Point(386, 506);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(69, 13);
+            this.label6.Size = new System.Drawing.Size(101, 20);
             this.label6.TabIndex = 20;
             this.label6.Text = "Outline color:";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(19, 329);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Location = new System.Drawing.Point(28, 506);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(94, 13);
+            this.label5.Size = new System.Drawing.Size(137, 20);
             this.label5.TabIndex = 19;
             this.label5.Text = "Background color:";
             // 
             // button7
             // 
             this.button7.BackColor = System.Drawing.Color.White;
-            this.button7.Location = new System.Drawing.Point(115, 317);
-            this.button7.Margin = new System.Windows.Forms.Padding(2);
+            this.button7.Location = new System.Drawing.Point(172, 488);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(53, 38);
+            this.button7.Size = new System.Drawing.Size(80, 58);
             this.button7.TabIndex = 18;
             this.button7.UseVisualStyleBackColor = false;
             this.button7.Click += new System.EventHandler(this.button7_Click);
@@ -506,10 +480,9 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.label4.Location = new System.Drawing.Point(4, 2);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Location = new System.Drawing.Point(6, 3);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(190, 25);
+            this.label4.Size = new System.Drawing.Size(289, 36);
             this.label4.TabIndex = 16;
             this.label4.Text = "Select subtitle colors";
             // 
@@ -519,10 +492,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox3.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.pictureBox3.Location = new System.Drawing.Point(0, 198);
-            this.pictureBox3.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox3.Location = new System.Drawing.Point(0, 305);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(895, 249);
+            this.pictureBox3.Size = new System.Drawing.Size(1342, 382);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox3.TabIndex = 42;
             this.pictureBox3.TabStop = false;
@@ -533,10 +505,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox6.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.pictureBox6.Location = new System.Drawing.Point(0, 27);
-            this.pictureBox6.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox6.Location = new System.Drawing.Point(0, 42);
             this.pictureBox6.Name = "pictureBox6";
-            this.pictureBox6.Size = new System.Drawing.Size(895, 286);
+            this.pictureBox6.Size = new System.Drawing.Size(1342, 439);
             this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox6.TabIndex = 41;
             this.pictureBox6.TabStop = false;
@@ -576,10 +547,9 @@
             this.tabPage4.Controls.Add(this.label7);
             this.tabPage4.Controls.Add(this.pictureBox5);
             this.tabPage4.Controls.Add(this.pictureBox4);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage4.Location = new System.Drawing.Point(4, 29);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(892, 439);
+            this.tabPage4.Size = new System.Drawing.Size(1342, 682);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Step 4";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -587,10 +557,9 @@
             // maxCharPixelSize
             // 
             this.maxCharPixelSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.maxCharPixelSize.Location = new System.Drawing.Point(981, 118);
-            this.maxCharPixelSize.Margin = new System.Windows.Forms.Padding(2);
+            this.maxCharPixelSize.Location = new System.Drawing.Point(1472, 182);
             this.maxCharPixelSize.Name = "maxCharPixelSize";
-            this.maxCharPixelSize.Size = new System.Drawing.Size(48, 23);
+            this.maxCharPixelSize.Size = new System.Drawing.Size(70, 30);
             this.maxCharPixelSize.TabIndex = 59;
             this.maxCharPixelSize.Text = "200";
             this.maxCharPixelSize.TextChanged += new System.EventHandler(this.maxCharPixelSize_TextChanged);
@@ -599,10 +568,9 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
-            this.label10.Location = new System.Drawing.Point(729, 103);
-            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Location = new System.Drawing.Point(1094, 158);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(170, 13);
+            this.label10.Size = new System.Drawing.Size(239, 20);
             this.label10.TabIndex = 58;
             this.label10.Text = "Character max size (in pixel):";
             // 
@@ -610,11 +578,10 @@
             // 
             this.trackBar6.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.trackBar6.LargeChange = 100;
-            this.trackBar6.Location = new System.Drawing.Point(729, 118);
-            this.trackBar6.Margin = new System.Windows.Forms.Padding(2);
+            this.trackBar6.Location = new System.Drawing.Point(1094, 182);
             this.trackBar6.Maximum = 3000;
             this.trackBar6.Name = "trackBar6";
-            this.trackBar6.Size = new System.Drawing.Size(247, 45);
+            this.trackBar6.Size = new System.Drawing.Size(370, 69);
             this.trackBar6.SmallChange = 10;
             this.trackBar6.TabIndex = 57;
             this.trackBar6.TickFrequency = 100;
@@ -622,20 +589,18 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(997, 188);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(2);
+            this.numericUpDown1.Location = new System.Drawing.Point(1496, 289);
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(80, 20);
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 26);
             this.numericUpDown1.TabIndex = 56;
             this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(729, 188);
-            this.checkBox4.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBox4.Location = new System.Drawing.Point(1094, 289);
             this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(265, 17);
+            this.checkBox4.Size = new System.Drawing.Size(395, 24);
             this.checkBox4.TabIndex = 55;
             this.checkBox4.Text = "Discard non-centered lines. Imperfection threshold:";
             this.checkBox4.UseVisualStyleBackColor = true;
@@ -644,10 +609,9 @@
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(729, 168);
-            this.checkBox3.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBox3.Location = new System.Drawing.Point(1094, 258);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(236, 17);
+            this.checkBox3.Size = new System.Drawing.Size(351, 24);
             this.checkBox3.TabIndex = 54;
             this.checkBox3.Text = "Discard non-passing through the center lines";
             this.checkBox3.UseVisualStyleBackColor = true;
@@ -656,10 +620,9 @@
             // outlineWidth
             // 
             this.outlineWidth.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.outlineWidth.Location = new System.Drawing.Point(627, 134);
-            this.outlineWidth.Margin = new System.Windows.Forms.Padding(2);
+            this.outlineWidth.Location = new System.Drawing.Point(940, 206);
             this.outlineWidth.Name = "outlineWidth";
-            this.outlineWidth.Size = new System.Drawing.Size(48, 23);
+            this.outlineWidth.Size = new System.Drawing.Size(70, 30);
             this.outlineWidth.TabIndex = 53;
             this.outlineWidth.Text = "200";
             this.outlineWidth.TextChanged += new System.EventHandler(this.outlineWidth_TextChanged);
@@ -668,10 +631,9 @@
             // 
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
-            this.label23.Location = new System.Drawing.Point(375, 119);
-            this.label23.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label23.Location = new System.Drawing.Point(562, 183);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(137, 13);
+            this.label23.Size = new System.Drawing.Size(190, 20);
             this.label23.TabIndex = 52;
             this.label23.Text = "Outline width (in pixel):";
             // 
@@ -679,21 +641,19 @@
             // 
             this.trackBar9.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.trackBar9.LargeChange = 1;
-            this.trackBar9.Location = new System.Drawing.Point(375, 134);
-            this.trackBar9.Margin = new System.Windows.Forms.Padding(2);
+            this.trackBar9.Location = new System.Drawing.Point(562, 206);
             this.trackBar9.Maximum = 20;
             this.trackBar9.Name = "trackBar9";
-            this.trackBar9.Size = new System.Drawing.Size(247, 45);
+            this.trackBar9.Size = new System.Drawing.Size(370, 69);
             this.trackBar9.TabIndex = 51;
             this.trackBar9.ValueChanged += new System.EventHandler(this.trackBar9_ValueChanged);
             // 
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(729, 207);
-            this.checkBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBox2.Location = new System.Drawing.Point(1094, 318);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(207, 17);
+            this.checkBox2.Size = new System.Drawing.Size(305, 24);
             this.checkBox2.TabIndex = 50;
             this.checkBox2.Text = "Enable white and black subtitles mode";
             this.checkBox2.UseVisualStyleBackColor = true;
@@ -702,10 +662,9 @@
             // minCharPixelSize
             // 
             this.minCharPixelSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.minCharPixelSize.Location = new System.Drawing.Point(978, 69);
-            this.minCharPixelSize.Margin = new System.Windows.Forms.Padding(2);
+            this.minCharPixelSize.Location = new System.Drawing.Point(1467, 106);
             this.minCharPixelSize.Name = "minCharPixelSize";
-            this.minCharPixelSize.Size = new System.Drawing.Size(48, 23);
+            this.minCharPixelSize.Size = new System.Drawing.Size(70, 30);
             this.minCharPixelSize.TabIndex = 49;
             this.minCharPixelSize.Text = "200";
             this.minCharPixelSize.TextChanged += new System.EventHandler(this.minCharPixelSize_TextChanged);
@@ -714,10 +673,9 @@
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
-            this.label20.Location = new System.Drawing.Point(727, 54);
-            this.label20.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label20.Location = new System.Drawing.Point(1090, 83);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(167, 13);
+            this.label20.Size = new System.Drawing.Size(235, 20);
             this.label20.TabIndex = 48;
             this.label20.Text = "Character min size (in pixel):";
             // 
@@ -725,21 +683,19 @@
             // 
             this.trackBar8.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.trackBar8.LargeChange = 1;
-            this.trackBar8.Location = new System.Drawing.Point(727, 69);
-            this.trackBar8.Margin = new System.Windows.Forms.Padding(2);
+            this.trackBar8.Location = new System.Drawing.Point(1090, 106);
             this.trackBar8.Maximum = 200;
             this.trackBar8.Name = "trackBar8";
-            this.trackBar8.Size = new System.Drawing.Size(247, 45);
+            this.trackBar8.Size = new System.Drawing.Size(370, 69);
             this.trackBar8.TabIndex = 47;
             this.trackBar8.TickFrequency = 5;
             this.trackBar8.ValueChanged += new System.EventHandler(this.trackBar8_ValueChanged);
             // 
             // button13
             // 
-            this.button13.Location = new System.Drawing.Point(507, 201);
-            this.button13.Margin = new System.Windows.Forms.Padding(2);
+            this.button13.Location = new System.Drawing.Point(760, 309);
             this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(167, 26);
+            this.button13.Size = new System.Drawing.Size(250, 40);
             this.button13.TabIndex = 42;
             this.button13.Text = "Calculate outline average";
             this.button13.UseVisualStyleBackColor = true;
@@ -747,10 +703,9 @@
             // 
             // button12
             // 
-            this.button12.Location = new System.Drawing.Point(133, 201);
-            this.button12.Margin = new System.Windows.Forms.Padding(2);
+            this.button12.Location = new System.Drawing.Point(200, 309);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(167, 26);
+            this.button12.Size = new System.Drawing.Size(250, 40);
             this.button12.TabIndex = 41;
             this.button12.Text = "Calculate background average";
             this.button12.UseVisualStyleBackColor = true;
@@ -760,10 +715,9 @@
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.label15.Location = new System.Drawing.Point(1, 432);
-            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label15.Location = new System.Drawing.Point(2, 665);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(159, 25);
+            this.label15.Size = new System.Drawing.Size(240, 36);
             this.label15.TabIndex = 40;
             this.label15.Text = "After processing:";
             // 
@@ -771,20 +725,18 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.label13.Location = new System.Drawing.Point(1, 231);
-            this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label13.Location = new System.Drawing.Point(2, 355);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(148, 25);
+            this.label13.Size = new System.Drawing.Size(218, 36);
             this.label13.TabIndex = 39;
             this.label13.Text = "Example frame:";
             // 
             // outlineThreshold
             // 
             this.outlineThreshold.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.outlineThreshold.Location = new System.Drawing.Point(627, 69);
-            this.outlineThreshold.Margin = new System.Windows.Forms.Padding(2);
+            this.outlineThreshold.Location = new System.Drawing.Point(940, 106);
             this.outlineThreshold.Name = "outlineThreshold";
-            this.outlineThreshold.Size = new System.Drawing.Size(48, 23);
+            this.outlineThreshold.Size = new System.Drawing.Size(70, 30);
             this.outlineThreshold.TabIndex = 35;
             this.outlineThreshold.Text = "200";
             this.outlineThreshold.TextChanged += new System.EventHandler(this.outlineThreshold_TextChanged);
@@ -792,10 +744,9 @@
             // sameCharacterThreshold
             // 
             this.sameCharacterThreshold.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.sameCharacterThreshold.Location = new System.Drawing.Point(257, 69);
-            this.sameCharacterThreshold.Margin = new System.Windows.Forms.Padding(2);
+            this.sameCharacterThreshold.Location = new System.Drawing.Point(386, 106);
             this.sameCharacterThreshold.Name = "sameCharacterThreshold";
-            this.sameCharacterThreshold.Size = new System.Drawing.Size(48, 23);
+            this.sameCharacterThreshold.Size = new System.Drawing.Size(70, 30);
             this.sameCharacterThreshold.TabIndex = 34;
             this.sameCharacterThreshold.Text = "200";
             this.sameCharacterThreshold.TextChanged += new System.EventHandler(this.sameCharacterThreshold_TextChanged);
@@ -803,10 +754,9 @@
             // newCharacterThreshold
             // 
             this.newCharacterThreshold.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.newCharacterThreshold.Location = new System.Drawing.Point(257, 153);
-            this.newCharacterThreshold.Margin = new System.Windows.Forms.Padding(2);
+            this.newCharacterThreshold.Location = new System.Drawing.Point(386, 235);
             this.newCharacterThreshold.Name = "newCharacterThreshold";
-            this.newCharacterThreshold.Size = new System.Drawing.Size(48, 23);
+            this.newCharacterThreshold.Size = new System.Drawing.Size(70, 30);
             this.newCharacterThreshold.TabIndex = 33;
             this.newCharacterThreshold.Text = "200";
             this.newCharacterThreshold.TextChanged += new System.EventHandler(this.newCharacterThreshold_TextChanged);
@@ -815,21 +765,19 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
-            this.label14.Location = new System.Drawing.Point(375, 54);
-            this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label14.Location = new System.Drawing.Point(562, 83);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(165, 13);
+            this.label14.Size = new System.Drawing.Size(234, 20);
             this.label14.TabIndex = 32;
             this.label14.Text = "Outline uniformity threshold:";
             // 
             // trackBar5
             // 
             this.trackBar5.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.trackBar5.Location = new System.Drawing.Point(375, 69);
-            this.trackBar5.Margin = new System.Windows.Forms.Padding(2);
+            this.trackBar5.Location = new System.Drawing.Point(562, 106);
             this.trackBar5.Maximum = 180;
             this.trackBar5.Name = "trackBar5";
-            this.trackBar5.Size = new System.Drawing.Size(247, 45);
+            this.trackBar5.Size = new System.Drawing.Size(370, 69);
             this.trackBar5.TabIndex = 30;
             this.trackBar5.TickFrequency = 5;
             this.trackBar5.ValueChanged += new System.EventHandler(this.trackBar5_ValueChanged);
@@ -837,10 +785,9 @@
             // trackBar4
             // 
             this.trackBar4.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.trackBar4.Location = new System.Drawing.Point(6, 153);
-            this.trackBar4.Margin = new System.Windows.Forms.Padding(2);
+            this.trackBar4.Location = new System.Drawing.Point(9, 235);
             this.trackBar4.Name = "trackBar4";
-            this.trackBar4.Size = new System.Drawing.Size(247, 45);
+            this.trackBar4.Size = new System.Drawing.Size(370, 69);
             this.trackBar4.TabIndex = 28;
             this.trackBar4.ValueChanged += new System.EventHandler(this.trackBar4_ValueChanged);
             // 
@@ -848,10 +795,9 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
-            this.label12.Location = new System.Drawing.Point(2, 119);
-            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label12.Location = new System.Drawing.Point(3, 183);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(156, 13);
+            this.label12.Size = new System.Drawing.Size(218, 20);
             this.label12.TabIndex = 27;
             this.label12.Text = "New characters threshold:\r\n";
             // 
@@ -859,10 +805,9 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(372, 23);
-            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label9.Location = new System.Drawing.Point(558, 35);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(146, 17);
+            this.label9.Size = new System.Drawing.Size(194, 25);
             this.label9.TabIndex = 26;
             this.label9.Text = "Outline thresholds:";
             // 
@@ -870,21 +815,19 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
-            this.label11.Location = new System.Drawing.Point(2, 54);
-            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label11.Location = new System.Drawing.Point(3, 83);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(193, 13);
+            this.label11.Size = new System.Drawing.Size(273, 20);
             this.label11.TabIndex = 25;
             this.label11.Text = "Background uniformity threshold:";
             // 
             // trackBar3
             // 
             this.trackBar3.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.trackBar3.Location = new System.Drawing.Point(6, 69);
-            this.trackBar3.Margin = new System.Windows.Forms.Padding(2);
+            this.trackBar3.Location = new System.Drawing.Point(9, 106);
             this.trackBar3.Maximum = 150;
             this.trackBar3.Name = "trackBar3";
-            this.trackBar3.Size = new System.Drawing.Size(247, 45);
+            this.trackBar3.Size = new System.Drawing.Size(370, 69);
             this.trackBar3.TabIndex = 22;
             this.trackBar3.TickFrequency = 5;
             this.trackBar3.ValueChanged += new System.EventHandler(this.trackBar3_ValueChanged);
@@ -893,10 +836,9 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(2, 23);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label8.Location = new System.Drawing.Point(3, 35);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(132, 17);
+            this.label8.Size = new System.Drawing.Size(177, 25);
             this.label8.TabIndex = 21;
             this.label8.Text = "Color thresholds:";
             // 
@@ -904,10 +846,9 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.label7.Location = new System.Drawing.Point(2, 0);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Location = new System.Drawing.Point(3, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(162, 25);
+            this.label7.Size = new System.Drawing.Size(244, 36);
             this.label7.TabIndex = 20;
             this.label7.Text = "Select thresholds";
             // 
@@ -918,10 +859,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox5.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.pictureBox5.Location = new System.Drawing.Point(0, 432);
-            this.pictureBox5.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox5.Location = new System.Drawing.Point(0, 665);
             this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(895, 15);
+            this.pictureBox5.Size = new System.Drawing.Size(1342, 22);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox5.TabIndex = 19;
             this.pictureBox5.TabStop = false;
@@ -932,10 +872,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox4.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.pictureBox4.Location = new System.Drawing.Point(0, 231);
-            this.pictureBox4.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox4.Location = new System.Drawing.Point(0, 355);
             this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(895, 198);
+            this.pictureBox4.Size = new System.Drawing.Size(1342, 304);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox4.TabIndex = 18;
             this.pictureBox4.TabStop = false;
@@ -957,11 +896,10 @@
             this.tabPage5.Controls.Add(this.label21);
             this.tabPage5.Controls.Add(this.pictureBox7);
             this.tabPage5.Controls.Add(this.label19);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage5.Location = new System.Drawing.Point(4, 29);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage5.Size = new System.Drawing.Size(892, 439);
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage5.Size = new System.Drawing.Size(1342, 682);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Step 5";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -969,10 +907,9 @@
             // charDistance
             // 
             this.charDistance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.charDistance.Location = new System.Drawing.Point(261, 50);
-            this.charDistance.Margin = new System.Windows.Forms.Padding(2);
+            this.charDistance.Location = new System.Drawing.Point(392, 77);
             this.charDistance.Name = "charDistance";
-            this.charDistance.Size = new System.Drawing.Size(48, 23);
+            this.charDistance.Size = new System.Drawing.Size(70, 30);
             this.charDistance.TabIndex = 61;
             this.charDistance.Text = "200";
             this.charDistance.TextChanged += new System.EventHandler(this.charDistance_TextChanged);
@@ -981,31 +918,28 @@
             // 
             this.label25.AutoSize = true;
             this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
-            this.label25.Location = new System.Drawing.Point(9, 35);
-            this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label25.Location = new System.Drawing.Point(14, 54);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(229, 13);
+            this.label25.Size = new System.Drawing.Size(320, 20);
             this.label25.TabIndex = 60;
             this.label25.Text = "Distance between characters (in pixel):";
             // 
             // trackBar11
             // 
             this.trackBar11.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.trackBar11.Location = new System.Drawing.Point(4, 50);
-            this.trackBar11.Margin = new System.Windows.Forms.Padding(2);
+            this.trackBar11.Location = new System.Drawing.Point(6, 77);
             this.trackBar11.Maximum = 100;
             this.trackBar11.Name = "trackBar11";
-            this.trackBar11.Size = new System.Drawing.Size(247, 45);
+            this.trackBar11.Size = new System.Drawing.Size(370, 69);
             this.trackBar11.TabIndex = 59;
             this.trackBar11.TickFrequency = 5;
             this.trackBar11.ValueChanged += new System.EventHandler(this.trackBar11_ValueChanged);
             // 
             // button14
             // 
-            this.button14.Location = new System.Drawing.Point(258, 262);
-            this.button14.Margin = new System.Windows.Forms.Padding(2);
+            this.button14.Location = new System.Drawing.Point(387, 403);
             this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(47, 19);
+            this.button14.Size = new System.Drawing.Size(70, 29);
             this.button14.TabIndex = 58;
             this.button14.Text = "Calc";
             this.button14.UseVisualStyleBackColor = true;
@@ -1015,20 +949,18 @@
             // 
             this.label24.AutoSize = true;
             this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
-            this.label24.Location = new System.Drawing.Point(9, 247);
-            this.label24.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label24.Location = new System.Drawing.Point(14, 380);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(144, 13);
+            this.label24.Size = new System.Drawing.Size(201, 20);
             this.label24.TabIndex = 57;
             this.label24.Text = "Default character scale:";
             // 
             // defaultCharScale
             // 
             this.defaultCharScale.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.defaultCharScale.Location = new System.Drawing.Point(12, 262);
-            this.defaultCharScale.Margin = new System.Windows.Forms.Padding(2);
+            this.defaultCharScale.Location = new System.Drawing.Point(18, 403);
             this.defaultCharScale.Name = "defaultCharScale";
-            this.defaultCharScale.Size = new System.Drawing.Size(243, 23);
+            this.defaultCharScale.Size = new System.Drawing.Size(362, 30);
             this.defaultCharScale.TabIndex = 56;
             this.defaultCharScale.Text = "1";
             this.defaultCharScale.TextChanged += new System.EventHandler(this.defaultCharScale_TextChanged);
@@ -1036,10 +968,9 @@
             // lineDistance
             // 
             this.lineDistance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lineDistance.Location = new System.Drawing.Point(261, 174);
-            this.lineDistance.Margin = new System.Windows.Forms.Padding(2);
+            this.lineDistance.Location = new System.Drawing.Point(392, 268);
             this.lineDistance.Name = "lineDistance";
-            this.lineDistance.Size = new System.Drawing.Size(48, 23);
+            this.lineDistance.Size = new System.Drawing.Size(70, 30);
             this.lineDistance.TabIndex = 55;
             this.lineDistance.Text = "200";
             this.lineDistance.TextChanged += new System.EventHandler(this.lineDistance_TextChanged);
@@ -1048,21 +979,19 @@
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
-            this.label18.Location = new System.Drawing.Point(9, 159);
-            this.label18.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label18.Location = new System.Drawing.Point(14, 245);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(195, 13);
+            this.label18.Size = new System.Drawing.Size(272, 20);
             this.label18.TabIndex = 54;
             this.label18.Text = "Distance between lines (in pixel):";
             // 
             // trackBar10
             // 
             this.trackBar10.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.trackBar10.Location = new System.Drawing.Point(4, 174);
-            this.trackBar10.Margin = new System.Windows.Forms.Padding(2);
+            this.trackBar10.Location = new System.Drawing.Point(6, 268);
             this.trackBar10.Maximum = 100;
             this.trackBar10.Name = "trackBar10";
-            this.trackBar10.Size = new System.Drawing.Size(247, 45);
+            this.trackBar10.Size = new System.Drawing.Size(370, 69);
             this.trackBar10.TabIndex = 53;
             this.trackBar10.TickFrequency = 5;
             this.trackBar10.ValueChanged += new System.EventHandler(this.trackBar10_ValueChanged);
@@ -1070,10 +999,9 @@
             // minSpaceWidth
             // 
             this.minSpaceWidth.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.minSpaceWidth.Location = new System.Drawing.Point(261, 112);
-            this.minSpaceWidth.Margin = new System.Windows.Forms.Padding(2);
+            this.minSpaceWidth.Location = new System.Drawing.Point(392, 172);
             this.minSpaceWidth.Name = "minSpaceWidth";
-            this.minSpaceWidth.Size = new System.Drawing.Size(48, 23);
+            this.minSpaceWidth.Size = new System.Drawing.Size(70, 30);
             this.minSpaceWidth.TabIndex = 52;
             this.minSpaceWidth.Text = "200";
             this.minSpaceWidth.TextChanged += new System.EventHandler(this.minSpaceWidth_TextChanged);
@@ -1082,21 +1010,19 @@
             // 
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
-            this.label22.Location = new System.Drawing.Point(6, 97);
-            this.label22.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label22.Location = new System.Drawing.Point(9, 149);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(202, 13);
+            this.label22.Size = new System.Drawing.Size(282, 20);
             this.label22.TabIndex = 51;
             this.label22.Text = "Distance between words (in pixel):";
             // 
             // trackBar7
             // 
             this.trackBar7.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.trackBar7.Location = new System.Drawing.Point(4, 112);
-            this.trackBar7.Margin = new System.Windows.Forms.Padding(2);
+            this.trackBar7.Location = new System.Drawing.Point(6, 172);
             this.trackBar7.Maximum = 100;
             this.trackBar7.Name = "trackBar7";
-            this.trackBar7.Size = new System.Drawing.Size(247, 45);
+            this.trackBar7.Size = new System.Drawing.Size(370, 69);
             this.trackBar7.TabIndex = 50;
             this.trackBar7.TickFrequency = 5;
             this.trackBar7.ValueChanged += new System.EventHandler(this.trackBar7_ValueChanged);
@@ -1105,10 +1031,9 @@
             // 
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.label21.Location = new System.Drawing.Point(1, 430);
-            this.label21.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label21.Location = new System.Drawing.Point(2, 662);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(159, 25);
+            this.label21.Size = new System.Drawing.Size(240, 36);
             this.label21.TabIndex = 42;
             this.label21.Text = "After processing:";
             // 
@@ -1119,10 +1044,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox7.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.pictureBox7.Location = new System.Drawing.Point(0, 430);
-            this.pictureBox7.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox7.Location = new System.Drawing.Point(0, 662);
             this.pictureBox7.Name = "pictureBox7";
-            this.pictureBox7.Size = new System.Drawing.Size(895, 15);
+            this.pictureBox7.Size = new System.Drawing.Size(1342, 22);
             this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox7.TabIndex = 41;
             this.pictureBox7.TabStop = false;
@@ -1131,22 +1055,20 @@
             // 
             this.label19.AutoSize = true;
             this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.label19.Location = new System.Drawing.Point(4, 2);
-            this.label19.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label19.Location = new System.Drawing.Point(6, 3);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(184, 25);
+            this.label19.Size = new System.Drawing.Size(278, 36);
             this.label19.TabIndex = 21;
             this.label19.Text = "Characters splitting:";
             // 
             // SettingsRegulation
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(913, 487);
+            this.ClientSize = new System.Drawing.Size(1370, 749);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "SettingsRegulation";
             this.Text = "SettingsRegulation";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
