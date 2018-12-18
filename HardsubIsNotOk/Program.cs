@@ -18,7 +18,7 @@ namespace HardsubIsNotOk
         public static string saveSubsPath = "";
         public static int nnSize = 25;
         public static int maxLearningThreads = 4;
-        //public static string fileName = "";
+        public static bool recognitionDash = true;
 
         public static int cutTop = -1, cutBottom = -1;
         public static int minSpaceWidth = 5;

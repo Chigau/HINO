@@ -200,88 +200,47 @@ namespace HardsubIsNotOk
 
                 StringBuilder converted = new StringBuilder();
                 int wordStart = 0;
-                for (int lineIndex = 0; lineIndex < subtitles[vIndex][subIndex].lines.Count; lineIndex++)
+                try
                 {
-                    Subtitle.Line line = subtitles[vIndex][subIndex].lines[lineIndex];
-                    for (int c = 0; c < line.letters.Count; c++)
+                    for (int lineIndex = 0; lineIndex < subtitles[vIndex][subIndex].lines.Count; lineIndex++) //PER OGNI LINEA
                     {
-                        if (line.letters[c] is Space)
+                        Subtitle.Line line = subtitles[vIndex][subIndex].lines[lineIndex];
+                        for (int c = 0; c < line.letters.Count; c++) //PER OGNI LETTERA
                         {
-                            if (!TryToCorrectWithDictionary(subtitles[vIndex][subIndex], lineIndex, wordStart, c, converted))
-                            {
-                                if (Settings.dictionaryMode)
-                                {
-                                    waitForUser.Add(subtitles[vIndex][subIndex]);
-                                    //subtitles.RemoveAt(subIndex);
-                                    subIndex++;
-                                    goto skipSub;
-                                }
-                                else
-                                {
-                                    exit = ShowDictionaryDialog(subtitles[vIndex][subIndex], lineIndex, wordStart, c, converted);
-                                    switch (exit)
-                                    {
-                                        case WordNotFound.Result.skipSub:
-                                            subtitles[vIndex].RemoveAt(subIndex);
-                                            goto skipSub;
-                                        case WordNotFound.Result.subChanged:
-                                            goto skipSub;
-                                        case WordNotFound.Result.subRewrited:
-                                            subIndex++;
-                                            goto skipSub;
-                                    }
-                                }
-                            }
-                            converted.Append(' ');
-                            wordStart = c + 1;
-                            continue;
-                        }
-                        line.letters[c].GenerateArray();
-                        line.letters[c].Recognize();
-
-                        if (line.letters[c].firstOverSecondCorrectness > 0.5) //parametrizzabile
-                            line.letters[c].secondChoice = null;
-
-                        if (Settings.dictionaryMode)
-                        {
-                            if (line.letters[c].error > Settings.maxDictionaryError || line.letters[c].firstOverSecondCorrectness < Settings.minDictionaryCorrectness)
-                            {
-                                waitForUser.Add(subtitles[vIndex][subIndex]);
-                                //subtitles.RemoveAt(subIndex);
-                                subIndex++;
-                                goto skipSub;
-                            }
-                        }
-                        else
-                        {
-                            if (line.letters[c].error > Settings.maxError || line.letters[c].firstOverSecondCorrectness < Settings.minCorrectness)
-                            {
-                                GuessLetter.Result e = ShowCorrectLetterDialog(subtitles[vIndex][subIndex], lineIndex, c);
-                                switch (e)
-                                {
-                                    case GuessLetter.Result.notALetter:
-                                        line.letters.RemoveAt(c);
-                                        c--;
-                                        continue;
-                                    case GuessLetter.Result.skipSub:
-                                        subtitles[vIndex].RemoveAt(subIndex);
-                                        goto skipSub;
-                                    case GuessLetter.Result.subChanged:
-                                        goto skipSub;
-                                    case GuessLetter.Result.subRewrited:
-                                        subIndex++;
-                                        goto skipSub;
-
-                                }
-                            }
-                        }
-
-                        if (line.letters[c].value != "")
-                        {
-                            if (!IsLetter(line.letters[c].value))
+                            if (line.letters[c] is Space) //SE SONO ARRIVATO ALLO SPAZIO
                             {
                                 if (!TryToCorrectWithDictionary(subtitles[vIndex][subIndex], lineIndex, wordStart, c, converted))
                                 {
+                                    if (Settings.recognitionDash && c == wordStart + 1 && line.letters.Count > c + 2)
+                                    {
+                                        if (line.letters[c - 1].value.ToUpper() == line.letters[c - 1].value)
+                                        {
+                                            string word = line.letters[c - 1].value;
+                                            int d = c + 1;
+                                            line.letters[d].GenerateArray();
+                                            line.letters[d].Recognize();
+                                            bool flag = false;
+                                            while (d < line.letters.Count)
+                                            {
+                                                if (line.letters[d] is Space || !IsLetter(line.letters[d].value))
+                                                {
+                                                    if (Program.FindWord(word) || Program.FindName(word))
+                                                    {
+                                                        line.letters.RemoveAt(c);
+                                                        c -= 2;
+                                                        flag = true;
+                                                    }
+                                                    break;
+                                                }
+                                                word += line.letters[d].value;
+                                                d++;
+                                                line.letters[d].GenerateArray();
+                                                line.letters[d].Recognize();
+                                            }
+                                            if (flag)
+                                                continue;
+                                        }
+                                    }
                                     if (Settings.dictionaryMode)
                                     {
                                         waitForUser.Add(subtitles[vIndex][subIndex]);
@@ -305,54 +264,144 @@ namespace HardsubIsNotOk
                                         }
                                     }
                                 }
+                                converted.Append(' ');
                                 wordStart = c + 1;
+                                continue;
                             }
-                            converted.Append(line.letters[c].value);
-                        }
-                    }
-                    if (!TryToCorrectWithDictionary(subtitles[vIndex][subIndex], lineIndex, wordStart, line.letters.Count, converted))
-                    {
-                        if (Settings.dictionaryMode)
-                        {
-                            waitForUser.Add(subtitles[vIndex][subIndex]);
-                            //subtitles.RemoveAt(subIndex);
-                            subIndex++;
-                            goto skipSub;
-                        }
-                        else
-                        {
-                            exit = ShowDictionaryDialog(subtitles[vIndex][subIndex], lineIndex, wordStart, line.letters.Count, converted);
-                            switch (exit)
+                            line.letters[c].GenerateArray();
+                            line.letters[c].Recognize();
+
+                            if (line.letters[c].firstOverSecondCorrectness > 0.5) //parametrizzabile
+                                line.letters[c].secondChoice = null;
+
+                            if (Settings.dictionaryMode)
                             {
-                                case WordNotFound.Result.skipSub:
-                                    subtitles[vIndex].RemoveAt(subIndex);
-                                    goto skipSub;
-                                case WordNotFound.Result.subChanged:
-                                    goto skipSub;
-                                case WordNotFound.Result.subRewrited:
+                                if (line.letters[c].error > Settings.maxDictionaryError || line.letters[c].firstOverSecondCorrectness < Settings.minDictionaryCorrectness)
+                                {
+                                    waitForUser.Add(subtitles[vIndex][subIndex]);
+                                    //subtitles.RemoveAt(subIndex);
                                     subIndex++;
                                     goto skipSub;
+                                }
+                            }
+                            else
+                            {
+                                if (line.letters[c].error > Settings.maxError || line.letters[c].firstOverSecondCorrectness < Settings.minCorrectness)
+                                {
+                                    GuessLetter.Result e = ShowCorrectLetterDialog(subtitles[vIndex][subIndex], lineIndex, c);
+                                    switch (e)
+                                    {
+                                        case GuessLetter.Result.notALetter:
+                                            line.letters.RemoveAt(c);
+                                            c--;
+                                            continue;
+                                        case GuessLetter.Result.skipSub:
+                                            subtitles[vIndex].RemoveAt(subIndex);
+                                            goto skipSub;
+                                        case GuessLetter.Result.subChanged:
+                                            goto skipSub;
+                                        case GuessLetter.Result.subRewrited:
+                                            subIndex++;
+                                            goto skipSub;
+
+                                    }
+                                }
+                            }
+
+                            if (line.letters[c].value != "")
+                            {
+                                if (!IsLetter(line.letters[c].value))
+                                {
+                                    if (!TryToCorrectWithDictionary(subtitles[vIndex][subIndex], lineIndex, wordStart, c, converted))
+                                    {
+                                        if (Settings.recognitionDash && c == wordStart + 1 && line.letters.Count > c + 1 && c != 0)
+                                        {
+                                            line.letters[c + 1].GenerateArray();
+                                            line.letters[c + 1].Recognize();
+                                            if (line.letters[c].value == "-" && line.letters[c + 1].value.ToLower() == line.letters[c - 1].value.ToLower())
+                                            {
+                                                converted.Append(line.letters[c - 1].value);
+                                                converted.Append(line.letters[c].value);
+                                                wordStart = c + 1;
+                                                continue;
+                                            }
+                                        }
+
+                                        if (Settings.dictionaryMode)
+                                        {
+                                            waitForUser.Add(subtitles[vIndex][subIndex]);
+                                            //subtitles.RemoveAt(subIndex);
+                                            subIndex++;
+                                            goto skipSub;
+                                        }
+                                        else
+                                        {
+                                            exit = ShowDictionaryDialog(subtitles[vIndex][subIndex], lineIndex, wordStart, c, converted);
+                                            switch (exit)
+                                            {
+                                                case WordNotFound.Result.skipSub:
+                                                    subtitles[vIndex].RemoveAt(subIndex);
+                                                    goto skipSub;
+                                                case WordNotFound.Result.subChanged:
+                                                    goto skipSub;
+                                                case WordNotFound.Result.subRewrited:
+                                                    subIndex++;
+                                                    goto skipSub;
+                                            }
+                                        }
+                                    }
+                                    wordStart = c + 1;
+                                }
+                                converted.Append(line.letters[c].value);
                             }
                         }
+                        if (!TryToCorrectWithDictionary(subtitles[vIndex][subIndex], lineIndex, wordStart, line.letters.Count, converted))
+                        {
+                            if (Settings.dictionaryMode)
+                            {
+                                waitForUser.Add(subtitles[vIndex][subIndex]);
+                                //subtitles.RemoveAt(subIndex);
+                                subIndex++;
+                                goto skipSub;
+                            }
+                            else
+                            {
+                                exit = ShowDictionaryDialog(subtitles[vIndex][subIndex], lineIndex, wordStart, line.letters.Count, converted);
+                                switch (exit)
+                                {
+                                    case WordNotFound.Result.skipSub:
+                                        subtitles[vIndex].RemoveAt(subIndex);
+                                        goto skipSub;
+                                    case WordNotFound.Result.subChanged:
+                                        goto skipSub;
+                                    case WordNotFound.Result.subRewrited:
+                                        subIndex++;
+                                        goto skipSub;
+                                }
+                            }
+                        }
+                        if (converted.Length != 0 && converted[converted.Length - 1] != '\n')
+                            converted.Append('\n');
+                        wordStart = 0;
                     }
-                    if (converted.Length != 0 && converted[converted.Length - 1] != '\n')
-                        converted.Append('\n');
-                    wordStart = 0;
-                }
-                if (converted.Length == 0)
-                {
-                    subtitles[vIndex].RemoveAt(subIndex);
-                }
-                else if (subIndex > 0 && converted.ToString() == subtitles[vIndex][subIndex - 1].value && subtitles[vIndex][subIndex].startFrame - 1 <= subtitles[vIndex][subIndex - 1].endFrame)
-                {
-                    subtitles[vIndex][subIndex - 1].endFrame = subtitles[vIndex][subIndex].endFrame;
-                    subtitles[vIndex].RemoveAt(subIndex);
-                }
-                else
-                {
-                    //Console.Write(converted);
-                    subtitles[vIndex][subIndex].value = converted.ToString();
-                    subIndex++;
+                    if (converted.Length == 0)
+                    {
+                        subtitles[vIndex].RemoveAt(subIndex);
+                    }
+                    else if (subIndex > 0 && converted.ToString() == subtitles[vIndex][subIndex - 1].value && subtitles[vIndex][subIndex].startFrame - 1 <= subtitles[vIndex][subIndex - 1].endFrame)
+                    {
+                        subtitles[vIndex][subIndex - 1].endFrame = subtitles[vIndex][subIndex].endFrame;
+                        subtitles[vIndex].RemoveAt(subIndex);
+                    }
+                    else
+                    {
+                        //Console.Write(converted);
+                        subtitles[vIndex][subIndex].value = converted.ToString();
+                        subIndex++;
+                        }
+                    }
+                catch (Exception e) {
+
                 }
                 skipSub:;
             }
@@ -381,11 +430,40 @@ namespace HardsubIsNotOk
                         {
                             if (!TryToCorrectWithDictionary(waitForUser[0], lineIndex, wordStart, c, converted))
                             {
+                                if (Settings.recognitionDash && c == wordStart + 1 && line.letters.Count > c + 2)
+                                {
+                                    if (line.letters[c - 1].value.ToUpper() == line.letters[c - 1].value)
+                                    {
+                                        string word = line.letters[c - 1].value;
+                                        int d = c + 1;
+                                        line.letters[d].GenerateArray();
+                                        line.letters[d].Recognize();
+                                        bool flag = false;
+                                        while (d < line.letters.Count)
+                                        {
+                                            if (line.letters[d] is Space || !IsLetter(line.letters[d].value))
+                                            {
+                                                if (Program.FindWord(word) || Program.FindName(word))
+                                                {
+                                                    line.letters.RemoveAt(c);
+                                                    c -= 2;
+                                                    flag = true;
+                                                }
+                                                break;
+                                            }
+                                            word += line.letters[d].value;
+                                            d++;
+                                            line.letters[d].GenerateArray();
+                                            line.letters[d].Recognize();
+                                        }
+                                        if (flag)
+                                            continue;
+                                    }
+                                }
                                 exit = ShowDictionaryDialog(waitForUser[0], lineIndex, wordStart, c, converted);
                                 switch (exit)
                                 {
                                     case WordNotFound.Result.skipSub:
-                                        //subtitles.Remove(waitForUser[0]);
                                         waitForUser.RemoveAt(0);
                                         goto skipSub;
                                     case WordNotFound.Result.subChanged:
@@ -415,7 +493,6 @@ namespace HardsubIsNotOk
                                     c--;
                                     continue;
                                 case GuessLetter.Result.skipSub:
-                                    //subtitles.Remove(waitForUser[0]);
                                     waitForUser.RemoveAt(0);
                                     goto skipSub;
                                 case GuessLetter.Result.subChanged:
@@ -437,7 +514,6 @@ namespace HardsubIsNotOk
                                     switch (exit)
                                     {
                                         case WordNotFound.Result.skipSub:
-                                            //subtitles.Remove(waitForUser[0]);
                                             waitForUser.RemoveAt(0);
                                             goto skipSub;
                                         case WordNotFound.Result.subChanged:
@@ -458,7 +534,6 @@ namespace HardsubIsNotOk
                         switch (exit)
                         {
                             case WordNotFound.Result.skipSub:
-                                //subtitles.Remove(waitForUser[0]);
                                 waitForUser.RemoveAt(0);
                                 goto skipSub;
                             case WordNotFound.Result.subChanged:
@@ -472,22 +547,12 @@ namespace HardsubIsNotOk
                         converted.Append('\n');
                     wordStart = 0;
                 }
-                //int subIndex = subtitles[vIndex].IndexOf(waitForUser[0]);
                 if (converted.Length == 0)
                 {
-                    //subtitles.Remove(waitForUser[0]);
                     waitForUser.RemoveAt(0);
                 }
-                //else if (subIndex > 0 && converted.ToString() == subtitles[vIndex][subIndex - 1].value && subtitles[vIndex][subIndex].startFrame - 1 <= subtitles[vIndex][subIndex - 1].endFrame)
-                //{
-                //    subtitles[vIndex][subIndex - 1].endFrame = subtitles[vIndex][subIndex].endFrame;
-                    //subtitles.Remove(waitForUser[0]);
-                //    waitForUser[0].value = "";
-                //    waitForUser.RemoveAt(0);
-                //}
                 else
                 {
-                    //Console.Write(converted);
                     waitForUser[0].value = converted.ToString();
                     waitForUser.RemoveAt(0);
                 }
@@ -649,9 +714,10 @@ namespace HardsubIsNotOk
                 {
                     if (sub.lines[line].letters[c].secondChoice != null && sub.lines[line].letters[c].secondChoice != "")
                     {
-
                         string newWord = word + sub.lines[line].letters[c].secondChoice;
-                        for (int d = c + 1; d < end; d++)
+                        if (end > sub.lines[line].letters.Count())
+                            return true;
+                        for (int d = c + 1; d < end; d++) //RISOLVERE CRASH FUORI DA ARRAY
                             newWord += sub.lines[line].letters[d].value;
                         if (Program.FindWord(newWord) || Program.FindName(newWord))
                             alternatives.Add(newWord, sub.lines[line].letters[c]);
